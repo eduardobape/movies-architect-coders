@@ -1,4 +1,4 @@
-package com.example.mymovies.data.apiservices
+package com.example.mymovies.data.remoteapi
 
 class ApiUrlsManager {
 	companion object {

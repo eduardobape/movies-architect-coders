@@ -1,6 +1,6 @@
 package com.example.mymovies.domain.mapper
 
-import com.example.mymovies.data.apiservices.MovieDetailsDiscovery
+import com.example.mymovies.data.remoteapi.MovieDetailsDiscovery
 import com.example.mymovies.domain.model.MovieMainDetails
 
 object DomainMovieModelMapper {
