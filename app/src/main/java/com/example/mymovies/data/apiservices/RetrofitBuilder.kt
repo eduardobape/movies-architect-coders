@@ -22,7 +22,7 @@ object RetrofitBuilder {
 		.build()
 
 	val retrofit: Retrofit = Retrofit.Builder()
-		.baseUrl(theMovieDbBaseUrl)
+		.baseUrl(ApiUrlsManager.theMovieDbBaseUrl)
 		.client(networkClient)
 		.addConverterFactory(MoshiConverterFactory.create())
 		.build()
