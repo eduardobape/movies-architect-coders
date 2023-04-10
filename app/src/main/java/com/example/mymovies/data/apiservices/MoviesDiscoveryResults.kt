@@ -22,7 +22,7 @@ data class MovieDetailsDiscovery(
 	@Json(name = "poster_path") val posterPath: String?,
 	@Json(name = "release_date") val releaseDate: String,
 	@Json(name = "title") val translatedTitle: String,
-	@Json(name = "video") val video: Boolean,
+	@Json(name = "video") val isRegularMovie: Boolean,
 	@Json(name = "vote_average") val voteAverage: Double,
 	@Json(name = "vote_count") val voteCount: Int
 )
