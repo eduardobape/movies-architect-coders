@@ -1,5 +1,6 @@
 package com.example.mymovies.data.remoteapi
 
+import com.example.mymovies.domain.model.MovieMainDetails
 import com.squareup.moshi.Json
 
 
@@ -26,3 +27,13 @@ data class MovieDetailsDiscovery(
 	@Json(name = "vote_average") val voteAverage: Double,
 	@Json(name = "vote_count") val voteCount: Int
 )
+
+fun MoviesDiscoveryResult.asDomainModel(): List<MovieMainDetails> = movies.map { movie ->
+	MovieMainDetails(
+		movie.originalTitle,
+		movie.translatedTitle,
+		movie.posterPath?.let {
+			ApiImageUtils.buildFullUrlImage(movie.posterPath, ApiImageUtils.PosterMovieSize.WIDTH_500PX)
+		}
+	)
+}
