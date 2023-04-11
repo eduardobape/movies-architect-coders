@@ -1,4 +1,4 @@
-package com.example.mymovies.domain.model
+package com.example.mymovies.domain.models
 
 data class MovieMainDetails(
 	val originalTitle: String,

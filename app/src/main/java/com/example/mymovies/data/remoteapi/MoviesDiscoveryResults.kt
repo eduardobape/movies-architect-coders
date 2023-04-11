@@ -1,6 +1,6 @@
 package com.example.mymovies.data.remoteapi
 
-import com.example.mymovies.domain.model.MovieMainDetails
+import com.example.mymovies.domain.models.MovieMainDetails
 import com.squareup.moshi.Json
 
 
