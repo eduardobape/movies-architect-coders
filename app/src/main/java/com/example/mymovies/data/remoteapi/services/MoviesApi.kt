@@ -1,4 +1,6 @@
-package com.example.mymovies.data.remoteapi
+package com.example.mymovies.data.remoteapi.services
+
+import com.example.mymovies.data.remoteapi.RetrofitBuilder
 
 object MoviesApi {
 
