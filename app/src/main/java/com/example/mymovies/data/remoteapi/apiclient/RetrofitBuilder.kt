@@ -1,6 +1,7 @@
-package com.example.mymovies.data.remoteapi
+package com.example.mymovies.data.remoteapi.apiclient
 
 import com.example.mymovies.BuildConfig
+import com.example.mymovies.data.remoteapi.ApiUrlsManager
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
