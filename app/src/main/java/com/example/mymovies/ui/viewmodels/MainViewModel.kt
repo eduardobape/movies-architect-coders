@@ -1,9 +1,6 @@
 package com.example.mymovies.ui.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.mymovies.domain.models.MovieMainDetails
 import com.example.mymovies.domain.usecases.DiscoverMoviesUseCase
 import kotlinx.coroutines.launch
@@ -23,5 +20,10 @@ class MainViewModel(private val discoverMoviesUseCase: DiscoverMoviesUseCase) : 
 			val movies: List<MovieMainDetails> = discoverMoviesUseCase()
 			_movies.value = movies
 		}
+	}
+
+	class Factory(private val discoverMoviesUseCase: DiscoverMoviesUseCase) : ViewModelProvider.Factory {
+		@Suppress("UNCHECKED_CAST")
+		override fun <T : ViewModel> create(modelClass: Class<T>): T = MainViewModel(discoverMoviesUseCase) as T
 	}
 }
