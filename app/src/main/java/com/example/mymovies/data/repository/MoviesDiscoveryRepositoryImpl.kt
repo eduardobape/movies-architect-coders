@@ -1,6 +1,6 @@
 package com.example.mymovies.data.repository
 
-import com.example.mymovies.data.remoteapi.models.asDomainModel
+import com.example.mymovies.domain.models.asDomainModel
 import com.example.mymovies.data.remoteapi.services.MoviesDiscoveryApiService
 import com.example.mymovies.domain.models.MovieMainDetails
 import com.example.mymovies.domain.repository.MoviesDiscoveryRepository
