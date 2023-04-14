@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface MoviesDiscoveryApiService {
 
-	@GET("/discover/movie")
+	@GET("discover/movie")
 	suspend fun discoverMoviesByYear(
 		@Query("year") year: Int,
 		@Query("page") page: Int,
