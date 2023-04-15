@@ -1,7 +1,9 @@
 package com.example.mymovies.data.remoteapi.models
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class MoviesDiscoveryResult(
 	@Json(name = "page") val page: Int,
 	@Json(name = "total_pages") val totalPages: Int,
@@ -9,6 +11,7 @@ data class MoviesDiscoveryResult(
 	@Json(name = "results") val movies: List<MovieDetailsDiscovery>
 )
 
+@JsonClass(generateAdapter = true)
 data class MovieDetailsDiscovery(
 	@Json(name = "adult") val isAdultFilm: Boolean,
 	@Json(name = "backdrop_path") val backdropPath: String?,
