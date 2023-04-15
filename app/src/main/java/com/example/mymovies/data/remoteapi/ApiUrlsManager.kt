@@ -19,7 +19,7 @@ class ApiUrlsManager {
 		}
 
 		fun buildFullUrlImage(imagePath: String, size: PosterMovieSize): String {
-			return "${ApiUrlsManager.imageBaseUrl}/${size.width}/$imagePath"
+			return "$imageBaseUrl${size.width}$imagePath"
 		}
 	}
 }
