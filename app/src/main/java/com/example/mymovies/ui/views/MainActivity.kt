@@ -2,20 +2,33 @@ package com.example.mymovies.ui.views
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mymovies.data.remoteapi.services.MoviesApi
+import com.example.mymovies.data.repository.MoviesDiscoveryRepositoryImpl
 import com.example.mymovies.databinding.ActivityMainBinding
+import com.example.mymovies.domain.usecases.DiscoverMoviesUseCase
+import com.example.mymovies.ui.viewmodels.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
 	private lateinit var binding: ActivityMainBinding
 	private val moviesAdapter = MoviesAdapter()
+	private val viewModel by viewModels<MainViewModel> {
+		MainViewModel.Factory(
+			DiscoverMoviesUseCase(MoviesDiscoveryRepositoryImpl(MoviesApi.moviesDiscoveryApiService)))
+	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 		setUpMoviesAdapter()
+
+		viewModel.movies.observe(this) {
+			moviesAdapter.movies += it
+		}
 	}
 
 	private fun setUpMoviesAdapter() {
