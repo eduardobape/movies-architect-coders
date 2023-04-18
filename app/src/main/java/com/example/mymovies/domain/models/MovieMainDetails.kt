@@ -4,6 +4,7 @@ import com.example.mymovies.data.remoteapi.ApiUrlsManager
 import com.example.mymovies.data.remoteapi.models.MoviesDiscoveryResult
 
 data class MovieMainDetails(
+	val id: Int,
 	val originalTitle: String,
 	val translatedTitle: String,
 	val posterUrl: String?
@@ -11,6 +12,7 @@ data class MovieMainDetails(
 
 fun MoviesDiscoveryResult.asDomainModel(): List<MovieMainDetails> = movies.map { movie ->
 	MovieMainDetails(
+		movie.id,
 		movie.originalTitle,
 		movie.translatedTitle,
 		movie.posterPath?.let { posterPath ->
@@ -18,6 +20,6 @@ fun MoviesDiscoveryResult.asDomainModel(): List<MovieMainDetails> = movies.map {
 				posterPath,
 				ApiUrlsManager.ApiImageUtils.PosterMovieSize.WIDTH_500PX
 			)
-		}
+		},
 	)
 }
