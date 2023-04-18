@@ -20,6 +20,6 @@ fun MoviesDiscoveryResult.asDomainModel(): List<MovieMainDetails> = movies.map {
 				posterPath,
 				ApiUrlsManager.ApiImageUtils.PosterMovieSize.WIDTH_500PX
 			)
-		},
+		}
 	)
 }
