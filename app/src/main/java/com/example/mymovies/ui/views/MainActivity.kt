@@ -1,8 +1,8 @@
 package com.example.mymovies.ui.views
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovies.data.remoteapi.services.MoviesApi
@@ -17,7 +17,8 @@ class MainActivity : AppCompatActivity() {
 	private val moviesAdapter = MoviesAdapter()
 	private val viewModel by viewModels<MainViewModel> {
 		MainViewModel.Factory(
-			DiscoverMoviesUseCase(MoviesDiscoveryRepositoryImpl(MoviesApi.moviesDiscoveryApiService)))
+			DiscoverMoviesUseCase(MoviesDiscoveryRepositoryImpl(MoviesApi.moviesDiscoveryApiService))
+		)
 	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 		setUpMoviesAdapter()
 
 		viewModel.movies.observe(this) {
-			moviesAdapter.movies += it
+			moviesAdapter.submitList(it)
 		}
 	}
 
