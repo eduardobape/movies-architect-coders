@@ -17,8 +17,8 @@
 			android:layout_width="match_parent"
 			android:layout_height="200dp"
 			android:background="#72B8B6"
+			android:scaleType="fitXY"
 			android:contentDescription="@string/poster_movie_description"
-			android:scaleType="fitCenter"
 			tools:src="@tools:sample/backgrounds/scenic"
 			tools:srcCompat="@tools:sample/backgrounds/scenic[2]" />
 
