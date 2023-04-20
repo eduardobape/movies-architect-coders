@@ -26,10 +26,7 @@ class MainActivity : AppCompatActivity() {
 		binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 		setUpMoviesAdapter()
-
-		viewModel.movies.observe(this) {
-			moviesAdapter.submitList(it)
-		}
+		updateMoviesList()
 	}
 
 	private fun setUpMoviesAdapter() {
@@ -37,6 +34,12 @@ class MainActivity : AppCompatActivity() {
 			adapter = moviesAdapter
 			layoutManager = GridLayoutManager(this@MainActivity, 2, RecyclerView.VERTICAL, false)
 			addItemDecoration(SpacesItemDecoration(2, 50, true))
+		}
+	}
+
+	private fun updateMoviesList() {
+		viewModel.movies.observe(this) {
+			moviesAdapter.submitList(it)
 		}
 	}
 }
