@@ -33,9 +33,10 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun setUpMoviesAdapter() {
-		val recyclerViewMovies = binding.rvMoviesList
-		recyclerViewMovies.adapter = moviesAdapter
-		recyclerViewMovies.layoutManager = GridLayoutManager(this, 2, RecyclerView.VERTICAL, false)
-		recyclerViewMovies.addItemDecoration(SpacesItemDecoration(2, 50, true))
+		with (binding.rvMoviesList) {
+			adapter = moviesAdapter
+			layoutManager = GridLayoutManager(this@MainActivity, 2, RecyclerView.VERTICAL, false)
+			addItemDecoration(SpacesItemDecoration(2, 50, true))
+		}
 	}
 }
