@@ -14,32 +14,63 @@ import com.example.mymovies.ui.viewmodels.MainViewModel
 class MainActivity : AppCompatActivity() {
 
 	private lateinit var binding: ActivityMainBinding
-	private val moviesAdapter = MoviesAdapter()
+	private lateinit var moviesAdapter: MoviesAdapter
+	private lateinit var moviesLayoutManager: GridLayoutManager
 	private val viewModel by viewModels<MainViewModel> {
 		MainViewModel.Factory(
 			DiscoverMoviesUseCase(MoviesDiscoveryRepositoryImpl(MoviesApi.moviesDiscoveryApiService))
 		)
 	}
+	private var isLoadingMovies = false
+	private var areMoreMoviesAvailable = false
+	private var moviesListPage = 1
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
-		setUpMoviesAdapter()
+
+		configMoviesAdapter()
+		onScrollMovies()
 		updateMoviesList()
+		viewModel.getMovies(2023, "ES", "ES_es", "release_date.desc", moviesListPage)
 	}
 
-	private fun setUpMoviesAdapter() {
-		with (binding.rvMoviesList) {
+	private fun configMoviesAdapter() {
+		moviesAdapter = MoviesAdapter()
+		with(binding.rvMoviesList) {
 			adapter = moviesAdapter
-			layoutManager = GridLayoutManager(this@MainActivity, 2, RecyclerView.VERTICAL, false)
+			GridLayoutManager(this@MainActivity, 2, RecyclerView.VERTICAL, false).also {
+				layoutManager = it
+				this@MainActivity.moviesLayoutManager = it
+			}
 			addItemDecoration(SpacesItemDecoration(2, 50, true))
 		}
 	}
 
 	private fun updateMoviesList() {
 		viewModel.movies.observe(this) {
-			moviesAdapter.submitList(it)
+			areMoreMoviesAvailable = it.isNotEmpty()
+			moviesAdapter.submitList(moviesAdapter.currentList + it)
+			isLoadingMovies = false
 		}
+	}
+
+	private fun onScrollMovies() {
+		binding.rvMoviesList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+			override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+				super.onScrolled(recyclerView, dx, dy)
+				val visibleItemCount = moviesLayoutManager.childCount
+				val totalItemCount = moviesLayoutManager.itemCount
+				val firstVisibleItemPosition = moviesLayoutManager.findFirstVisibleItemPosition()
+
+				if (!isLoadingMovies && areMoreMoviesAvailable && dy > 0 &&
+					(visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
+					isLoadingMovies = true
+					moviesListPage++
+					viewModel.getMovies(2023, "ES", "ES_es", "release_date.desc", moviesListPage)
+				}
+			}
+		})
 	}
 }

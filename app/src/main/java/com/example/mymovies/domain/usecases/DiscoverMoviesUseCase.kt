@@ -5,7 +5,11 @@ import com.example.mymovies.domain.repository.MoviesDiscoveryRepository
 
 class DiscoverMoviesUseCase(private val repository: MoviesDiscoveryRepository) {
 
-	suspend operator fun invoke(): List<MovieMainDetails> = repository.discoverMoviesByYear(
-		2023, 1, "release.desc", "ES", "es-ES"
-	)
+	suspend operator fun invoke(
+		year: Int,
+		order: String,
+		region: String,
+		language: String,
+		page: Int
+	): List<MovieMainDetails> = repository.discoverMoviesByYear(year, page, order, region, language)
 }

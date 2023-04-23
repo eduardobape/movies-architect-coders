@@ -11,13 +11,9 @@ class MainViewModel(private val discoverMoviesUseCase: DiscoverMoviesUseCase) : 
 	val movies: LiveData<List<MovieMainDetails>>
 		get() = _movies
 
-	init {
-		getMovies()
-	}
-
-	private fun getMovies() {
+	fun getMovies(year: Int, region: String, language: String, order: String, page: Int) {
 		viewModelScope.launch {
-			val movies: List<MovieMainDetails> = discoverMoviesUseCase()
+			val movies: List<MovieMainDetails> = discoverMoviesUseCase(year, order, region, language, page)
 			_movies.value = movies
 		}
 	}
