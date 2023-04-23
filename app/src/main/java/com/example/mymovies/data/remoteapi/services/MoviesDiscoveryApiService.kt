@@ -10,8 +10,8 @@ interface MoviesDiscoveryApiService {
 	suspend fun discoverMoviesByYear(
 		@Query("year") year: Int,
 		@Query("page") page: Int,
-		@Query("sort_by") sortBy: String = "release_date.desc",
-		@Query("region") region: String = "ES",
-		@Query("language") language: String = "es-ES"
+		@Query("sort_by") sortBy: String,
+		@Query("region") region: String,
+		@Query("language") language: String
 	): MoviesDiscoveryResult
 }
