@@ -18,7 +18,7 @@ fun MoviesDiscoveryResult.asDomainModel(): List<MovieMainDetails> = movies.map {
 		movie.posterPath?.let { posterPath ->
 			ApiUrlsManager.ApiImageUtils.buildFullUrlImage(
 				posterPath,
-				ApiUrlsManager.ApiImageUtils.PosterMovieSize.WIDTH_500PX
+				ApiUrlsManager.ApiImageUtils.PosterMovieSize.WIDTH_342PX
 			)
 		}
 	)
