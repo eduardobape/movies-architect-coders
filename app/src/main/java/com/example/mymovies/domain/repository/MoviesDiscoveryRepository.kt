@@ -1,6 +1,6 @@
 package com.example.mymovies.domain.repository
 
-import com.example.mymovies.domain.models.MovieMainDetails
+import com.example.mymovies.domain.models.MoviesDiscoveryDetails
 
 interface MoviesDiscoveryRepository {
 
@@ -10,5 +10,5 @@ interface MoviesDiscoveryRepository {
 		sortBy: String,
 		region: String,
 		language: String
-	): List<MovieMainDetails>
+	): MoviesDiscoveryDetails
 }

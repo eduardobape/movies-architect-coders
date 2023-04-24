@@ -22,8 +22,8 @@ class MainActivity : AppCompatActivity() {
 		)
 	}
 	private var isLoadingMovies = false
+	private var numLoadedMoviesPages = 0
 	private var areMoreMoviesAvailable = false
-	private var moviesListPage = 1
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 		configMoviesAdapter()
 		onScrollMovies()
 		updateMoviesList()
-		viewModel.getMovies(2023, "ES", "ES_es", "release_date.desc", moviesListPage)
+		viewModel.getMovies(2023, "ES", "ES_es", "release_date.desc", numLoadedMoviesPages + 1)
 	}
 
 	private fun configMoviesAdapter() {
@@ -49,9 +49,10 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun updateMoviesList() {
-		viewModel.movies.observe(this) {
-			areMoreMoviesAvailable = it.isNotEmpty()
-			moviesAdapter.submitList(moviesAdapter.currentList + it)
+		viewModel.moviesDetails.observe(this) { moviesDetails ->
+			areMoreMoviesAvailable = moviesDetails.pages > moviesDetails.page
+			numLoadedMoviesPages = moviesDetails.page
+			moviesAdapter.submitList(moviesAdapter.currentList + moviesDetails.movies)
 			isLoadingMovies = false
 		}
 	}
@@ -65,10 +66,10 @@ class MainActivity : AppCompatActivity() {
 				val firstVisibleItemPosition = moviesLayoutManager.findFirstVisibleItemPosition()
 
 				if (!isLoadingMovies && areMoreMoviesAvailable && dy > 0 &&
-					(visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
+					(visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+				) {
 					isLoadingMovies = true
-					moviesListPage++
-					viewModel.getMovies(2023, "ES", "ES_es", "release_date.desc", moviesListPage)
+					viewModel.getMovies(2023, "ES", "ES_es", "release_date.desc", numLoadedMoviesPages + 1)
 				}
 			}
 		})
