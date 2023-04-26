@@ -9,9 +9,9 @@ interface MoviesDiscoveryApiService {
 	@GET("discover/movie")
 	suspend fun discoverMoviesByYear(
 		@Query("year") year: Int,
-		@Query("page") page: Int,
-		@Query("sort_by") sortBy: String,
 		@Query("region") region: String,
-		@Query("language") language: String
+		@Query("language") language: String,
+		@Query("sort_by") sortBy: String,
+		@Query("page") page: Int
 	): MoviesDiscoveryResult
 }

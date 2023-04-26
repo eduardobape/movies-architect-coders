@@ -17,6 +17,6 @@ class MoviesDiscoveryRepositoryImpl(private val moviesDiscoveryApiService: Movie
 		region: String,
 		language: String
 	): MoviesDiscoveryDetails = withContext(Dispatchers.IO) {
-		moviesDiscoveryApiService.discoverMoviesByYear(releaseYear, page, sortBy, region, language).asDomainModel()
+		moviesDiscoveryApiService.discoverMoviesByYear(releaseYear, region, language, sortBy, page).asDomainModel()
 	}
 }
