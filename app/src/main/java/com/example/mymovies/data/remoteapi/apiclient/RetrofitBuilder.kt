@@ -8,7 +8,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 object RetrofitBuilder {
 
-	val networkClient: OkHttpClient = OkHttpClient.Builder()
+	private val networkClient: OkHttpClient = OkHttpClient.Builder()
 		.addInterceptor { chain ->
 			val originalRequest = chain.request()
 			val originalHttpUrl = originalRequest.url()
