@@ -6,10 +6,10 @@ import com.example.mymovies.domain.repository.MoviesDiscoveryRepository
 class DiscoverMoviesUseCase(private val repository: MoviesDiscoveryRepository) {
 
 	suspend operator fun invoke(
-		year: Int,
+		releaseYear: Int,
 		region: String,
 		language: String,
-		order: String,
+		sortBy: String,
 		page: Int
-	): MoviesDiscoveryDetails = repository.discoverMoviesByYear(year, region, language, order, page)
+	): MoviesDiscoveryDetails = repository.discoverMoviesByYear(releaseYear, region, language, sortBy, page)
 }
