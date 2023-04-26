@@ -11,5 +11,5 @@ class DiscoverMoviesUseCase(private val repository: MoviesDiscoveryRepository) {
 		region: String,
 		language: String,
 		page: Int
-	): MoviesDiscoveryDetails = repository.discoverMoviesByYear(year, page, order, region, language)
+	): MoviesDiscoveryDetails = repository.discoverMoviesByYear(year, region, language, order, page)
 }

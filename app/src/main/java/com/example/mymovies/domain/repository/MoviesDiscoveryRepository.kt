@@ -6,9 +6,9 @@ interface MoviesDiscoveryRepository {
 
 	suspend fun discoverMoviesByYear(
 		releaseYear: Int,
-		page: Int,
-		sortBy: String,
 		region: String,
-		language: String
+		language: String,
+		sortBy: String,
+		page: Int
 	): MoviesDiscoveryDetails
 }

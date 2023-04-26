@@ -12,10 +12,10 @@ class MoviesDiscoveryRepositoryImpl(private val moviesDiscoveryApiService: Movie
 
 	override suspend fun discoverMoviesByYear(
 		releaseYear: Int,
-		page: Int,
-		sortBy: String,
 		region: String,
-		language: String
+		language: String,
+		sortBy: String,
+		page: Int
 	): MoviesDiscoveryDetails = withContext(Dispatchers.IO) {
 		moviesDiscoveryApiService.discoverMoviesByYear(releaseYear, region, language, sortBy, page).asDomainModel()
 	}
