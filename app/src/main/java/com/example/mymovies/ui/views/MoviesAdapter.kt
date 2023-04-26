@@ -27,6 +27,10 @@ class MoviesAdapter : ListAdapter<MovieMainDetails, MoviesAdapter.MovieViewHolde
 		private val binding: MovieItemBinding = MovieItemBinding.bind(itemView)
 
 		fun bind(movieMainDetails: MovieMainDetails) {
+			displayMovieDetails(movieMainDetails)
+		}
+
+		private fun displayMovieDetails(movieMainDetails: MovieMainDetails) {
 			displayMoviePoster(movieMainDetails)
 			displayMovieTitle(movieMainDetails)
 		}
