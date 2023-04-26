@@ -28,7 +28,7 @@ class MoviesAdapter : ListAdapter<MovieMainDetails, MoviesAdapter.MovieViewHolde
 
 		fun bind(movieMainDetails: MovieMainDetails) {
 			displayMoviePoster(movieMainDetails)
-			binding.tvMovieTitle.text = movieMainDetails.translatedTitle
+			displayMovieTitle(movieMainDetails)
 		}
 
 		private fun displayMoviePoster(movieMainDetails: MovieMainDetails) {
@@ -36,6 +36,10 @@ class MoviesAdapter : ListAdapter<MovieMainDetails, MoviesAdapter.MovieViewHolde
 				?: binding.ivMoviePoster.setImageDrawable(
 					ContextCompat.getDrawable(itemView.context, R.drawable.no_movie_poster)
 				)
+		}
+
+		private fun displayMovieTitle(movieMainDetails: MovieMainDetails) {
+			binding.tvMovieTitle.text = movieMainDetails.translatedTitle
 		}
 	}
 
