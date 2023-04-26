@@ -7,9 +7,9 @@ class DiscoverMoviesUseCase(private val repository: MoviesDiscoveryRepository) {
 
 	suspend operator fun invoke(
 		year: Int,
-		order: String,
 		region: String,
 		language: String,
+		order: String,
 		page: Int
 	): MoviesDiscoveryDetails = repository.discoverMoviesByYear(year, region, language, order, page)
 }

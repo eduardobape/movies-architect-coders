@@ -13,7 +13,7 @@ class MainViewModel(private val discoverMoviesUseCase: DiscoverMoviesUseCase) : 
 
 	fun getMovies(year: Int, region: String, language: String, order: String, page: Int) {
 		viewModelScope.launch {
-			val moviesDetails = discoverMoviesUseCase(year, order, region, language, page)
+			val moviesDetails = discoverMoviesUseCase(year, region, language, order, page)
 			_moviesDetails.value = moviesDetails
 		}
 	}
