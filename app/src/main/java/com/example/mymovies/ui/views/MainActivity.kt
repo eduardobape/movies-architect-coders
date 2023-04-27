@@ -9,7 +9,10 @@ import com.example.mymovies.data.remoteapi.services.MoviesApi
 import com.example.mymovies.data.repository.MoviesDiscoveryRepositoryImpl
 import com.example.mymovies.databinding.ActivityMainBinding
 import com.example.mymovies.domain.usecases.DiscoverMoviesUseCase
+import com.example.mymovies.ui.models.MoviesDiscoveryFilters
 import com.example.mymovies.ui.viewmodels.MainViewModel
+import java.time.LocalDate
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,8 +24,8 @@ class MainActivity : AppCompatActivity() {
 			DiscoverMoviesUseCase(MoviesDiscoveryRepositoryImpl(MoviesApi.moviesDiscoveryApiService))
 		)
 	}
+	private lateinit var moviesFilters: MoviesDiscoveryFilters
 	private var isLoadingMovies = false
-	private var numLoadedMoviesPages = 0
 	private var areMoreMoviesAvailable = false
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,9 +34,10 @@ class MainActivity : AppCompatActivity() {
 		setContentView(binding.root)
 
 		configMoviesAdapter()
+		initMoviesFilters()
 		onScrollMovies()
 		updateMoviesList()
-		viewModel.getMovies(2023, "ES", "ES_es", "release_date.desc", numLoadedMoviesPages + 1)
+		viewModel.getMovies(moviesFilters)
 	}
 
 	private fun configMoviesAdapter() {
@@ -51,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 	private fun updateMoviesList() {
 		viewModel.moviesDetails.observe(this) { moviesDetails ->
 			areMoreMoviesAvailable = moviesDetails.pages > moviesDetails.page
-			numLoadedMoviesPages = moviesDetails.page
+			increaseMoviesPageToLoad()
 			moviesAdapter.submitList(moviesAdapter.currentList + moviesDetails.movies)
 			isLoadingMovies = false
 		}
@@ -69,9 +73,23 @@ class MainActivity : AppCompatActivity() {
 					(visibleItemCount + firstVisibleItemPosition) >= totalItemCount
 				) {
 					isLoadingMovies = true
-					viewModel.getMovies(2023, "ES", "ES_es", "release_date.desc", numLoadedMoviesPages + 1)
+					viewModel.getMovies(moviesFilters)
 				}
 			}
 		})
+	}
+
+	private fun initMoviesFilters() {
+		moviesFilters = MoviesDiscoveryFilters(
+			LocalDate.now().year,
+			Locale.getDefault().country,
+			Locale.getDefault().language,
+			"release_date.asc",
+			1
+		)
+	}
+
+	private fun increaseMoviesPageToLoad() {
+		moviesFilters.page++
 	}
 }
