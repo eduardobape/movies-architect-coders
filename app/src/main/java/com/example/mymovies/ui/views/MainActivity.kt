@@ -71,6 +71,10 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
+	private fun increaseMoviesPageToLoad() {
+		moviesFilters.page++
+	}
+
 	private fun onScrollMovies() {
 		binding.rvMoviesList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 			override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -87,9 +91,5 @@ class MainActivity : AppCompatActivity() {
 				}
 			}
 		})
-	}
-
-	private fun increaseMoviesPageToLoad() {
-		moviesFilters.page++
 	}
 }
