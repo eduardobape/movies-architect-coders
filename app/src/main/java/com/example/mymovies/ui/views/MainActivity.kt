@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 	}
 	private lateinit var moviesFilters: MoviesDiscoveryFilters
 	private var isLoadingMovies = false
-	private var areMoreMoviesAvailable = false
+	private var areMoreMoviesToFetch = false
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
 
 	private fun updateMoviesList() {
 		viewModel.moviesDetails.observe(this) { moviesDetails ->
-			areMoreMoviesAvailable = moviesDetails.pages > moviesDetails.page
+			areMoreMoviesToFetch = moviesDetails.pages > moviesDetails.page
 			increaseMoviesPageToLoad()
 			moviesAdapter.submitList(moviesAdapter.currentList + moviesDetails.movies)
 			isLoadingMovies = false
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
 				val totalItemCount = moviesLayoutManager.itemCount
 				val firstVisibleItemPosition = moviesLayoutManager.findFirstVisibleItemPosition()
 
-				if (!isLoadingMovies && areMoreMoviesAvailable && dy > 0 &&
+				if (!isLoadingMovies && areMoreMoviesToFetch && dy > 0 &&
 					(visibleItemCount + firstVisibleItemPosition) >= totalItemCount
 				) {
 					isLoadingMovies = true
