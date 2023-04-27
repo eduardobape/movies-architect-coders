@@ -52,6 +52,16 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
+	private fun initMoviesFilters() {
+		moviesFilters = MoviesDiscoveryFilters(
+			LocalDate.now().year,
+			Locale.getDefault().country,
+			Locale.getDefault().language,
+			"release_date.asc",
+			1
+		)
+	}
+
 	private fun updateMoviesList() {
 		viewModel.moviesDetails.observe(this) { moviesDetails ->
 			areMoreMoviesAvailable = moviesDetails.pages > moviesDetails.page
@@ -77,16 +87,6 @@ class MainActivity : AppCompatActivity() {
 				}
 			}
 		})
-	}
-
-	private fun initMoviesFilters() {
-		moviesFilters = MoviesDiscoveryFilters(
-			LocalDate.now().year,
-			Locale.getDefault().country,
-			Locale.getDefault().language,
-			"release_date.asc",
-			1
-		)
 	}
 
 	private fun increaseMoviesPageToLoad() {
