@@ -6,7 +6,7 @@ import com.example.mymovies.data.remoteapi.models.MoviesDiscoveryResult
 data class MoviesDiscoveryDetails(
 	val pages: Int,
 	val page: Int,
-	val movies: List<MovieMainDetails>
+	var movies: List<MovieMainDetails>
 )
 
 data class MovieMainDetails(

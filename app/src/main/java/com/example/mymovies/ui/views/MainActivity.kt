@@ -9,10 +9,7 @@ import com.example.mymovies.data.remoteapi.services.MoviesApi
 import com.example.mymovies.data.repository.MoviesDiscoveryRepositoryImpl
 import com.example.mymovies.databinding.ActivityMainBinding
 import com.example.mymovies.domain.usecases.DiscoverMoviesUseCase
-import com.example.mymovies.ui.models.MoviesDiscoveryFilters
 import com.example.mymovies.ui.viewmodels.MainViewModel
-import java.time.LocalDate
-import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,7 +21,6 @@ class MainActivity : AppCompatActivity() {
 			DiscoverMoviesUseCase(MoviesDiscoveryRepositoryImpl(MoviesApi.moviesDiscoveryApiService))
 		)
 	}
-	private lateinit var moviesFilters: MoviesDiscoveryFilters
 	private var isLoadingMovies = false
 	private var areMoreMoviesToFetch = false
 
@@ -32,12 +28,9 @@ class MainActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
-
 		configMoviesAdapter()
-		initMoviesFilters()
 		onScrollMovies()
 		updateMoviesList()
-		viewModel.getMovies(moviesFilters)
 	}
 
 	private fun configMoviesAdapter() {
@@ -52,27 +45,12 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
-	private fun initMoviesFilters() {
-		moviesFilters = MoviesDiscoveryFilters(
-			LocalDate.now().year,
-			Locale.getDefault().country,
-			Locale.getDefault().language,
-			"release_date.asc",
-			1
-		)
-	}
-
 	private fun updateMoviesList() {
 		viewModel.moviesDetails.observe(this) { moviesDetails ->
 			areMoreMoviesToFetch = moviesDetails.pages > moviesDetails.page
-			increaseMoviesPageToLoad()
-			moviesAdapter.submitList(moviesAdapter.currentList + moviesDetails.movies)
+			moviesAdapter.submitList(moviesDetails.movies)
 			isLoadingMovies = false
 		}
-	}
-
-	private fun increaseMoviesPageToLoad() {
-		moviesFilters.page++
 	}
 
 	private fun onScrollMovies() {
@@ -87,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 					(visibleItemCount + firstVisibleItemPosition) >= totalItemCount
 				) {
 					isLoadingMovies = true
-					viewModel.getMovies(moviesFilters)
+					viewModel.getMovies(viewModel.moviesFilters)
 				}
 			}
 		})

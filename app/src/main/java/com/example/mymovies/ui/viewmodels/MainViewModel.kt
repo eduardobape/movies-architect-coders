@@ -11,12 +11,26 @@ class MainViewModel(private val discoverMoviesUseCase: DiscoverMoviesUseCase) : 
 	private val _moviesDetails: MutableLiveData<MoviesDiscoveryDetails> = MutableLiveData()
 	val moviesDetails: LiveData<MoviesDiscoveryDetails>
 		get() = _moviesDetails
+	val moviesFilters = MoviesDiscoveryFilters()
+
+	init {
+		getMovies(moviesFilters)
+	}
 
 	fun getMovies(moviesDiscoveryFilters: MoviesDiscoveryFilters) {
 		viewModelScope.launch {
-			val moviesDetails = discoverMoviesUseCase(moviesDiscoveryFilters)
-			_moviesDetails.value = moviesDetails
+			val newMoviesDetails = discoverMoviesUseCase(moviesDiscoveryFilters)
+			moviesDetails.value?.let {
+				val allMovies = it.movies + newMoviesDetails.movies
+				newMoviesDetails.movies = allMovies
+			}
+			_moviesDetails.value = newMoviesDetails
+			increaseMoviesPage()
 		}
+	}
+
+	private fun increaseMoviesPage() {
+		moviesFilters.page++
 	}
 
 	class Factory(private val discoverMoviesUseCase: DiscoverMoviesUseCase) : ViewModelProvider.Factory {
