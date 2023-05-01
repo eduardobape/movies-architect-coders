@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 				layoutManager = it
 				this@MainActivity.moviesLayoutManager = it
 			}
-			addItemDecoration(SpacesItemDecoration(2, 50, true))
+			addItemDecoration(SpacedItemDecoration(2, 50, true))
 		}
 	}
 
