@@ -16,7 +16,7 @@ data class MovieMainDetails(
 	val posterUrl: String?
 )
 
-fun MoviesDiscoveryResult.asDomainModel(): MoviesDiscoveryDetails = MoviesDiscoveryDetails(
+fun MoviesDiscoveryResult.toDomainModel(): MoviesDiscoveryDetails = MoviesDiscoveryDetails(
 	totalPages,
 	page,
 	movies.map { movie ->

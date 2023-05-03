@@ -2,7 +2,7 @@ package com.example.mymovies.data.repository
 
 import com.example.mymovies.data.remoteapi.services.MoviesDiscoveryApiService
 import com.example.mymovies.domain.models.MoviesDiscoveryDetails
-import com.example.mymovies.domain.models.asDomainModel
+import com.example.mymovies.domain.models.toDomainModel
 import com.example.mymovies.domain.repository.MoviesDiscoveryRepository
 import com.example.mymovies.ui.models.MoviesDiscoveryFilters
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +19,6 @@ class MoviesDiscoveryRepositoryImpl(private val moviesDiscoveryApiService: Movie
 				moviesDiscoveryFilters.language,
 				moviesDiscoveryFilters.sortBy,
 				moviesDiscoveryFilters.page
-			).asDomainModel()
+			).toDomainModel()
 		}
 }
