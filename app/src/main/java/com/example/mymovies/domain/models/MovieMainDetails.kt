@@ -4,9 +4,9 @@ import com.example.mymovies.data.remoteapi.ApiUrlsManager
 import com.example.mymovies.data.remoteapi.models.MoviesDiscoveryResult
 
 data class MoviesDiscoveryDetails(
-	val pages: Int,
-	val page: Int,
-	var movies: List<MovieMainDetails>
+	val pages: Int = 0,
+	val page: Int = 1,
+	var movies: List<MovieMainDetails> = emptyList()
 )
 
 data class MovieMainDetails(
