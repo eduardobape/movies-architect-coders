@@ -18,7 +18,7 @@ class MoviesDiscoveryRepositoryImpl(private val moviesDiscoveryApiService: Movie
 				moviesDiscoveryFilters.region,
 				moviesDiscoveryFilters.language,
 				moviesDiscoveryFilters.sortBy,
-				moviesDiscoveryFilters.page
+				moviesDiscoveryFilters.nextMoviesPageToFetch
 			).toDomainModel()
 		}
 }

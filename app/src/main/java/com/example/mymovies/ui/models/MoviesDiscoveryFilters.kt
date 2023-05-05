@@ -8,7 +8,7 @@ data class MoviesDiscoveryFilters(
 	var region: String = Locale.getDefault().country,
 	var language: String = Locale.getDefault().language,
 	var sortBy: String = SortOptionMoviesDiscovery.RELEASE_DATE_ASC.sortOption,
-	var page: Int = 1
+	var nextMoviesPageToFetch: Int = 1
 )
 
 enum class SortOptionMoviesDiscovery(val sortOption: String) {

@@ -42,14 +42,14 @@ class MainViewModel(private val discoverMoviesUseCase: DiscoverMoviesUseCase) : 
 	private fun areMoreMoviesToFetch(): Boolean {
 		_uiState.value?.let { state ->
 			state.moviesDiscoveryDetails?.let {
-				return moviesFilters.page <= it.pages
+				return moviesFilters.nextMoviesPageToFetch <= it.pages
 			}
 		}
 		return true
 	}
 
 	private fun increaseMoviesPage() {
-		moviesFilters.page++
+		moviesFilters.nextMoviesPageToFetch++
 	}
 
 	fun getState(): MoviesLoadState = uiState.value?.moviesLoadState ?: MoviesLoadState.Loading
