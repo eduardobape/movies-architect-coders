@@ -1,6 +1,8 @@
 package com.example.mymovies.ui.views
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,8 +23,6 @@ class MainActivity : AppCompatActivity() {
 			DiscoverMoviesUseCase(MoviesDiscoveryRepositoryImpl(MoviesApi.moviesDiscoveryApiService))
 		)
 	}
-	private var isLoadingMovies = false
-	private var areMoreMoviesToFetch = false
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 		setContentView(binding.root)
 		configMoviesAdapter()
 		onScrollMovies()
-		updateMoviesList()
+		updateMovies()
 	}
 
 	private fun configMoviesAdapter() {
@@ -45,11 +45,30 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
-	private fun updateMoviesList() {
-		viewModel.moviesDetails.observe(this) { moviesDetails ->
-			areMoreMoviesToFetch = moviesDetails.pages > moviesDetails.page
-			moviesAdapter.submitList(moviesDetails.movies)
-			isLoadingMovies = false
+	private fun updateMovies() {
+		viewModel.uiState.observe(this) { uiState ->
+			Log.d("MOVIES_PAGE", "State: ${uiState.moviesLoadState} / Page: ${uiState.moviesDiscoveryDetails?.page}")
+			when (uiState.moviesLoadState) {
+				is MoviesLoadState.Success -> {
+					moviesAdapter.submitList(uiState.moviesDiscoveryDetails?.movies)
+				}
+
+				is MoviesLoadState.Loading -> Toast.makeText(
+					this,
+					"Loading",
+					Toast.LENGTH_SHORT
+				).show()
+
+				is MoviesLoadState.Error -> Toast.makeText(
+					this,
+					uiState.moviesLoadState.errorMessage,
+					Toast.LENGTH_SHORT
+				).show()
+
+				MoviesLoadState.ExhaustedPagination -> {
+					Toast.makeText(this, "No more movies to load", Toast.LENGTH_SHORT).show()
+				}
+			}
 		}
 	}
 
@@ -61,10 +80,11 @@ class MainActivity : AppCompatActivity() {
 				val totalItemCount = moviesLayoutManager.itemCount
 				val firstVisibleItemPosition = moviesLayoutManager.findFirstVisibleItemPosition()
 
-				if (!isLoadingMovies && areMoreMoviesToFetch && dy > 0 &&
+				if (viewModel.getState() !is MoviesLoadState.Loading &&
+					viewModel.getState() !is MoviesLoadState.ExhaustedPagination &&
+					dy > 0 &&
 					(visibleItemCount + firstVisibleItemPosition) >= totalItemCount
 				) {
-					isLoadingMovies = true
 					viewModel.getMovies(viewModel.moviesFilters)
 				}
 			}
