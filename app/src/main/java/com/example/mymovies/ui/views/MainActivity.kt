@@ -1,7 +1,6 @@
 package com.example.mymovies.ui.views
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -47,7 +46,6 @@ class MainActivity : AppCompatActivity() {
 
 	private fun updateMovies() {
 		viewModel.uiState.observe(this) { uiState ->
-			Log.d("MOVIES_PAGE", "State: ${uiState.moviesLoadState} / Page: ${uiState.moviesDiscoveryDetails?.page}")
 			when (uiState.moviesLoadState) {
 				is MoviesLoadState.Success -> {
 					moviesAdapter.submitList(uiState.moviesDiscoveryDetails?.movies)
