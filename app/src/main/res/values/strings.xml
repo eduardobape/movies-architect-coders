@@ -1,4 +1,10 @@
 <resources>
 	<string name="app_name">My Movies</string>
 	<string name="poster_movie_description">Poster of the movie</string>
+    <string name="movie_title_headline">Título original:</string>
+    <string name="movie_release_date_headline">Fecha de salida:</string>
+    <string name="movie_average_rate_headline">Puntuación:</string>
+    <string name="movie_genre_names_headline">Géneros:</string>
+    <string name="movie_overview_headline">Descripción:</string>
+    <string name="movie_no_overview">Esta película no tiene descripción</string>
 </resources>
