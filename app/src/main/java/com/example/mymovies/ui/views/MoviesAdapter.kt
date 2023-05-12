@@ -12,47 +12,60 @@ import com.example.mymovies.R
 import com.example.mymovies.databinding.MovieItemBinding
 import com.example.mymovies.domain.models.MovieMainDetails
 
-class MoviesAdapter : ListAdapter<MovieMainDetails, MoviesAdapter.MovieViewHolder>(MovieDiff) {
+class MoviesAdapter(val onClickItem: (Int) -> Unit) :
+    ListAdapter<MovieMainDetails, MoviesAdapter.MovieViewHolder>(MovieDiff) {
 
-	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-		val itemView = LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
-		return MovieViewHolder(itemView)
-	}
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
+        val itemView =
+            LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
+        return MovieViewHolder(itemView)
+    }
 
-	override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-		holder.bind(getItem(position))
-	}
+    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
 
-	class MovieViewHolder(itemView: View) : ViewHolder(itemView) {
-		private val binding: MovieItemBinding = MovieItemBinding.bind(itemView)
+    inner class MovieViewHolder(itemView: View) : ViewHolder(itemView) {
+        private val binding: MovieItemBinding = MovieItemBinding.bind(itemView)
 
-		fun bind(movieMainDetails: MovieMainDetails) {
-			displayMovieDetails(movieMainDetails)
-		}
+        fun bind(movieMainDetails: MovieMainDetails) {
+            displayMovieDetails(movieMainDetails)
+            itemView.setOnClickListener {
+                onClickItem(movieMainDetails.id)
+            }
+        }
 
-		private fun displayMovieDetails(movieMainDetails: MovieMainDetails) {
-			displayMoviePoster(movieMainDetails)
-			displayMovieTitle(movieMainDetails)
-		}
+        private fun displayMovieDetails(movieMainDetails: MovieMainDetails) {
+            displayMoviePoster(movieMainDetails)
+            displayMovieTitle(movieMainDetails)
+        }
 
-		private fun displayMoviePoster(movieMainDetails: MovieMainDetails) {
-			movieMainDetails.posterUrl?.let { Glide.with(itemView).load(it).into(binding.ivMoviePoster) }
-				?: binding.ivMoviePoster.setImageDrawable(
-					ContextCompat.getDrawable(itemView.context, R.drawable.no_movie_poster)
-				)
-		}
+        private fun displayMoviePoster(movieMainDetails: MovieMainDetails) {
+            movieMainDetails.posterUrl?.let {
+                Glide.with(itemView).load(it).into(binding.ivMoviePoster)
+            }
+                ?: binding.ivMoviePoster.setImageDrawable(
+                    ContextCompat.getDrawable(itemView.context, R.drawable.no_movie_poster)
+                )
+        }
 
-		private fun displayMovieTitle(movieMainDetails: MovieMainDetails) {
-			binding.tvMovieTitle.text = movieMainDetails.translatedTitle
-		}
-	}
+        private fun displayMovieTitle(movieMainDetails: MovieMainDetails) {
+            binding.tvMovieTitle.text = movieMainDetails.translatedTitle
+        }
+    }
 
-	object MovieDiff : DiffUtil.ItemCallback<MovieMainDetails>() {
-		override fun areItemsTheSame(oldItem: MovieMainDetails, newItem: MovieMainDetails): Boolean =
-			oldItem.id == newItem.id
+    object MovieDiff : DiffUtil.ItemCallback<MovieMainDetails>() {
+        override fun areItemsTheSame(
+            oldItem: MovieMainDetails,
+            newItem: MovieMainDetails
+        ): Boolean =
+            oldItem.id == newItem.id
 
-		override fun areContentsTheSame(oldItem: MovieMainDetails, newItem: MovieMainDetails): Boolean =
-			oldItem == newItem
+        override fun areContentsTheSame(
+            oldItem: MovieMainDetails,
+            newItem: MovieMainDetails
+        ): Boolean =
+            oldItem == newItem
 
-	}
+    }
 }

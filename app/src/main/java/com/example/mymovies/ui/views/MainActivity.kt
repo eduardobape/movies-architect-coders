@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovies.data.remoteapi.services.MoviesApi
 import com.example.mymovies.data.repository.MoviesDiscoveryRepositoryImpl
 import com.example.mymovies.databinding.ActivityMainBinding
 import com.example.mymovies.domain.usecases.DiscoverMoviesUseCase
+import com.example.mymovies.ui.utils.startActivity
 import com.example.mymovies.ui.viewmodels.MainViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +25,10 @@ class MainActivity : AppCompatActivity() {
 		)
 	}
 
+	companion object {
+		const val MOVIE_ID_INTENT_EXTRA_KEY = "movieID"
+	}
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		binding = ActivityMainBinding.inflate(layoutInflater)
@@ -33,7 +39,9 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun configMoviesAdapter() {
-		moviesAdapter = MoviesAdapter()
+        moviesAdapter = MoviesAdapter { movieId ->
+            startActivity<MovieDetailActivity>(bundleOf(MOVIE_ID_INTENT_EXTRA_KEY to movieId))
+        }
 		with(binding.rvMoviesList) {
 			adapter = moviesAdapter
 			GridLayoutManager(this@MainActivity, 2, RecyclerView.VERTICAL, false).also {
