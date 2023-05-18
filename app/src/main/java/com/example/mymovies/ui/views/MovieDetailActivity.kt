@@ -8,13 +8,13 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
 import com.example.mymovies.R
 import com.example.mymovies.data.remoteapi.services.MoviesApi
 import com.example.mymovies.data.repository.MovieDetailsRepositoryImpl
 import com.example.mymovies.databinding.ActivityMovieDetailBinding
 import com.example.mymovies.domain.models.MovieDetails
 import com.example.mymovies.domain.usecases.MovieDetailsUseCase
+import com.example.mymovies.ui.utils.loadImageFromUrl
 import com.example.mymovies.ui.viewmodels.MovieDetailsViewModel
 import com.google.android.material.appbar.AppBarLayout
 import kotlin.math.abs
@@ -110,7 +110,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
     private fun displayMoviePoster(moviePosterUrl: String?, imageViewPoster: ImageView) {
         if (moviePosterUrl != null) {
-            Glide.with(this).load(moviePosterUrl).into(imageViewPoster)
+            imageViewPoster.loadImageFromUrl(moviePosterUrl)
         } else {
             imageViewPoster.setImageDrawable(
                 ContextCompat.getDrawable(
