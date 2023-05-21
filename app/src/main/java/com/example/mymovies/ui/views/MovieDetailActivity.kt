@@ -29,6 +29,9 @@ class MovieDetailActivity : AppCompatActivity() {
             getMovieIdFromIntent()
         )
     }
+    companion object {
+        const val MOVIE_ID = "movieID"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +79,7 @@ class MovieDetailActivity : AppCompatActivity() {
     }
 
     private fun getMovieIdFromIntent(): Int? {
-        return intent.extras?.getInt(MainActivity.MOVIE_ID)
+        return intent.extras?.getInt(MOVIE_ID)
     }
 
     private fun loadMovieDetails() {

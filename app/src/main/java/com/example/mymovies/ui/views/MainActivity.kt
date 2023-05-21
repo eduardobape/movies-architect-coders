@@ -26,10 +26,6 @@ class MainActivity : AppCompatActivity() {
 	}
 	private val numColumnsMoviesList = 2
 
-	companion object {
-		const val MOVIE_ID = "movieID"
-	}
-
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		binding = ActivityMainBinding.inflate(layoutInflater)
@@ -41,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
 	private fun configMoviesAdapter() {
         moviesAdapter = MoviesAdapter { movieId ->
-            startActivity<MovieDetailActivity>(bundleOf(MOVIE_ID to movieId))
+            startActivity<MovieDetailActivity>(bundleOf(MovieDetailActivity.MOVIE_ID to movieId))
         }
 		with(binding.rvMoviesList) {
 			adapter = moviesAdapter
