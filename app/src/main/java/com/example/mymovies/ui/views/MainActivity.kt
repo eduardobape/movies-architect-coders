@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 	private val numColumnsMoviesList = 2
 
 	companion object {
-		const val MOVIE_ID_INTENT_EXTRA_KEY = "movieID"
+		const val MOVIE_ID = "movieID"
 	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
 	private fun configMoviesAdapter() {
         moviesAdapter = MoviesAdapter { movieId ->
-            startActivity<MovieDetailActivity>(bundleOf(MOVIE_ID_INTENT_EXTRA_KEY to movieId))
+            startActivity<MovieDetailActivity>(bundleOf(MOVIE_ID to movieId))
         }
 		with(binding.rvMoviesList) {
 			adapter = moviesAdapter

@@ -76,7 +76,7 @@ class MovieDetailActivity : AppCompatActivity() {
     }
 
     private fun getMovieIdFromIntent(): Int? {
-        return intent.extras?.getInt(MainActivity.MOVIE_ID_INTENT_EXTRA_KEY)
+        return intent.extras?.getInt(MainActivity.MOVIE_ID)
     }
 
     private fun loadMovieDetails() {
