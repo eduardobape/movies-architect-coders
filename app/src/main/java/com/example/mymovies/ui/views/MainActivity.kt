@@ -36,9 +36,9 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun configMoviesAdapter() {
-        moviesAdapter = MoviesAdapter { movieId ->
-            startActivity<MovieDetailActivity>(bundleOf(MovieDetailActivity.MOVIE_ID to movieId))
-        }
+		moviesAdapter = MoviesAdapter { movieId ->
+			startActivity<MovieDetailActivity>(bundleOf(MovieDetailActivity.MOVIE_ID to movieId))
+		}
 		with(binding.rvMoviesList) {
 			adapter = moviesAdapter
 			GridLayoutManager(this@MainActivity, numColumnsMoviesList, RecyclerView.VERTICAL, false).also {
