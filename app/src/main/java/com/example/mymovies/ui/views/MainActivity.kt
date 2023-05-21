@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
 			DiscoverMoviesUseCase(MoviesDiscoveryRepositoryImpl(MoviesApi.moviesDiscoveryApiService))
 		)
 	}
+	private val numColumnsMoviesList = 2
 
 	companion object {
 		const val MOVIE_ID_INTENT_EXTRA_KEY = "movieID"
@@ -44,11 +45,11 @@ class MainActivity : AppCompatActivity() {
         }
 		with(binding.rvMoviesList) {
 			adapter = moviesAdapter
-			GridLayoutManager(this@MainActivity, 2, RecyclerView.VERTICAL, false).also {
+			GridLayoutManager(this@MainActivity, numColumnsMoviesList, RecyclerView.VERTICAL, false).also {
 				layoutManager = it
 				this@MainActivity.moviesLayoutManager = it
 			}
-			addItemDecoration(SpacedItemDecoration(2, 50, true))
+			addItemDecoration(SpacedItemDecoration(numColumnsMoviesList, 50, true))
 		}
 	}
 
