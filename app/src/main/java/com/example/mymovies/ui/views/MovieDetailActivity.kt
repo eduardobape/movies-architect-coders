@@ -101,7 +101,7 @@ class MovieDetailActivity : AppCompatActivity() {
         movieDetails?.let {
             with(binding) {
                 modifyToolBarTitle(it.translatedTitle)
-                displayMovieBackdropImage(it.backdropImageUrl, ivBackdropImageMovieDetails)
+                displayMovieImage(it, ivMovieHeaderImage)
                 displayMovieTranslatedTitle(it.translatedTitle, tvMovieTranslatedTitle)
                 displayMovieOriginalTitle(it.originalTitle, tvMovieOriginalTitle)
                 displayMovieReleaseDate(it.releaseDate, tvMovieReleaseDate)
@@ -112,14 +112,15 @@ class MovieDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun displayMovieBackdropImage(
-        movieBackdropImageUrl: String?,
-        imageViewBackdrop: ImageView
+    private fun displayMovieImage(
+        movieDetails: MovieDetails,
+        imageViewMovieImage: ImageView
     ) {
-        if (movieBackdropImageUrl != null) {
-            imageViewBackdrop.loadImageFromUrl(movieBackdropImageUrl)
+        val movieImage = movieDetails.backdropImageUrl ?: movieDetails.posterUrl
+        if (movieImage != null) {
+            imageViewMovieImage.loadImageFromUrl(movieImage)
         } else {
-            imageViewBackdrop.setImageDrawable(
+            imageViewMovieImage.setImageDrawable(
                 ContextCompat.getDrawable(
                     this,
                     R.drawable.no_movie_poster

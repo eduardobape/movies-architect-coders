@@ -21,7 +21,7 @@
             app:titleEnabled="false">
 
             <ImageView
-                android:id="@+id/ivBackdropImageMovieDetails"
+                android:id="@+id/ivMovieHeaderImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/poster_movie_description"
