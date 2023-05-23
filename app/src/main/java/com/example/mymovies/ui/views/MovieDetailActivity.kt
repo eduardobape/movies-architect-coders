@@ -29,6 +29,7 @@ class MovieDetailActivity : AppCompatActivity() {
             getMovieIdFromIntent()
         )
     }
+
     companion object {
         const val MOVIE_ID = "movieID"
     }
@@ -100,7 +101,7 @@ class MovieDetailActivity : AppCompatActivity() {
         movieDetails?.let {
             with(binding) {
                 modifyToolBarTitle(it.translatedTitle)
-                displayMoviePoster(it.posterUrl, ivPosterMovieDetails)
+                displayMovieBackdropImage(it.backdropImageUrl, ivBackdropImageMovieDetails)
                 displayMovieTranslatedTitle(it.translatedTitle, tvMovieTranslatedTitle)
                 displayMovieOriginalTitle(it.originalTitle, tvMovieOriginalTitle)
                 displayMovieReleaseDate(it.releaseDate, tvMovieReleaseDate)
@@ -111,11 +112,14 @@ class MovieDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun displayMoviePoster(moviePosterUrl: String?, imageViewPoster: ImageView) {
-        if (moviePosterUrl != null) {
-            imageViewPoster.loadImageFromUrl(moviePosterUrl)
+    private fun displayMovieBackdropImage(
+        movieBackdropImageUrl: String?,
+        imageViewBackdrop: ImageView
+    ) {
+        if (movieBackdropImageUrl != null) {
+            imageViewBackdrop.loadImageFromUrl(movieBackdropImageUrl)
         } else {
-            imageViewPoster.setImageDrawable(
+            imageViewBackdrop.setImageDrawable(
                 ContextCompat.getDrawable(
                     this,
                     R.drawable.no_movie_poster

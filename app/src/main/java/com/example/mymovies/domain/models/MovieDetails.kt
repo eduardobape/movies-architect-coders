@@ -11,7 +11,8 @@ data class MovieDetails(
     val releaseDate: String,
     val genres: List<String>,
     val voteAverage: Float,
-    val posterUrl: String?
+    val posterUrl: String?,
+    val backdropImageUrl: String?
 )
 
 fun MovieDetailsResult.toDomainModel(): MovieDetails = MovieDetails(
@@ -23,6 +24,12 @@ fun MovieDetailsResult.toDomainModel(): MovieDetails = MovieDetails(
     genres.map { it.name },
     voteAverage,
     posterPath?.let {
+        ApiUrlsManager.ApiImageUtils.buildFullUrlImage(
+            it,
+            ApiUrlsManager.ApiImageUtils.PosterMovieSize.WIDTH_500PX
+        )
+    },
+    backdropImagePath?.let {
         ApiUrlsManager.ApiImageUtils.buildFullUrlImage(
             it,
             ApiUrlsManager.ApiImageUtils.PosterMovieSize.WIDTH_500PX
