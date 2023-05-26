@@ -8,9 +8,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.mymovies.R
+import com.example.mymovies.data.remoteapi.ApiUrlsManager.ApiImageUtils.PosterMovieSize
 import com.example.mymovies.databinding.MovieItemBinding
 import com.example.mymovies.domain.models.MovieMainDetails
+import com.example.mymovies.domain.usecases.GetUrlMoviePosterUseCase
 import com.example.mymovies.ui.utils.loadImageFromUrl
+
 
 class MoviesAdapter(val onClickItem: (Int) -> Unit) :
     ListAdapter<MovieMainDetails, MoviesAdapter.MovieViewHolder>(MovieDiff) {
@@ -41,12 +44,17 @@ class MoviesAdapter(val onClickItem: (Int) -> Unit) :
         }
 
         private fun displayMoviePoster(movieMainDetails: MovieMainDetails) {
-            movieMainDetails.posterUrl?.let {
-                binding.ivMoviePoster.loadImageFromUrl(it)
-            }
-                ?: binding.ivMoviePoster.setImageDrawable(
+            if (movieMainDetails.hasPoster()) {
+                val urlMoviePoster = GetUrlMoviePosterUseCase(
+                    movieMainDetails.posterPath!!,
+                    PosterMovieSize.WIDTH_342PX
+                )
+                binding.ivMoviePoster.loadImageFromUrl(urlMoviePoster)
+            } else {
+                binding.ivMoviePoster.setImageDrawable(
                     ContextCompat.getDrawable(itemView.context, R.drawable.no_movie_poster)
                 )
+            }
         }
 
         private fun displayMovieTitle(movieMainDetails: MovieMainDetails) {
