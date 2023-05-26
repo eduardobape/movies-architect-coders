@@ -9,10 +9,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.mymovies.R
+import com.example.mymovies.data.remoteapi.ApiUrlsManager.ApiImageUtils.PosterMovieSize
 import com.example.mymovies.data.remoteapi.services.MoviesApi
 import com.example.mymovies.data.repository.MovieDetailsRepositoryImpl
 import com.example.mymovies.databinding.ActivityMovieDetailBinding
 import com.example.mymovies.domain.models.MovieDetails
+import com.example.mymovies.domain.usecases.GetUrlMovieBackdropUseCase
 import com.example.mymovies.domain.usecases.MovieDetailsUseCase
 import com.example.mymovies.ui.utils.loadImageFromUrl
 import com.example.mymovies.ui.viewmodels.MovieDetailsViewModel
@@ -116,9 +118,10 @@ class MovieDetailActivity : AppCompatActivity() {
         movieDetails: MovieDetails,
         imageViewMovieImage: ImageView
     ) {
-        val movieImage = movieDetails.backdropImageUrl ?: movieDetails.posterUrl
-        if (movieImage != null) {
-            imageViewMovieImage.loadImageFromUrl(movieImage)
+        val pathMovieImage = movieDetails.backdropImagePath ?: movieDetails.posterPath
+        if (pathMovieImage != null) {
+            val urlMovieImage = GetUrlMovieBackdropUseCase(pathMovieImage, PosterMovieSize.WIDTH_780PX)
+            imageViewMovieImage.loadImageFromUrl(urlMovieImage)
         } else {
             imageViewMovieImage.setImageDrawable(
                 ContextCompat.getDrawable(
