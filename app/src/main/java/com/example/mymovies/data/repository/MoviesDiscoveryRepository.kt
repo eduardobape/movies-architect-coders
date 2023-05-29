@@ -8,18 +8,16 @@ import kotlinx.coroutines.withContext
 
 interface MoviesDiscoveryRepository {
 
-	suspend fun discoverMoviesByYear(moviesDiscoveryFilters: MoviesDiscoveryFilters): MoviesDiscoveryResult
+	suspend fun getPopularMovies(moviesDiscoveryFilters: MoviesDiscoveryFilters): MoviesDiscoveryResult
 }
 
 class MoviesDiscoveryRepositoryImpl(private val moviesDiscoveryApiService: MoviesDiscoveryApiService) :
 	MoviesDiscoveryRepository {
-	override suspend fun discoverMoviesByYear(moviesDiscoveryFilters: MoviesDiscoveryFilters): MoviesDiscoveryResult =
+	override suspend fun getPopularMovies(moviesDiscoveryFilters: MoviesDiscoveryFilters): MoviesDiscoveryResult =
 		withContext(Dispatchers.IO) {
-			moviesDiscoveryApiService.discoverMoviesByYear(
-				moviesDiscoveryFilters.releaseYear,
+			moviesDiscoveryApiService.getPopularMovies(
 				moviesDiscoveryFilters.region,
 				moviesDiscoveryFilters.language,
-				moviesDiscoveryFilters.sortBy,
 				moviesDiscoveryFilters.nextMoviesPageToFetch
 			)
 		}
