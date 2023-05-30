@@ -5,7 +5,8 @@ import java.util.Locale
 data class MoviesDiscoveryFilters(
 	var region: String = Locale.getDefault().country,
 	var language: String = Locale.getDefault().language,
-	var nextMoviesPageToFetch: Int = 1
+	var nextMoviesPageToFetch: Int = 1,
+	var maxNumMoviesToFetch: Int = 100
 )
 
 enum class SortOptionMoviesDiscovery(val sortOption: String) {

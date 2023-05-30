@@ -42,7 +42,8 @@ class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase
 	private fun areMoreMoviesToFetch(): Boolean {
 		_uiState.value?.let { state ->
 			state.moviesDiscoveryDetails?.let {
-				return moviesFilters.nextMoviesPageToFetch <= it.pages
+				return moviesFilters.nextMoviesPageToFetch <= it.pages &&
+						moviesFilters.maxNumMoviesToFetch > it.movies.size
 			}
 		}
 		return true
