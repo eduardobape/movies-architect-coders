@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovies.data.remoteapi.services.MoviesApi
 import com.example.mymovies.data.repository.MoviesDiscoveryRepositoryImpl
 import com.example.mymovies.databinding.ActivityMainBinding
+import com.example.mymovies.domain.models.MovieMainDetails
 import com.example.mymovies.domain.usecases.GetPopularMoviesUseCase
 import com.example.mymovies.ui.utils.startActivity
 import com.example.mymovies.ui.viewmodels.MainViewModel
@@ -92,5 +93,23 @@ class MainActivity : AppCompatActivity() {
 				}
 			}
 		})
+	}
+
+	override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+		reloadMovies()
+		super.onRestoreInstanceState(savedInstanceState)
+	}
+
+	private fun reloadMovies() {
+		// The movies list must be submitted to the adapter when the activity is recreated because
+		// of a configuration change. If not, the movies will not be displayed.
+		val movies: List<MovieMainDetails>? = viewModel.uiState.value?.moviesDiscoveryDetails?.movies
+		movies?.let {
+			submitMoviesToAdapter(it)
+		}
+	}
+
+	private fun submitMoviesToAdapter(movies: List<MovieMainDetails>) {
+		moviesAdapter.submitList(movies)
 	}
 }
