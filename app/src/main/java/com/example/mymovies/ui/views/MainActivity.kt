@@ -54,7 +54,8 @@ class MainActivity : AppCompatActivity() {
 		viewModel.uiState.observe(this) { uiState ->
 			when (uiState.moviesLoadState) {
 				is MoviesLoadState.Success -> {
-					moviesAdapter.submitList(uiState.moviesDiscoveryDetails?.movies)
+					val movies: List<MovieMainDetails>? = uiState.moviesDiscoveryDetails?.movies
+					movies?.let { submitMoviesToAdapter(it) }
 				}
 
 				is MoviesLoadState.Loading -> Toast.makeText(
