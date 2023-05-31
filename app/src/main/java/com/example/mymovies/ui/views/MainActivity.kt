@@ -77,6 +77,10 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
+	private fun submitMoviesToAdapter(movies: List<MovieMainDetails>) {
+		moviesAdapter.submitList(movies)
+	}
+
 	private fun onScrollMovies() {
 		binding.rvMoviesList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 			override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -108,9 +112,5 @@ class MainActivity : AppCompatActivity() {
 		movies?.let {
 			submitMoviesToAdapter(it)
 		}
-	}
-
-	private fun submitMoviesToAdapter(movies: List<MovieMainDetails>) {
-		moviesAdapter.submitList(movies)
 	}
 }
