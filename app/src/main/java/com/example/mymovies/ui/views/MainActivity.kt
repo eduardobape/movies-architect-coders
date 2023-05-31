@@ -42,7 +42,12 @@ class MainActivity : AppCompatActivity() {
 		}
 		with(binding.rvMoviesList) {
 			adapter = moviesAdapter
-			GridLayoutManager(this@MainActivity, numColumnsMoviesList, RecyclerView.VERTICAL, false).also {
+			GridLayoutManager(
+				this@MainActivity,
+				numColumnsMoviesList,
+				RecyclerView.VERTICAL,
+				false
+			).also {
 				layoutManager = it
 				this@MainActivity.moviesLayoutManager = it
 			}
@@ -85,16 +90,18 @@ class MainActivity : AppCompatActivity() {
 		binding.rvMoviesList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 			override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 				super.onScrolled(recyclerView, dx, dy)
-				val visibleItemCount = moviesLayoutManager.childCount
-				val totalItemCount = moviesLayoutManager.itemCount
-				val firstVisibleItemPosition = moviesLayoutManager.findFirstVisibleItemPosition()
-
+				val isDownVerticalScroll = dy > 0
 				if (viewModel.getState() !is MoviesLoadState.Loading &&
 					viewModel.getState() !is MoviesLoadState.ExhaustedPagination &&
-					dy > 0 &&
-					(visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+					isDownVerticalScroll
 				) {
-					viewModel.getMovies(viewModel.moviesFilters)
+					val visibleItemCount = moviesLayoutManager.childCount
+					val totalItemCount = moviesLayoutManager.itemCount
+					val firstVisibleItemPosition =
+						moviesLayoutManager.findFirstVisibleItemPosition()
+					if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
+						viewModel.getMovies(viewModel.moviesFilters)
+					}
 				}
 			}
 		})
@@ -108,7 +115,8 @@ class MainActivity : AppCompatActivity() {
 	private fun reloadMovies() {
 		// The movies list must be submitted to the adapter when the activity is recreated because
 		// of a configuration change. If not, the movies will not be displayed.
-		val movies: List<MovieMainDetails>? = viewModel.uiState.value?.moviesDiscoveryDetails?.movies
+		val movies: List<MovieMainDetails>? =
+			viewModel.uiState.value?.moviesDiscoveryDetails?.movies
 		movies?.let {
 			submitMoviesToAdapter(it)
 		}
