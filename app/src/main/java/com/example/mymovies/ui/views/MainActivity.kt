@@ -17,6 +17,10 @@ import com.example.mymovies.ui.viewmodels.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
+	companion object {
+		private const val GRIDLAYOUT_COLUMNS_SPACE = 50
+	}
+
 	private lateinit var binding: ActivityMainBinding
 	private lateinit var moviesAdapter: MoviesAdapter
 	private lateinit var moviesLayoutManager: GridLayoutManager
@@ -51,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 				layoutManager = it
 				this@MainActivity.moviesLayoutManager = it
 			}
-			addItemDecoration(SpacedItemDecoration(numColumnsMoviesList, 50, true))
+			addItemDecoration(SpacedItemDecoration(numColumnsMoviesList, GRIDLAYOUT_COLUMNS_SPACE, true))
 		}
 	}
 
