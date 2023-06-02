@@ -9,7 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.mymovies.R
-import com.example.mymovies.data.remote.ApiUrlsManager.ApiImageUtils.PosterMovieSize
+import com.example.mymovies.data.remote.services.ApiUrlsManager.ApiImageUtils.PosterMovieSize
 import com.example.mymovies.data.remote.client.RetrofitServiceBuilder
 import com.example.mymovies.data.remote.services.MoviesApi
 import com.example.mymovies.data.repository.MovieDetailsRepositoryImpl

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.mymovies.R
-import com.example.mymovies.data.remote.ApiUrlsManager.ApiImageUtils.PosterMovieSize
+import com.example.mymovies.data.remote.services.ApiUrlsManager.ApiImageUtils.PosterMovieSize
 import com.example.mymovies.databinding.MovieItemBinding
 import com.example.mymovies.domain.models.MovieMainDetails
 import com.example.mymovies.domain.usecases.GetUrlMoviePosterUseCase
