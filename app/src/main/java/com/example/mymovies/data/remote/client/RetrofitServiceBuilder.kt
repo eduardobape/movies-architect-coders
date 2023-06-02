@@ -2,6 +2,7 @@ package com.example.mymovies.data.remote.client
 
 import com.example.mymovies.BuildConfig
 import com.example.mymovies.data.remote.ApiUrlsManager
+import com.example.mymovies.data.remote.services.ApiServiceFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
