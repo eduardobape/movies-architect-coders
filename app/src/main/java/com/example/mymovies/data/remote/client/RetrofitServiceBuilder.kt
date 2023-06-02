@@ -1,4 +1,4 @@
-package com.example.mymovies.data.remote.apiclient
+package com.example.mymovies.data.remote.client
 
 import com.example.mymovies.BuildConfig
 import com.example.mymovies.data.remote.ApiUrlsManager

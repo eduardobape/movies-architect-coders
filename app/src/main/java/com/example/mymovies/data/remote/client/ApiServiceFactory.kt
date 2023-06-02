@@ -1,4 +1,4 @@
-package com.example.mymovies.data.remote.apiclient
+package com.example.mymovies.data.remote.client
 
 interface ApiServiceFactory {
     fun <T> create(serviceClass: Class<T>): T

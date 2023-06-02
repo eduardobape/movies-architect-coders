@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mymovies.data.remote.apiclient.RetrofitServiceBuilder
+import com.example.mymovies.data.remote.client.RetrofitServiceBuilder
 import com.example.mymovies.data.remote.services.MoviesApi
 import com.example.mymovies.data.repository.MoviesDiscoveryRepositoryImpl
 import com.example.mymovies.databinding.ActivityMainBinding
