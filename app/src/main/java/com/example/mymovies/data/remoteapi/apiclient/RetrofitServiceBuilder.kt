@@ -6,8 +6,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-object RetrofitBuilder {
-
+object RetrofitServiceBuilder : ApiServiceFactory {
 	private val networkClient: OkHttpClient = OkHttpClient.Builder()
 		.addInterceptor { chain ->
 			val originalRequest = chain.request()
@@ -22,9 +21,13 @@ object RetrofitBuilder {
 		}
 		.build()
 
-	val retrofit: Retrofit = Retrofit.Builder()
+	private val retrofit: Retrofit = Retrofit.Builder()
 		.baseUrl(ApiUrlsManager.theMovieDbBaseUrl)
 		.client(networkClient)
 		.addConverterFactory(MoshiConverterFactory.create())
 		.build()
+
+	override fun <T> create(serviceClass: Class<T>): T {
+		return retrofit.create(serviceClass)
+	}
 }

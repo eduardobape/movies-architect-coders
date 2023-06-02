@@ -1,15 +1,15 @@
 package com.example.mymovies.data.remoteapi.services
 
-import com.example.mymovies.data.remoteapi.apiclient.RetrofitBuilder
-import retrofit2.create
+import com.example.mymovies.data.remoteapi.apiclient.ApiServiceFactory
+import com.example.mymovies.data.remoteapi.apiclient.create
 
-object MoviesApi {
+class MoviesApi(private val apiServiceFactory: ApiServiceFactory) {
 
 	val moviesDiscoveryApiService: MoviesDiscoveryApiService by lazy {
-		RetrofitBuilder.retrofit.create()
+		apiServiceFactory.create()
 	}
 
 	val movieDetailsApiService: MovieDetailsApiService by lazy {
-		RetrofitBuilder.retrofit.create()
+		apiServiceFactory.create()
 	}
 }

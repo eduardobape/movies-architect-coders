@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mymovies.data.remoteapi.apiclient.RetrofitServiceBuilder
 import com.example.mymovies.data.remoteapi.services.MoviesApi
 import com.example.mymovies.data.repository.MoviesDiscoveryRepositoryImpl
 import com.example.mymovies.databinding.ActivityMainBinding
@@ -26,7 +27,9 @@ class MainActivity : AppCompatActivity() {
 	private lateinit var moviesLayoutManager: GridLayoutManager
 	private val viewModel by viewModels<MainViewModel> {
 		MainViewModel.Factory(
-			GetPopularMoviesUseCase(MoviesDiscoveryRepositoryImpl(MoviesApi.moviesDiscoveryApiService))
+			GetPopularMoviesUseCase(MoviesDiscoveryRepositoryImpl(
+				MoviesApi(RetrofitServiceBuilder).moviesDiscoveryApiService)
+			)
 		)
 	}
 	private val numColumnsMoviesList = 2

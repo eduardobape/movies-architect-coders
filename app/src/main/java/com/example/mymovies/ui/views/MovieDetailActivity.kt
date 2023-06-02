@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.mymovies.R
 import com.example.mymovies.data.remoteapi.ApiUrlsManager.ApiImageUtils.PosterMovieSize
+import com.example.mymovies.data.remoteapi.apiclient.RetrofitServiceBuilder
 import com.example.mymovies.data.remoteapi.services.MoviesApi
 import com.example.mymovies.data.repository.MovieDetailsRepositoryImpl
 import com.example.mymovies.databinding.ActivityMovieDetailBinding
@@ -27,7 +28,8 @@ class MovieDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMovieDetailBinding
     private val viewModel by viewModels<MovieDetailsViewModel> {
         MovieDetailsViewModel.Factory(
-            MovieDetailsUseCase(MovieDetailsRepositoryImpl(MoviesApi.movieDetailsApiService)),
+            MovieDetailsUseCase(MovieDetailsRepositoryImpl(
+                MoviesApi(RetrofitServiceBuilder).movieDetailsApiService)),
             getMovieIdFromIntent()
         )
     }
