@@ -1,7 +1,7 @@
 package com.example.mymovies.data.repository
 
-import com.example.mymovies.data.remoteapi.models.MoviesDiscoveryResult
-import com.example.mymovies.data.remoteapi.services.MoviesDiscoveryApiService
+import com.example.mymovies.data.remote.models.MoviesDiscoveryResult
+import com.example.mymovies.data.remote.services.MoviesDiscoveryApiService
 import com.example.mymovies.ui.models.MoviesDiscoveryFilters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

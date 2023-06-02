@@ -1,6 +1,6 @@
 package com.example.mymovies.domain.models
 
-import com.example.mymovies.data.remoteapi.models.MoviesDiscoveryResult
+import com.example.mymovies.data.remote.models.MoviesDiscoveryResult
 
 data class MoviesDiscoveryDetails(
 	val pages: Int = 0,

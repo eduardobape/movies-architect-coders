@@ -1,7 +1,7 @@
 package com.example.mymovies.data.repository
 
-import com.example.mymovies.data.remoteapi.models.MovieDetailsResult
-import com.example.mymovies.data.remoteapi.services.MovieDetailsApiService
+import com.example.mymovies.data.remote.models.MovieDetailsResult
+import com.example.mymovies.data.remote.services.MovieDetailsApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

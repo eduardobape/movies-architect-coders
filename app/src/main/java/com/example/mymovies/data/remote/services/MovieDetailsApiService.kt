@@ -1,6 +1,6 @@
-package com.example.mymovies.data.remoteapi.services
+package com.example.mymovies.data.remote.services
 
-import com.example.mymovies.data.remoteapi.models.MovieDetailsResult
+import com.example.mymovies.data.remote.models.MovieDetailsResult
 import retrofit2.http.GET
 import retrofit2.http.Path
 

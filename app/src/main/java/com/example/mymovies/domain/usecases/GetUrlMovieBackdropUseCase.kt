@@ -1,6 +1,6 @@
 package com.example.mymovies.domain.usecases
 
-import com.example.mymovies.data.remoteapi.ApiUrlsManager.ApiImageUtils
+import com.example.mymovies.data.remote.ApiUrlsManager.ApiImageUtils
 
 object GetUrlMovieBackdropUseCase {
     operator fun invoke(
