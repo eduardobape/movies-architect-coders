@@ -1,6 +1,11 @@
 package com.example.mymovies.ui.viewmodels
 
-import androidx.lifecycle.*
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.example.mymovies.domain.usecases.GetPopularMoviesUseCase
 import com.example.mymovies.ui.models.MoviesDiscoveryFilters
 import com.example.mymovies.ui.views.MoviesDiscoveryState
