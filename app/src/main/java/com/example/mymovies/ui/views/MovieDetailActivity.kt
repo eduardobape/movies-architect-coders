@@ -44,7 +44,7 @@ class MovieDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
         setUpActionBar()
         manageScrollCollapsingToolbar()
-        loadMovieDetails()
+        updateUiState()
     }
 
     private fun setUpActionBar() {
@@ -87,7 +87,7 @@ class MovieDetailActivity : AppCompatActivity() {
         return intent.extras?.getInt(MOVIE_ID)
     }
 
-    private fun loadMovieDetails() {
+    private fun updateUiState() {
         viewModel.uiState.observe(this) { uiState ->
             when (uiState.loadState) {
                 MovieDetailsLoadState.Loading ->
