@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
 	private fun configMoviesAdapter() {
 		moviesAdapter = MoviesAdapter { movieId ->
-			startActivity<MovieDetailActivity>(bundleOf(MovieDetailActivity.MOVIE_ID to movieId))
+			startActivity<MovieDetailsActivity>(bundleOf(MovieDetailsActivity.MOVIE_ID to movieId))
 		}
 		with(binding.rvMoviesList) {
 			adapter = moviesAdapter

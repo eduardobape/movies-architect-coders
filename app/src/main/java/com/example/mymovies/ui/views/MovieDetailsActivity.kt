@@ -23,7 +23,7 @@ import com.google.android.material.appbar.AppBarLayout
 import kotlin.math.abs
 
 
-class MovieDetailActivity : AppCompatActivity() {
+class MovieDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMovieDetailBinding
     private val viewModel by viewModels<MovieDetailsViewModel> {

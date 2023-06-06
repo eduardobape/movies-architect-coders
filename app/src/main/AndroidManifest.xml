@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.views.MovieDetailActivity"
+            android:name=".ui.views.MovieDetailsActivity"
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"/>
     </application>
