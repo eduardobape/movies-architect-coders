@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 		binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 		configMoviesAdapter()
-		updateUiState()
+		hookToUiState()
 		onScrollMovies()
 	}
 
@@ -60,26 +60,28 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
-	private fun updateUiState() {
-		viewModel.uiState.observe(this) { uiState ->
-			when (uiState.moviesLoadState) {
-				is MoviesLoadState.Success -> {
-					val movies: List<MovieMainDetails>? = uiState.moviesDiscoveryDetails?.movies
-					movies?.let { submitMoviesToAdapter(it) }
-					binding.pbMoviesList.visible = false
-				}
+	private fun hookToUiState() {
+		viewModel.uiState.observe(this, ::updateUiState)
+	}
 
-				is MoviesLoadState.Loading -> binding.pbMoviesList.visible = true
+	private fun updateUiState(uiState: MoviesDiscoveryState) {
+		when (uiState.moviesLoadState) {
+			is MoviesLoadState.Success -> {
+				val movies: List<MovieMainDetails>? = uiState.moviesDiscoveryDetails?.movies
+				movies?.let { submitMoviesToAdapter(it) }
+				binding.pbMoviesList.visible = false
+			}
 
-				is MoviesLoadState.Error -> Toast.makeText(
-					this,
-					uiState.moviesLoadState.errorMessage,
-					Toast.LENGTH_SHORT
-				).show()
+			is MoviesLoadState.Loading -> binding.pbMoviesList.visible = true
 
-				MoviesLoadState.ExhaustedPagination -> {
-					Toast.makeText(this, "No more movies to load", Toast.LENGTH_SHORT).show()
-				}
+			is MoviesLoadState.Error -> Toast.makeText(
+				this,
+				uiState.moviesLoadState.errorMessage,
+				Toast.LENGTH_SHORT
+			).show()
+
+			MoviesLoadState.ExhaustedPagination -> {
+				Toast.makeText(this, "No more movies to load", Toast.LENGTH_SHORT).show()
 			}
 		}
 	}
