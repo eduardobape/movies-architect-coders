@@ -9,8 +9,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.mymovies.R
-import com.example.mymovies.data.remote.services.ApiUrlsManager.ApiImageUtils.PosterMovieSize
 import com.example.mymovies.data.remote.client.RetrofitServiceBuilder
+import com.example.mymovies.data.remote.services.ApiUrlsManager.ApiImageUtils.PosterMovieSize
 import com.example.mymovies.data.remote.services.MoviesApi
 import com.example.mymovies.data.repository.MovieDetailsRepositoryImpl
 import com.example.mymovies.databinding.ActivityMovieDetailBinding
@@ -18,6 +18,7 @@ import com.example.mymovies.domain.models.MovieDetails
 import com.example.mymovies.domain.usecases.GetUrlMovieBackdropUseCase
 import com.example.mymovies.domain.usecases.MovieDetailsUseCase
 import com.example.mymovies.ui.utils.loadImageFromUrl
+import com.example.mymovies.ui.utils.visible
 import com.example.mymovies.ui.viewmodels.MovieDetailsViewModel
 import com.google.android.material.appbar.AppBarLayout
 import kotlin.math.abs
@@ -90,10 +91,14 @@ class MovieDetailsActivity : AppCompatActivity() {
     private fun updateUiState() {
         viewModel.uiState.observe(this) { uiState ->
             when (uiState.loadState) {
-                MovieDetailsLoadState.Loading ->
-                    Toast.makeText(this, "Cargando", Toast.LENGTH_SHORT).show()
+                MovieDetailsLoadState.Loading -> binding.pbMovieDetails.visible = true
 
-                MovieDetailsLoadState.Success -> displayMovieDetails(uiState.movieDetails)
+                MovieDetailsLoadState.Success -> {
+                    displayMovieDetails(uiState.movieDetails)
+                    binding.pbMovieDetails.visible = false
+                    binding.nesScrollMovieDetails.visible = true
+                    binding.appBarMovieDetails.setExpanded(true, true)
+                }
 
                 is MovieDetailsLoadState.Error ->
                     Toast.makeText(this, uiState.loadState.errorMessage, Toast.LENGTH_SHORT).show()

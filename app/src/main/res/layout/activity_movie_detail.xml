@@ -10,7 +10,9 @@
         android:id="@+id/appBarMovieDetails"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:theme="@style/ThemeOverlay.MaterialComponents.Dark">
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
+        app:expanded="false"
+        tools:expanded="true">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
@@ -26,7 +28,6 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/poster_movie_description"
                 android:scaleType="centerCrop"
-                android:src="@drawable/no_movie_poster"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.6" />
 
@@ -42,10 +43,13 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nesScrollMovieDetails"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="8dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -158,5 +162,11 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/pbMovieDetails"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
