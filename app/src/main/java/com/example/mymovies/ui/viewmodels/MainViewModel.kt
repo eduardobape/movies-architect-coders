@@ -16,7 +16,8 @@ class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase
 
 	val moviesFilters = MoviesDiscoveryFilters()
 	private val _uiState: MutableLiveData<MoviesDiscoveryState> = MutableLiveData(MoviesDiscoveryState())
-	val uiState: LiveData<MoviesDiscoveryState> = _uiState
+	val uiState: LiveData<MoviesDiscoveryState>
+		get() = _uiState
 
 	init {
 		getMovies(moviesFilters)
