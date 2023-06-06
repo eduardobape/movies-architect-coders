@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 		setContentView(binding.root)
 		configMoviesAdapter()
 		onScrollMovies()
-		updateMovies()
+		updateUiState()
 	}
 
 	private fun configMoviesAdapter() {
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 		}
 	}
 
-	private fun updateMovies() {
+	private fun updateUiState() {
 		viewModel.uiState.observe(this) { uiState ->
 			when (uiState.moviesLoadState) {
 				is MoviesLoadState.Success -> {
