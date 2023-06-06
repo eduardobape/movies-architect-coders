@@ -40,8 +40,8 @@ class MainActivity : AppCompatActivity() {
 		binding = ActivityMainBinding.inflate(layoutInflater)
 		setContentView(binding.root)
 		configMoviesAdapter()
-		onScrollMovies()
 		updateUiState()
+		onScrollMovies()
 	}
 
 	private fun configMoviesAdapter() {
