@@ -15,6 +15,7 @@ import com.example.mymovies.databinding.ActivityMainBinding
 import com.example.mymovies.domain.models.MovieMainDetails
 import com.example.mymovies.domain.usecases.GetPopularMoviesUseCase
 import com.example.mymovies.ui.utils.startActivity
+import com.example.mymovies.ui.utils.visible
 import com.example.mymovies.ui.viewmodels.MainViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -65,13 +66,10 @@ class MainActivity : AppCompatActivity() {
 				is MoviesLoadState.Success -> {
 					val movies: List<MovieMainDetails>? = uiState.moviesDiscoveryDetails?.movies
 					movies?.let { submitMoviesToAdapter(it) }
+					binding.pbMoviesList.visible = false
 				}
 
-				is MoviesLoadState.Loading -> Toast.makeText(
-					this,
-					"Loading",
-					Toast.LENGTH_SHORT
-				).show()
+				is MoviesLoadState.Loading -> binding.pbMoviesList.visible = true
 
 				is MoviesLoadState.Error -> Toast.makeText(
 					this,
