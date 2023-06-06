@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovies.data.remote.client.RetrofitServiceBuilder
 import com.example.mymovies.data.remote.services.MoviesApi
@@ -24,7 +25,6 @@ class MainActivity : AppCompatActivity() {
 
 	private lateinit var binding: ActivityMainBinding
 	private lateinit var moviesAdapter: MoviesAdapter
-	private lateinit var moviesLayoutManager: GridLayoutManager
 	private val viewModel by viewModels<MainViewModel> {
 		MainViewModel.Factory(
 			GetPopularMoviesUseCase(MoviesDiscoveryRepositoryImpl(
@@ -49,15 +49,12 @@ class MainActivity : AppCompatActivity() {
 		}
 		with(binding.rvMoviesList) {
 			adapter = moviesAdapter
-			GridLayoutManager(
+			layoutManager = GridLayoutManager(
 				this@MainActivity,
 				numColumnsMoviesList,
 				RecyclerView.VERTICAL,
 				false
-			).also {
-				layoutManager = it
-				this@MainActivity.moviesLayoutManager = it
-			}
+			)
 			addItemDecoration(SpacedItemDecoration(numColumnsMoviesList, GRIDLAYOUT_COLUMNS_SPACE, true))
 		}
 	}
@@ -102,10 +99,11 @@ class MainActivity : AppCompatActivity() {
 					viewModel.getState() !is MoviesLoadState.ExhaustedPagination &&
 					isDownVerticalScroll
 				) {
-					val visibleItemCount = moviesLayoutManager.childCount
-					val totalItemCount = moviesLayoutManager.itemCount
+					val layoutManager: LinearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
+					val visibleItemCount = layoutManager.childCount
+					val totalItemCount = layoutManager.itemCount
 					val firstVisibleItemPosition =
-						moviesLayoutManager.findFirstVisibleItemPosition()
+						layoutManager.findFirstVisibleItemPosition()
 					if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
 						viewModel.getMovies(viewModel.moviesFilters)
 					}
