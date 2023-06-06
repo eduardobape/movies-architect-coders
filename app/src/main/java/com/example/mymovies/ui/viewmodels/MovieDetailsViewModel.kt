@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.mymovies.domain.usecases.MovieDetailsUseCase
 import com.example.mymovies.ui.views.MovieDetailsLoadState
-import com.example.mymovies.ui.views.MovieDetailsUiState
+import com.example.mymovies.ui.views.MovieDetailsState
 import kotlinx.coroutines.launch
 
 class MovieDetailsViewModel(
@@ -15,9 +15,9 @@ class MovieDetailsViewModel(
     movieId: Int?
 ) : ViewModel() {
 
-    private val _uiState: MutableLiveData<MovieDetailsUiState> =
-        MutableLiveData(MovieDetailsUiState())
-    val uiState: LiveData<MovieDetailsUiState>
+    private val _uiState: MutableLiveData<MovieDetailsState> =
+        MutableLiveData(MovieDetailsState())
+    val uiState: LiveData<MovieDetailsState>
         get() = _uiState
 
     init {

@@ -2,7 +2,7 @@ package com.example.mymovies.ui.views
 
 import com.example.mymovies.domain.models.MovieDetails
 
-data class MovieDetailsUiState(
+data class MovieDetailsState(
     val movieDetails: MovieDetails? = null,
     val loadState: MovieDetailsLoadState = MovieDetailsLoadState.Loading
 )
