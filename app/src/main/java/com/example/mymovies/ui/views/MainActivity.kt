@@ -1,7 +1,6 @@
 package com.example.mymovies.ui.views
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
@@ -28,8 +27,10 @@ class MainActivity : AppCompatActivity() {
 	private lateinit var moviesAdapter: MoviesAdapter
 	private val viewModel by viewModels<MainViewModel> {
 		MainViewModel.Factory(
-			GetPopularMoviesUseCase(MoviesDiscoveryRepositoryImpl(
-				MoviesApi(RetrofitServiceBuilder).moviesDiscoveryApiService)
+			GetPopularMoviesUseCase(
+				MoviesDiscoveryRepositoryImpl(
+					MoviesApi(RetrofitServiceBuilder).moviesDiscoveryApiService
+				)
 			)
 		)
 	}
@@ -65,29 +66,8 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun updateViewsFromUiState(uiState: MoviesDiscoveryState) {
-		when (uiState.moviesLoadState) {
-			is MoviesLoadState.Success -> {
-				val movies: List<MovieMainDetails>? = uiState.moviesDiscoveryDetails?.movies
-				movies?.let { submitMoviesToAdapter(it) }
-				binding.pbMoviesList.visible = false
-			}
-
-			is MoviesLoadState.Loading -> binding.pbMoviesList.visible = true
-
-			is MoviesLoadState.Error -> Toast.makeText(
-				this,
-				uiState.moviesLoadState.errorMessage,
-				Toast.LENGTH_SHORT
-			).show()
-
-			MoviesLoadState.ExhaustedPagination -> {
-				Toast.makeText(this, "No more movies to load", Toast.LENGTH_SHORT).show()
-			}
-		}
-	}
-
-	private fun submitMoviesToAdapter(movies: List<MovieMainDetails>) {
-		moviesAdapter.submitList(movies)
+		moviesAdapter.submitList(uiState.moviesDiscoveryDetails?.movies)
+		binding.pbMoviesList.visible = uiState.isLoading
 	}
 
 	private fun onScrollMovies() {
@@ -95,17 +75,15 @@ class MainActivity : AppCompatActivity() {
 			override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 				super.onScrolled(recyclerView, dx, dy)
 				val isDownVerticalScroll = dy > 0
-				if (viewModel.getState() !is MoviesLoadState.Loading &&
-					viewModel.getState() !is MoviesLoadState.ExhaustedPagination &&
-					isDownVerticalScroll
+				if (isDownVerticalScroll &&
+					viewModel.uiState.value?.isLoading == false
 				) {
 					val layoutManager: LinearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
 					val visibleItemCount = layoutManager.childCount
 					val totalItemCount = layoutManager.itemCount
-					val firstVisibleItemPosition =
-						layoutManager.findFirstVisibleItemPosition()
+					val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
 					if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
-						viewModel.getMovies(viewModel.moviesFilters)
+						viewModel.getMovies()
 					}
 				}
 			}
@@ -123,7 +101,7 @@ class MainActivity : AppCompatActivity() {
 		val movies: List<MovieMainDetails>? =
 			viewModel.uiState.value?.moviesDiscoveryDetails?.movies
 		movies?.let {
-			submitMoviesToAdapter(it)
+			moviesAdapter.submitList(it)
 		}
 	}
 }
