@@ -46,7 +46,7 @@ class MovieDetailsActivity : AppCompatActivity() {
         setContentView(binding.root)
         setUpActionBar()
         manageScrollCollapsingToolbar()
-        updateUiState()
+        hookToUiState()
     }
 
     private fun setUpActionBar() {
@@ -87,21 +87,25 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private fun getMovieIdFromIntent(): Int? = intent.extras?.getInt(MOVIE_ID)
 
-    private fun updateUiState() {
+    private fun hookToUiState() {
         viewModel.uiState.observe(this) { uiState ->
-            when (uiState.loadState) {
-                MovieDetailsLoadState.Loading -> binding.pbMovieDetails.visible = true
+            updateViewsFromUiState(uiState)
+        }
+    }
 
-                MovieDetailsLoadState.Success -> {
-                    displayMovieDetails(uiState.movieDetails)
-                    binding.pbMovieDetails.visible = false
-                    binding.nesScrollMovieDetails.visible = true
-                    binding.appBarMovieDetails.setExpanded(true, true)
-                }
+    private fun updateViewsFromUiState(uiState: MovieDetailsState) {
+        when (uiState.loadState) {
+            MovieDetailsLoadState.Loading -> binding.pbMovieDetails.visible = true
 
-                is MovieDetailsLoadState.Error ->
-                    Toast.makeText(this, uiState.loadState.errorMessage, Toast.LENGTH_SHORT).show()
+            MovieDetailsLoadState.Success -> {
+                displayMovieDetails(uiState.movieDetails)
+                binding.pbMovieDetails.visible = false
+                binding.nesScrollMovieDetails.visible = true
+                binding.appBarMovieDetails.setExpanded(true, true)
             }
+
+            is MovieDetailsLoadState.Error ->
+                Toast.makeText(this, uiState.loadState.errorMessage, Toast.LENGTH_SHORT).show()
         }
     }
 
