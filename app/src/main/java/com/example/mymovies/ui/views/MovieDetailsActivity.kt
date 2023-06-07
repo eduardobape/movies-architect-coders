@@ -113,9 +113,9 @@ class MovieDetailsActivity : AppCompatActivity() {
             displayMovieImage(it)
             displayMovieTranslatedTitle(it.translatedTitle)
             displayMovieOriginalTitle(it.originalTitle)
+            displayMovieReleaseDate(it.releaseDate)
             with(binding) {
                 modifyToolBarTitle(it.translatedTitle)
-                displayMovieReleaseDate(it.releaseDate, tvMovieReleaseDate)
                 displayMovieVoteAverage(it.voteAverage, tvMovieVoteAverage)
                 displayMovieGenres(it.genres, tvMovieGenresNames)
                 displayMovieOverview(it.overview.orEmpty(), tvMovieOverview)
@@ -147,8 +147,8 @@ class MovieDetailsActivity : AppCompatActivity() {
         binding.tvMovieOriginalTitle.text = title
     }
 
-    private fun displayMovieReleaseDate(releaseDate: String, textViewReleaseDate: TextView) {
-        textViewReleaseDate.text = releaseDate
+    private fun displayMovieReleaseDate(releaseDate: String) {
+        binding.tvMovieReleaseDate.text = releaseDate
     }
 
     private fun displayMovieVoteAverage(voteAverage: Float, textViewVoteAverage: TextView) {
