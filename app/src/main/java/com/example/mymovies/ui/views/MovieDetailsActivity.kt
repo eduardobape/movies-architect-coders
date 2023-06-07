@@ -112,9 +112,9 @@ class MovieDetailsActivity : AppCompatActivity() {
         movieDetails?.let {
             displayMovieImage(it)
             displayMovieTranslatedTitle(it.translatedTitle)
+            displayMovieOriginalTitle(it.originalTitle)
             with(binding) {
                 modifyToolBarTitle(it.translatedTitle)
-                displayMovieOriginalTitle(it.originalTitle, tvMovieOriginalTitle)
                 displayMovieReleaseDate(it.releaseDate, tvMovieReleaseDate)
                 displayMovieVoteAverage(it.voteAverage, tvMovieVoteAverage)
                 displayMovieGenres(it.genres, tvMovieGenresNames)
@@ -143,8 +143,8 @@ class MovieDetailsActivity : AppCompatActivity() {
         supportActionBar?.title = title
     }
 
-    private fun displayMovieOriginalTitle(title: String, textViewOriginalTitle: TextView) {
-        textViewOriginalTitle.text = title
+    private fun displayMovieOriginalTitle(title: String) {
+        binding.tvMovieOriginalTitle.text = title
     }
 
     private fun displayMovieReleaseDate(releaseDate: String, textViewReleaseDate: TextView) {
