@@ -116,9 +116,9 @@ class MovieDetailsActivity : AppCompatActivity() {
             displayMovieReleaseDate(it.releaseDate)
             displayMovieVoteAverage(it.voteAverage)
             displayMovieGenres(it.genres)
+            displayMovieOverview(it.overview.orEmpty())
             with(binding) {
                 modifyToolBarTitle(it.translatedTitle)
-                displayMovieOverview(it.overview.orEmpty(), tvMovieOverview)
             }
         }
     }
@@ -159,8 +159,8 @@ class MovieDetailsActivity : AppCompatActivity() {
         binding.tvMovieGenresNames.text = movieGenresNames.joinToString(separator = ", ")
     }
 
-    private fun displayMovieOverview(movieOverview: String, textViewOverview: TextView) {
-        textViewOverview.text = movieOverview.ifEmpty {
+    private fun displayMovieOverview(movieOverview: String) {
+        binding.tvMovieOverview.text = movieOverview.ifEmpty {
             resources.getString(R.string.movie_overview_headline)
         }
     }
