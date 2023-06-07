@@ -61,10 +61,10 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun hookToUiState() {
-		viewModel.uiState.observe(this, ::updateUiState)
+		viewModel.uiState.observe(this, ::updateViewsFromUiState)
 	}
 
-	private fun updateUiState(uiState: MoviesDiscoveryState) {
+	private fun updateViewsFromUiState(uiState: MoviesDiscoveryState) {
 		when (uiState.moviesLoadState) {
 			is MoviesLoadState.Success -> {
 				val movies: List<MovieMainDetails>? = uiState.moviesDiscoveryDetails?.movies
