@@ -111,9 +111,9 @@ class MovieDetailsActivity : AppCompatActivity() {
     private fun displayMovieDetails(movieDetails: MovieDetails?) {
         movieDetails?.let {
             displayMovieImage(it)
+            displayMovieTranslatedTitle(it.translatedTitle)
             with(binding) {
                 modifyToolBarTitle(it.translatedTitle)
-                displayMovieTranslatedTitle(it.translatedTitle, tvMovieTranslatedTitle)
                 displayMovieOriginalTitle(it.originalTitle, tvMovieOriginalTitle)
                 displayMovieReleaseDate(it.releaseDate, tvMovieReleaseDate)
                 displayMovieVoteAverage(it.voteAverage, tvMovieVoteAverage)
@@ -135,8 +135,8 @@ class MovieDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun displayMovieTranslatedTitle(title: String, textViewTranslatedTitle: TextView) {
-        textViewTranslatedTitle.text = title
+    private fun displayMovieTranslatedTitle(title: String) {
+        binding.tvMovieTranslatedTitle.text = title
     }
 
     private fun modifyToolBarTitle(title: String) {
