@@ -2,7 +2,6 @@ package com.example.mymovies.ui.views
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -110,6 +109,7 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private fun displayMovieDetails(movieDetails: MovieDetails?) {
         movieDetails?.let {
+            modifyToolBarTitle(it.translatedTitle)
             displayMovieImage(it)
             displayMovieTranslatedTitle(it.translatedTitle)
             displayMovieOriginalTitle(it.originalTitle)
@@ -117,9 +117,6 @@ class MovieDetailsActivity : AppCompatActivity() {
             displayMovieVoteAverage(it.voteAverage)
             displayMovieGenres(it.genres)
             displayMovieOverview(it.overview.orEmpty())
-            with(binding) {
-                modifyToolBarTitle(it.translatedTitle)
-            }
         }
     }
 
