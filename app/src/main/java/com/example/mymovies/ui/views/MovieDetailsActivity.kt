@@ -26,17 +26,18 @@ import kotlin.math.abs
 
 class MovieDetailsActivity : AppCompatActivity() {
 
+    companion object {
+        const val MOVIE_ID = "movieID"
+    }
+
     private lateinit var binding: ActivityMovieDetailBinding
     private val viewModel by viewModels<MovieDetailsViewModel> {
         MovieDetailsViewModel.Factory(
-            MovieDetailsUseCase(MovieDetailsRepositoryImpl(
-                MoviesApi(RetrofitServiceBuilder).movieDetailsApiService)),
+            MovieDetailsUseCase(
+                MovieDetailsRepositoryImpl(MoviesApi(RetrofitServiceBuilder).movieDetailsApiService)
+            ),
             getMovieIdFromIntent()
         )
-    }
-
-    companion object {
-        const val MOVIE_ID = "movieID"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,9 +85,7 @@ class MovieDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun getMovieIdFromIntent(): Int? {
-        return intent.extras?.getInt(MOVIE_ID)
-    }
+    private fun getMovieIdFromIntent(): Int? = intent.extras?.getInt(MOVIE_ID)
 
     private fun updateUiState() {
         viewModel.uiState.observe(this) { uiState ->
@@ -131,10 +130,7 @@ class MovieDetailsActivity : AppCompatActivity() {
             imageViewMovieImage.loadImageFromUrl(urlMovieImage)
         } else {
             imageViewMovieImage.setImageDrawable(
-                ContextCompat.getDrawable(
-                    this,
-                    R.drawable.no_movie_poster
-                )
+                ContextCompat.getDrawable(this, R.drawable.no_movie_poster)
             )
         }
     }
