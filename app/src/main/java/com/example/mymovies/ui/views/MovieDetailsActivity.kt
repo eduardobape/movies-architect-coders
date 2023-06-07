@@ -2,7 +2,6 @@ package com.example.mymovies.ui.views
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -111,9 +110,9 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private fun displayMovieDetails(movieDetails: MovieDetails?) {
         movieDetails?.let {
+            displayMovieImage(it)
             with(binding) {
                 modifyToolBarTitle(it.translatedTitle)
-                displayMovieImage(it, ivMovieHeaderImage)
                 displayMovieTranslatedTitle(it.translatedTitle, tvMovieTranslatedTitle)
                 displayMovieOriginalTitle(it.originalTitle, tvMovieOriginalTitle)
                 displayMovieReleaseDate(it.releaseDate, tvMovieReleaseDate)
@@ -124,13 +123,13 @@ class MovieDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun displayMovieImage(movieDetails: MovieDetails, imageViewMovieImage: ImageView) {
+    private fun displayMovieImage(movieDetails: MovieDetails) {
         val pathMovieImage = movieDetails.backdropImagePath ?: movieDetails.posterPath
         if (pathMovieImage != null) {
             val urlMovieImage = GetUrlMovieBackdropUseCase(pathMovieImage, PosterMovieSize.WIDTH_780PX)
-            imageViewMovieImage.loadImageFromUrl(urlMovieImage)
+            binding.ivMovieHeaderImage.loadImageFromUrl(urlMovieImage)
         } else {
-            imageViewMovieImage.setImageDrawable(
+            binding.ivMovieHeaderImage.setImageDrawable(
                 ContextCompat.getDrawable(this, R.drawable.no_movie_poster)
             )
         }
