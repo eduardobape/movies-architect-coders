@@ -97,9 +97,6 @@ class MovieDetailsActivity : AppCompatActivity() {
 
             MovieDetailsLoadState.Success -> {
                 displayMovieDetails(uiState.movieDetails)
-                binding.pbMovieDetails.visible = false
-                binding.nesScrollMovieDetails.visible = true
-                binding.appBarMovieDetails.setExpanded(true, true)
             }
 
             is MovieDetailsLoadState.Error ->
@@ -117,7 +114,10 @@ class MovieDetailsActivity : AppCompatActivity() {
             displayMovieVoteAverage(it.voteAverage)
             displayMovieGenres(it.genres)
             displayMovieOverview(it.overview.orEmpty())
+            binding.nesScrollMovieDetails.visible = true
+            binding.appBarMovieDetails.setExpanded(true, true)
         }
+        binding.pbMovieDetails.visible = false
     }
 
     private fun displayMovieImage(movieDetails: MovieDetails) {
