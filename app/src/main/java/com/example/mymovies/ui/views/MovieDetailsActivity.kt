@@ -92,15 +92,13 @@ class MovieDetailsActivity : AppCompatActivity() {
     }
 
     private fun updateViewsFromUiState(uiState: MovieDetailsState) {
-        when (uiState.loadState) {
-            MovieDetailsLoadState.Loading -> binding.pbMovieDetails.visible = true
+        when (uiState) {
+            is MovieDetailsState.Loading -> binding.pbMovieDetails.visible = true
 
-            MovieDetailsLoadState.Success -> {
-                displayMovieDetails(uiState.movieDetails)
-            }
+            is MovieDetailsState.Success -> displayMovieDetails(uiState.movieDetails)
 
-            is MovieDetailsLoadState.Error ->
-                Toast.makeText(this, uiState.loadState.errorMessage, Toast.LENGTH_SHORT).show()
+            is MovieDetailsState.Error ->
+                Toast.makeText(this, getString(R.string.movie_id_intent_error), Toast.LENGTH_SHORT).show()
         }
     }
 

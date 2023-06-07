@@ -6,45 +6,40 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.mymovies.domain.usecases.MovieDetailsUseCase
-import com.example.mymovies.ui.views.MovieDetailsLoadState
 import com.example.mymovies.ui.views.MovieDetailsState
 import kotlinx.coroutines.launch
 
 class MovieDetailsViewModel(
-    private val movieDetailsUseCase: MovieDetailsUseCase,
-    movieId: Int?
+	private val movieDetailsUseCase: MovieDetailsUseCase,
+	movieId: Int?
 ) : ViewModel() {
 
-    private val _uiState: MutableLiveData<MovieDetailsState> =
-        MutableLiveData(MovieDetailsState())
-    val uiState: LiveData<MovieDetailsState>
-        get() = _uiState
+	private val _uiState: MutableLiveData<MovieDetailsState> = MutableLiveData(MovieDetailsState.Loading)
+	val uiState: LiveData<MovieDetailsState>
+		get() = _uiState
 
-    init {
-        getMovieDetails(movieId)
-    }
+	init {
+		getMovieDetails(movieId)
+	}
 
-    private fun getMovieDetails(movieId: Int?) {
-        viewModelScope.launch {
-            _uiState.value?.let { uiState ->
-                if (movieId == null) {
-                    _uiState.value = uiState.copy(loadState = MovieDetailsLoadState.Error("Error"))
-                } else {
-                    _uiState.value = uiState.copy(loadState = MovieDetailsLoadState.Loading)
-                    _uiState.value = uiState.copy(
-                        movieDetails = movieDetailsUseCase(movieId),
-                        loadState = MovieDetailsLoadState.Success
-                    )
-                }
-            }
-        }
-    }
+	private fun getMovieDetails(movieId: Int?) {
+		viewModelScope.launch {
+			_uiState.value?.let { uiState ->
+				if (movieId == null) {
+					_uiState.value = MovieDetailsState.Error
+				} else {
+					_uiState.value = MovieDetailsState.Loading
+					_uiState.value = MovieDetailsState.Success(movieDetailsUseCase(movieId))
+				}
+			}
+		}
+	}
 
-    class Factory(private val movieDetailsUseCase: MovieDetailsUseCase, private val movieId: Int?) :
-        ViewModelProvider.Factory {
+	class Factory(private val movieDetailsUseCase: MovieDetailsUseCase, private val movieId: Int?) :
+		ViewModelProvider.Factory {
 
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T =
-            MovieDetailsViewModel(movieDetailsUseCase, movieId) as T
-    }
+		@Suppress("UNCHECKED_CAST")
+		override fun <T : ViewModel> create(modelClass: Class<T>): T =
+			MovieDetailsViewModel(movieDetailsUseCase, movieId) as T
+	}
 }
