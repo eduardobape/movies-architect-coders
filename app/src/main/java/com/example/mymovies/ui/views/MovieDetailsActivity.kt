@@ -124,10 +124,7 @@ class MovieDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun displayMovieImage(
-        movieDetails: MovieDetails,
-        imageViewMovieImage: ImageView
-    ) {
+    private fun displayMovieImage(movieDetails: MovieDetails, imageViewMovieImage: ImageView) {
         val pathMovieImage = movieDetails.backdropImagePath ?: movieDetails.posterPath
         if (pathMovieImage != null) {
             val urlMovieImage = GetUrlMovieBackdropUseCase(pathMovieImage, PosterMovieSize.WIDTH_780PX)
