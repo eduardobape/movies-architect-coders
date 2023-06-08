@@ -11,7 +11,6 @@ import com.example.mymovies.data.remote.client.RetrofitServiceBuilder
 import com.example.mymovies.data.remote.services.MoviesApi
 import com.example.mymovies.data.repository.MoviesDiscoveryRepositoryImpl
 import com.example.mymovies.databinding.ActivityMainBinding
-import com.example.mymovies.domain.models.MovieMainDetails
 import com.example.mymovies.domain.usecases.GetPopularMoviesUseCase
 import com.example.mymovies.ui.utils.startActivity
 import com.example.mymovies.ui.utils.visible
@@ -88,20 +87,5 @@ class MainActivity : AppCompatActivity() {
 				}
 			}
 		})
-	}
-
-	override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-		reloadMovies()
-		super.onRestoreInstanceState(savedInstanceState)
-	}
-
-	private fun reloadMovies() {
-		// The movies list must be submitted to the adapter when the activity is recreated because
-		// of a configuration change. If not, the movies will not be displayed.
-		val movies: List<MovieMainDetails>? =
-			viewModel.uiState.value?.moviesDiscoveryDetails?.movies
-		movies?.let {
-			moviesAdapter.submitList(it)
-		}
 	}
 }
