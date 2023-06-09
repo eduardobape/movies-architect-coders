@@ -1,12 +1,13 @@
 package com.example.mymovies.ui.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.mymovies.domain.usecases.MovieDetailsUseCase
 import com.example.mymovies.ui.views.MovieDetailsState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class MovieDetailsViewModel(
@@ -14,9 +15,8 @@ class MovieDetailsViewModel(
 	movieId: Int?
 ) : ViewModel() {
 
-	private val _uiState: MutableLiveData<MovieDetailsState> = MutableLiveData(MovieDetailsState.Loading)
-	val uiState: LiveData<MovieDetailsState>
-		get() = _uiState
+	private val _uiState: MutableStateFlow<MovieDetailsState> = MutableStateFlow(MovieDetailsState.Loading)
+	val uiState: StateFlow<MovieDetailsState> = _uiState.asStateFlow()
 
 	init {
 		getMovieDetails(movieId)
@@ -24,13 +24,11 @@ class MovieDetailsViewModel(
 
 	private fun getMovieDetails(movieId: Int?) {
 		viewModelScope.launch {
-			_uiState.value?.let { uiState ->
-				if (movieId == null) {
-					_uiState.value = MovieDetailsState.Error
-				} else {
-					_uiState.value = MovieDetailsState.Loading
-					_uiState.value = MovieDetailsState.Success(movieDetailsUseCase(movieId))
-				}
+			if (movieId == null) {
+				_uiState.value = MovieDetailsState.Error
+			} else {
+				_uiState.value = MovieDetailsState.Loading
+				_uiState.value = MovieDetailsState.Success(movieDetailsUseCase(movieId))
 			}
 		}
 	}

@@ -4,6 +4,9 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +18,7 @@ import com.example.mymovies.domain.usecases.GetPopularMoviesUseCase
 import com.example.mymovies.ui.utils.startActivity
 import com.example.mymovies.ui.utils.visible
 import com.example.mymovies.ui.viewmodels.MainViewModel
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -61,7 +65,11 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun hookToUiState() {
-		viewModel.uiState.observe(this, ::updateViewsFromUiState)
+		lifecycleScope.launch {
+			repeatOnLifecycle(Lifecycle.State.STARTED) {
+				viewModel.uiState.collect(::updateViewsFromUiState)
+			}
+		}
 	}
 
 	private fun updateViewsFromUiState(uiState: MoviesDiscoveryState) {
@@ -74,8 +82,7 @@ class MainActivity : AppCompatActivity() {
 			override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 				super.onScrolled(recyclerView, dx, dy)
 				val isDownVerticalScroll = dy > 0
-				if (isDownVerticalScroll &&
-					viewModel.uiState.value?.isLoading == false
+				if (isDownVerticalScroll && !viewModel.uiState.value.isLoading
 				) {
 					val layoutManager: LinearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
 					val visibleItemCount = layoutManager.childCount

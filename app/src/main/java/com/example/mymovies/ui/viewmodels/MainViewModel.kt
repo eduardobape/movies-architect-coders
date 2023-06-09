@@ -1,8 +1,6 @@
 package com.example.mymovies.ui.viewmodels
 
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -10,13 +8,15 @@ import com.example.mymovies.domain.models.MoviesDiscoveryDetails
 import com.example.mymovies.domain.usecases.GetPopularMoviesUseCase
 import com.example.mymovies.ui.models.MoviesDiscoveryFilters
 import com.example.mymovies.ui.views.MoviesDiscoveryState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase) : ViewModel() {
 
-	private val _uiState: MutableLiveData<MoviesDiscoveryState> = MutableLiveData(MoviesDiscoveryState())
-	val uiState: LiveData<MoviesDiscoveryState>
-		get() = _uiState
+	private val _uiState: MutableStateFlow<MoviesDiscoveryState> = MutableStateFlow(MoviesDiscoveryState())
+	val uiState: StateFlow<MoviesDiscoveryState> = _uiState.asStateFlow()
 
 	init {
 		getMovies()
@@ -25,14 +25,13 @@ class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase
 	fun getMovies() {
 		viewModelScope.launch {
 			if (areMoreMoviesToFetch()) {
-				_uiState.value = _uiState.value?.copy(isLoading = true)
-				val moviesFilters: MoviesDiscoveryFilters =
-					_uiState.value?.moviesDiscoveryFilters ?: MoviesDiscoveryFilters()
+				_uiState.value = _uiState.value.copy(isLoading = true)
+				val moviesFilters: MoviesDiscoveryFilters = _uiState.value.moviesDiscoveryFilters
 				val newMoviesDetails: MoviesDiscoveryDetails = getPopularMoviesUseCase(moviesFilters)
-				newMoviesDetails.movies = _uiState.value?.moviesDiscoveryDetails?.let { lastMoviesDiscoveryDetails ->
+				newMoviesDetails.movies = _uiState.value.moviesDiscoveryDetails?.let { lastMoviesDiscoveryDetails ->
 					lastMoviesDiscoveryDetails.movies + newMoviesDetails.movies
 				} ?: newMoviesDetails.movies
-				_uiState.value = _uiState.value?.copy(
+				_uiState.value = _uiState.value.copy(
 					isLoading = false,
 					moviesDiscoveryDetails = newMoviesDetails
 				)
@@ -42,19 +41,15 @@ class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase
 	}
 
 	private fun areMoreMoviesToFetch(): Boolean {
-		_uiState.value?.let { state ->
-			state.moviesDiscoveryDetails?.let {
-				return state.moviesDiscoveryFilters.nextMoviesPageToFetch <= it.pages &&
-						state.moviesDiscoveryFilters.maxNumMoviesToFetch > it.movies.size
-			}
+		_uiState.value.moviesDiscoveryDetails?.let {
+			return _uiState.value.moviesDiscoveryFilters.nextMoviesPageToFetch <= it.pages &&
+					_uiState.value.moviesDiscoveryFilters.maxNumMoviesToFetch > it.movies.size
 		}
 		return true
 	}
 
 	private fun increaseMoviesPage() {
-		_uiState.value?.let {
-			it.moviesDiscoveryFilters.nextMoviesPageToFetch++
-		}
+		_uiState.value.moviesDiscoveryFilters.nextMoviesPageToFetch++
 	}
 
 

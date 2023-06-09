@@ -6,6 +6,9 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.mymovies.R
 import com.example.mymovies.data.remote.client.RetrofitServiceBuilder
 import com.example.mymovies.data.remote.services.ApiUrlsManager.ApiImageUtils.PosterMovieSize
@@ -19,6 +22,7 @@ import com.example.mymovies.ui.utils.loadImageFromUrl
 import com.example.mymovies.ui.utils.visible
 import com.example.mymovies.ui.viewmodels.MovieDetailsViewModel
 import com.google.android.material.appbar.AppBarLayout
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 
@@ -86,8 +90,10 @@ class MovieDetailsActivity : AppCompatActivity() {
     private fun getMovieIdFromIntent(): Int? = intent.extras?.getInt(MOVIE_ID)
 
     private fun hookToUiState() {
-        viewModel.uiState.observe(this) { uiState ->
-            updateViewsFromUiState(uiState)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect(::updateViewsFromUiState)
+            }
         }
     }
 
