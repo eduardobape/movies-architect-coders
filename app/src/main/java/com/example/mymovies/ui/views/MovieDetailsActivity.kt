@@ -1,7 +1,6 @@
 package com.example.mymovies.ui.views
 
 import android.os.Bundle
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -52,18 +51,10 @@ class MovieDetailsActivity : AppCompatActivity() {
     }
 
     private fun setUpActionBar() {
-        setSupportActionBar(binding.toolbarMovieDetails)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
+        binding.toolbarMovieDetails.apply {
+            setNavigationOnClickListener {
                 finish()
-                true
             }
-
-            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -73,17 +64,14 @@ class MovieDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun manageToolbarTitleVisibility(
-        appBarLayout: AppBarLayout,
-        verticalOffsetAppBarLayout: Int
-    ) {
+    private fun manageToolbarTitleVisibility(appBarLayout: AppBarLayout, verticalOffsetAppBarLayout: Int) {
         if (abs(verticalOffsetAppBarLayout) == appBarLayout.totalScrollRange) {
             // Show the toolbar's title when the collapsing toolbar layout is fully collapsed
-            supportActionBar?.setDisplayShowTitleEnabled(true)
+            modifyToolBarTitle(viewModel.getMovieTitle())
         } else if (verticalOffsetAppBarLayout == 0) {
-            // Hide the toolbar's title when the collapsing toolbar layout is collapsed in
+            // Hide the toolbar's title when the collapsing toolbar layout is expanded in
             // order to not overlapping the movie's image displayed on this one
-            supportActionBar?.setDisplayShowTitleEnabled(false)
+            modifyToolBarTitle("")
         }
     }
 
@@ -110,7 +98,6 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private fun displayMovieDetails(movieDetails: MovieDetails?) {
         movieDetails?.let {
-            modifyToolBarTitle(it.translatedTitle)
             displayMovieImage(it)
             displayMovieTranslatedTitle(it.translatedTitle)
             displayMovieOriginalTitle(it.originalTitle)
@@ -119,9 +106,12 @@ class MovieDetailsActivity : AppCompatActivity() {
             displayMovieGenres(it.genres)
             displayMovieOverview(it.overview.orEmpty())
             binding.nesScrollMovieDetails.visible = true
-            binding.appBarMovieDetails.setExpanded(true, true)
         }
         binding.pbMovieDetails.visible = false
+    }
+
+    private fun modifyToolBarTitle(title: String) {
+        binding.toolbarMovieDetails.title = title
     }
 
     private fun displayMovieImage(movieDetails: MovieDetails) {
@@ -138,10 +128,6 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private fun displayMovieTranslatedTitle(title: String) {
         binding.tvMovieTranslatedTitle.text = title
-    }
-
-    private fun modifyToolBarTitle(title: String) {
-        supportActionBar?.title = title
     }
 
     private fun displayMovieOriginalTitle(title: String) {

@@ -11,33 +11,40 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class MovieDetailsViewModel(
-	private val movieDetailsUseCase: MovieDetailsUseCase,
-	movieId: Int?
+    private val movieDetailsUseCase: MovieDetailsUseCase,
+    movieId: Int?
 ) : ViewModel() {
 
-	private val _uiState: MutableStateFlow<MovieDetailsState> = MutableStateFlow(MovieDetailsState.Loading)
-	val uiState: StateFlow<MovieDetailsState> = _uiState.asStateFlow()
+    private val _uiState: MutableStateFlow<MovieDetailsState> = MutableStateFlow(MovieDetailsState.Loading)
+    val uiState: StateFlow<MovieDetailsState> = _uiState.asStateFlow()
 
-	init {
-		getMovieDetails(movieId)
-	}
+    init {
+        fetchMovieDetails(movieId)
+    }
 
-	private fun getMovieDetails(movieId: Int?) {
-		viewModelScope.launch {
-			if (movieId == null) {
-				_uiState.value = MovieDetailsState.Error
-			} else {
-				_uiState.value = MovieDetailsState.Loading
-				_uiState.value = MovieDetailsState.Success(movieDetailsUseCase(movieId))
-			}
-		}
-	}
+    private fun fetchMovieDetails(movieId: Int?) {
+        viewModelScope.launch {
+            if (movieId == null) {
+                _uiState.value = MovieDetailsState.Error
+            } else {
+                _uiState.value = MovieDetailsState.Loading
+                _uiState.value = MovieDetailsState.Success(movieDetailsUseCase(movieId))
+            }
+        }
+    }
 
-	class Factory(private val movieDetailsUseCase: MovieDetailsUseCase, private val movieId: Int?) :
-		ViewModelProvider.Factory {
+    fun getMovieTitle(): String {
+        if (_uiState.value is MovieDetailsState.Success) {
+            return (_uiState.value as MovieDetailsState.Success).movieDetails.translatedTitle
+        }
+        return ""
+    }
 
-		@Suppress("UNCHECKED_CAST")
-		override fun <T : ViewModel> create(modelClass: Class<T>): T =
-			MovieDetailsViewModel(movieDetailsUseCase, movieId) as T
-	}
+    class Factory(private val movieDetailsUseCase: MovieDetailsUseCase, private val movieId: Int?) :
+        ViewModelProvider.Factory {
+
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T =
+            MovieDetailsViewModel(movieDetailsUseCase, movieId) as T
+    }
 }

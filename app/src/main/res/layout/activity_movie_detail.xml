@@ -10,9 +10,7 @@
         android:id="@+id/appBarMovieDetails"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
-        app:expanded="false"
-        tools:expanded="true">
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
@@ -28,6 +26,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/poster_movie_description"
                 android:scaleType="centerCrop"
+                android:src="@drawable/no_movie_poster"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.6" />
 
@@ -36,7 +35,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
-                app:layout_collapseMode="pin" />
+                app:layout_collapseMode="pin"
+                app:navigationIcon="?homeAsUpIndicator" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
