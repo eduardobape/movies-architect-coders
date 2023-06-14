@@ -1,6 +1,7 @@
 <resources>
 	<string name="app_name">My Movies</string>
     <string name="toolbar_title_popular_movies">Popular movies</string>
+    <string name="toolbar_title_movie_details">Movie details</string>
 	<string name="poster_movie_description">Backdrop image of the movie</string>
     <string name="movie_title_headline">Título original:</string>
     <string name="movie_release_date_headline">Fecha de salida:</string>
