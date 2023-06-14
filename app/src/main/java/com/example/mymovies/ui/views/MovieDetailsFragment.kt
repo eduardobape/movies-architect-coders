@@ -1,84 +1,55 @@
 package com.example.mymovies.ui.views
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.navArgs
 import com.example.mymovies.R
 import com.example.mymovies.data.remote.client.RetrofitServiceBuilder
 import com.example.mymovies.data.remote.services.ApiUrlsManager.ApiImageUtils.PosterMovieSize
 import com.example.mymovies.data.remote.services.MoviesApi
 import com.example.mymovies.data.repository.MovieDetailsRepositoryImpl
-import com.example.mymovies.databinding.ActivityMovieDetailBinding
+import com.example.mymovies.databinding.FragmentMovieDetailsBinding
 import com.example.mymovies.domain.models.MovieDetails
 import com.example.mymovies.domain.usecases.GetUrlMovieBackdropUseCase
 import com.example.mymovies.domain.usecases.MovieDetailsUseCase
 import com.example.mymovies.ui.utils.loadImageFromUrl
 import com.example.mymovies.ui.utils.visible
 import com.example.mymovies.ui.viewmodels.MovieDetailsViewModel
-import com.google.android.material.appbar.AppBarLayout
 import kotlinx.coroutines.launch
-import kotlin.math.abs
 
 
-class MovieDetailsActivity : AppCompatActivity() {
+class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
-    companion object {
-        const val MOVIE_ID = "movieID"
-    }
-
-    private lateinit var binding: ActivityMovieDetailBinding
+    private lateinit var binding: FragmentMovieDetailsBinding
+    private val args: MovieDetailsFragmentArgs by navArgs()
     private val viewModel by viewModels<MovieDetailsViewModel> {
         MovieDetailsViewModel.Factory(
             MovieDetailsUseCase(
                 MovieDetailsRepositoryImpl(MoviesApi(RetrofitServiceBuilder).movieDetailsApiService)
             ),
-            getMovieIdFromIntent()
+            getMovieIdFromSafeArgs()
         )
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMovieDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setUpActionBar()
-        manageScrollCollapsingToolbar()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentMovieDetailsBinding.bind(view)
         hookToUiState()
     }
 
-    private fun setUpActionBar() {
-        binding.toolbarMovieDetails.apply {
-            setNavigationOnClickListener {
-                finish()
-            }
-        }
+    private fun getMovieIdFromSafeArgs(): Int {
+        return args.movieId
     }
-
-    private fun manageScrollCollapsingToolbar() {
-        binding.appBarMovieDetails.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            manageToolbarTitleVisibility(appBarLayout, verticalOffset)
-        }
-    }
-
-    private fun manageToolbarTitleVisibility(appBarLayout: AppBarLayout, verticalOffsetAppBarLayout: Int) {
-        if (abs(verticalOffsetAppBarLayout) == appBarLayout.totalScrollRange) {
-            // Show the toolbar's title when the collapsing toolbar layout is fully collapsed
-            modifyToolBarTitle(viewModel.getMovieTitle())
-        } else if (verticalOffsetAppBarLayout == 0) {
-            // Hide the toolbar's title when the collapsing toolbar layout is expanded in
-            // order to not overlapping the movie's image displayed on this one
-            modifyToolBarTitle("")
-        }
-    }
-
-    private fun getMovieIdFromIntent(): Int? = intent.extras?.getInt(MOVIE_ID)
 
     private fun hookToUiState() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect(::updateViewsFromUiState)
             }
@@ -92,7 +63,7 @@ class MovieDetailsActivity : AppCompatActivity() {
             is MovieDetailsState.Success -> displayMovieDetails(uiState.movieDetails)
 
             is MovieDetailsState.Error ->
-                Toast.makeText(this, getString(R.string.movie_id_intent_error), Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.movie_id_intent_error), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -110,10 +81,6 @@ class MovieDetailsActivity : AppCompatActivity() {
         binding.pbMovieDetails.visible = false
     }
 
-    private fun modifyToolBarTitle(title: String) {
-        binding.toolbarMovieDetails.title = title
-    }
-
     private fun displayMovieImage(movieDetails: MovieDetails) {
         val pathMovieImage = movieDetails.backdropImagePath ?: movieDetails.posterPath
         if (pathMovieImage != null) {
@@ -121,7 +88,7 @@ class MovieDetailsActivity : AppCompatActivity() {
             binding.ivMovieHeaderImage.loadImageFromUrl(urlMovieImage)
         } else {
             binding.ivMovieHeaderImage.setImageDrawable(
-                ContextCompat.getDrawable(this, R.drawable.no_movie_poster)
+                ContextCompat.getDrawable(requireContext(), R.drawable.no_movie_poster)
             )
         }
     }

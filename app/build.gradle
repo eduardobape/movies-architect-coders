@@ -2,6 +2,7 @@ plugins {
 	id 'com.android.application'
 	id 'org.jetbrains.kotlin.android'
 	id 'com.google.devtools.ksp'
+	id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -54,8 +55,13 @@ dependencies {
 	implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
 	// Activity-KTX
 	implementation 'androidx.activity:activity-ktx:1.7.2'
+	// Fragment KTX
+	implementation "androidx.fragment:fragment-ktx:1.6.0"
 	// Library to enable support for some Java 8 APIs without requiring a minimum API level in the app
 	coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
+	// Jetpack Navigation
+	implementation "androidx.navigation:navigation-fragment:2.6.0"
+	implementation "androidx.navigation:navigation-ui:2.6.0"
 	// Retrofit
 	implementation 'com.squareup.retrofit2:retrofit:2.9.0'
 	// Moshi converter for Retrofit
