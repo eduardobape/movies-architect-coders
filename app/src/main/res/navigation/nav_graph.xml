@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/mainDest"
         android:name="com.example.mymovies.ui.views.MainFragment"
-        android:label="@string/app_name"
+        android:label="@string/toolbar_title_popular_movies"
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainDest_to_movieDetailsDest"
