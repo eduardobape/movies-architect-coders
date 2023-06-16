@@ -20,6 +20,7 @@ import com.example.mymovies.domain.models.MovieDetails
 import com.example.mymovies.domain.usecases.GetUrlMovieBackdropUseCase
 import com.example.mymovies.domain.usecases.MovieDetailsUseCase
 import com.example.mymovies.ui.utils.loadImageFromUrl
+import com.example.mymovies.ui.utils.viewLifecycleBinding
 import com.example.mymovies.ui.utils.visible
 import com.example.mymovies.ui.viewmodels.MovieDetailsViewModel
 import kotlinx.coroutines.launch
@@ -27,7 +28,9 @@ import kotlinx.coroutines.launch
 
 class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
-    private lateinit var binding: FragmentMovieDetailsBinding
+    private val binding: FragmentMovieDetailsBinding by viewLifecycleBinding {
+        FragmentMovieDetailsBinding.bind(requireView())
+    }
     private val args: MovieDetailsFragmentArgs by navArgs()
     private val viewModel by viewModels<MovieDetailsViewModel> {
         MovieDetailsViewModel.Factory(
@@ -40,7 +43,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentMovieDetailsBinding.bind(view)
         hookToUiState()
     }
 
