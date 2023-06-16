@@ -8,6 +8,7 @@ import kotlin.reflect.KProperty
 
 fun <T> Fragment.viewLifecycleBinding(initialise: () -> T): ReadOnlyProperty<Fragment, T> =
     object : ReadOnlyProperty<Fragment, T>, DefaultLifecycleObserver {
+
         private var binding: T? = null
 
         override fun onDestroy(owner: LifecycleOwner) {
@@ -23,7 +24,6 @@ fun <T> Fragment.viewLifecycleBinding(initialise: () -> T): ReadOnlyProperty<Fra
             thisRef: Fragment,
             property: KProperty<*>
         ): T {
-            // Return the backing property if it's set, or initialise
             return binding ?: initialise().also {
                 binding = it
                 this@viewLifecycleBinding.viewLifecycleOwner.lifecycle.addObserver(this)
