@@ -17,6 +17,7 @@ import com.example.mymovies.data.remote.services.MoviesApi
 import com.example.mymovies.data.repository.MoviesDiscoveryRepositoryImpl
 import com.example.mymovies.databinding.FragmentMainBinding
 import com.example.mymovies.domain.usecases.GetPopularMoviesUseCase
+import com.example.mymovies.ui.utils.viewLifecycleBinding
 import com.example.mymovies.ui.utils.visible
 import com.example.mymovies.ui.viewmodels.MainViewModel
 import kotlinx.coroutines.launch
@@ -27,7 +28,9 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         private const val GRIDLAYOUT_COLUMNS_SPACE = 50
     }
 
-    private lateinit var binding: FragmentMainBinding
+    private val binding: FragmentMainBinding by viewLifecycleBinding {
+        FragmentMainBinding.bind(requireView())
+    }
     private lateinit var moviesAdapter: MoviesAdapter
     private val viewModel by viewModels<MainViewModel> {
         MainViewModel.Factory(
@@ -42,7 +45,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentMainBinding.bind(view)
         configMoviesAdapter()
         hookToUiState()
         onScrollMovies()
