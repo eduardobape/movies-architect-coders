@@ -33,13 +33,6 @@ class MovieDetailsViewModel(
         }
     }
 
-    fun getMovieTitle(): String {
-        if (_uiState.value is MovieDetailsState.Success) {
-            return (_uiState.value as MovieDetailsState.Success).movieDetails.translatedTitle
-        }
-        return ""
-    }
-
     class Factory(private val movieDetailsUseCase: MovieDetailsUseCase, private val movieId: Int?) :
         ViewModelProvider.Factory {
 
