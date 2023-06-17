@@ -26,7 +26,7 @@ class MovieDetailsViewModel(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, isError = false)
             if (movieId == null) {
-                _uiState.value = _uiState.value.copy(isLoading = false, isError = true)
+                _uiState.value = _uiState.value.copy(isLoading = false, movieDetails = null, isError = true)
             } else {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false, movieDetails = movieDetailsUseCase(movieId), isError = false
