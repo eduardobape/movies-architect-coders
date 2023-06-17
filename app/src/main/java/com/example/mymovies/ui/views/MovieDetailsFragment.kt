@@ -6,9 +6,6 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.example.mymovies.R
 import com.example.mymovies.data.remote.client.RetrofitServiceBuilder
@@ -19,11 +16,11 @@ import com.example.mymovies.databinding.FragmentMovieDetailsBinding
 import com.example.mymovies.domain.models.MovieDetails
 import com.example.mymovies.domain.usecases.GetUrlMovieBackdropUseCase
 import com.example.mymovies.domain.usecases.MovieDetailsUseCase
+import com.example.mymovies.ui.utils.launchAndCollectFlow
 import com.example.mymovies.ui.utils.loadImageFromUrl
 import com.example.mymovies.ui.utils.viewLifecycleBinding
 import com.example.mymovies.ui.utils.visible
 import com.example.mymovies.ui.viewmodels.MovieDetailsViewModel
-import kotlinx.coroutines.launch
 
 
 class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
@@ -51,11 +48,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     }
 
     private fun hookToUiState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect(::updateViewsFromUiState)
-            }
-        }
+        viewLifecycleOwner.launchAndCollectFlow(viewModel.uiState, ::updateViewsFromUiState)
     }
 
     private fun updateViewsFromUiState(uiState: MovieDetailsUiState) {

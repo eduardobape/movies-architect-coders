@@ -8,8 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -55,3 +60,15 @@ fun <T> Fragment.viewLifecycleBinding(initialise: () -> T): ReadOnlyProperty<Fra
             }
         }
     }
+
+fun <T> LifecycleOwner.launchAndCollectFlow(
+    flow: Flow<T>,
+    body: (T) -> Unit,
+    lifeCycleState: Lifecycle.State = Lifecycle.State.STARTED
+) {
+    lifecycleScope.launch {
+        repeatOnLifecycle(lifeCycleState) {
+            flow.collect(body)
+        }
+    }
+}

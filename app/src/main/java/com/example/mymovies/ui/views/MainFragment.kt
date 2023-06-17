@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,10 +14,10 @@ import com.example.mymovies.data.remote.services.MoviesApi
 import com.example.mymovies.data.repository.MoviesDiscoveryRepositoryImpl
 import com.example.mymovies.databinding.FragmentMainBinding
 import com.example.mymovies.domain.usecases.GetPopularMoviesUseCase
+import com.example.mymovies.ui.utils.launchAndCollectFlow
 import com.example.mymovies.ui.utils.viewLifecycleBinding
 import com.example.mymovies.ui.utils.visible
 import com.example.mymovies.ui.viewmodels.MainViewModel
-import kotlinx.coroutines.launch
 
 class MainFragment : Fragment(R.layout.fragment_main) {
 
@@ -67,11 +64,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun hookToUiState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect(::updateViewsFromUiState)
-            }
-        }
+        viewLifecycleOwner.launchAndCollectFlow(viewModel.uiState, ::updateViewsFromUiState)
     }
 
     private fun updateViewsFromUiState(uiState: MainMoviesUiState) {
