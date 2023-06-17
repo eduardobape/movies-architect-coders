@@ -31,7 +31,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private val binding: FragmentMainBinding by viewLifecycleBinding {
         FragmentMainBinding.bind(requireView())
     }
-    private lateinit var moviesAdapter: MoviesAdapter
+    private lateinit var moviesAdapter: MainMoviesAdapter
     private val viewModel by viewModels<MainViewModel> {
         MainViewModel.Factory(
             GetPopularMoviesUseCase(
@@ -51,7 +51,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun configMoviesAdapter() {
-        moviesAdapter = MoviesAdapter { movieId ->
+        moviesAdapter = MainMoviesAdapter { movieId ->
             findNavController().navigate(MainFragmentDirections.actionMainDestToMovieDetailsDest(movieId))
         }
         with(binding.rvMoviesList) {
@@ -74,7 +74,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
     }
 
-    private fun updateViewsFromUiState(uiState: MoviesDiscoveryState) {
+    private fun updateViewsFromUiState(uiState: MainMoviesState) {
         moviesAdapter.submitList(uiState.moviesDiscoveryDetails?.movies)
         binding.pbMoviesList.visible = uiState.isLoading
     }

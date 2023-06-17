@@ -15,8 +15,8 @@ import com.example.mymovies.domain.usecases.GetUrlMoviePosterUseCase
 import com.example.mymovies.ui.utils.loadImageFromUrl
 
 
-class MoviesAdapter(val onClickItem: (Int) -> Unit) :
-    ListAdapter<MovieMainDetails, MoviesAdapter.MovieViewHolder>(MovieDiff) {
+class MainMoviesAdapter(val onClickItem: (Int) -> Unit) :
+    ListAdapter<MovieMainDetails, MainMoviesAdapter.MovieViewHolder>(MovieDiff) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val itemView =
