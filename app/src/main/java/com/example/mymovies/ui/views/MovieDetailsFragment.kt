@@ -63,12 +63,15 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         if (uiState.isError) {
             Toast.makeText(requireContext(), getString(R.string.movie_id_intent_error), Toast.LENGTH_SHORT).show()
         } else {
-            displayMovieDetails(uiState.movieDetails)
+            uiState.movieDetails?.let {
+                displayMovieDetails(it)
+                binding.nesScrollMovieDetails.visible = !uiState.isLoading
+            }
         }
     }
 
-    private fun displayMovieDetails(movieDetails: MovieDetails?) {
-        movieDetails?.let {
+    private fun displayMovieDetails(movieDetails: MovieDetails) {
+        movieDetails.also {
             displayMovieImage(it)
             displayMovieTranslatedTitle(it.translatedTitle)
             displayMovieOriginalTitle(it.originalTitle)
@@ -76,9 +79,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
             displayMovieVoteAverage(it.voteAverage)
             displayMovieGenres(it.genres)
             displayMovieOverview(it.overview.orEmpty())
-            binding.nesScrollMovieDetails.visible = true
         }
-        binding.pbMovieDetails.visible = false
     }
 
     private fun displayMovieImage(movieDetails: MovieDetails) {
