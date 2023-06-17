@@ -58,14 +58,12 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         }
     }
 
-    private fun updateViewsFromUiState(uiState: MovieDetailsState) {
-        when (uiState) {
-            is MovieDetailsState.Loading -> binding.pbMovieDetails.visible = true
-
-            is MovieDetailsState.Success -> displayMovieDetails(uiState.movieDetails)
-
-            is MovieDetailsState.Error ->
-                Toast.makeText(requireContext(), getString(R.string.movie_id_intent_error), Toast.LENGTH_SHORT).show()
+    private fun updateViewsFromUiState(uiState: MovieDetailsUiState) {
+        binding.pbMovieDetails.visible = uiState.isLoading
+        if (uiState.isError) {
+            Toast.makeText(requireContext(), getString(R.string.movie_id_intent_error), Toast.LENGTH_SHORT).show()
+        } else {
+            displayMovieDetails(uiState.movieDetails)
         }
     }
 

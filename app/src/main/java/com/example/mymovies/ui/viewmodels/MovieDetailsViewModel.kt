@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.mymovies.domain.usecases.MovieDetailsUseCase
-import com.example.mymovies.ui.views.MovieDetailsState
+import com.example.mymovies.ui.views.MovieDetailsUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,8 +15,8 @@ class MovieDetailsViewModel(
     movieId: Int?
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<MovieDetailsState> = MutableStateFlow(MovieDetailsState.Loading)
-    val uiState: StateFlow<MovieDetailsState> = _uiState.asStateFlow()
+    private val _uiState: MutableStateFlow<MovieDetailsUiState> = MutableStateFlow(MovieDetailsUiState())
+    val uiState: StateFlow<MovieDetailsUiState> = _uiState.asStateFlow()
 
     init {
         fetchMovieDetails(movieId)
@@ -24,11 +24,13 @@ class MovieDetailsViewModel(
 
     private fun fetchMovieDetails(movieId: Int?) {
         viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true, isError = false)
             if (movieId == null) {
-                _uiState.value = MovieDetailsState.Error
+                _uiState.value = _uiState.value.copy(isLoading = false, isError = true)
             } else {
-                _uiState.value = MovieDetailsState.Loading
-                _uiState.value = MovieDetailsState.Success(movieDetailsUseCase(movieId))
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false, movieDetails = movieDetailsUseCase(movieId), isError = false
+                )
             }
         }
     }
