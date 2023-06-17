@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.mymovies.domain.models.MoviesDiscoveryDetails
 import com.example.mymovies.domain.usecases.GetPopularMoviesUseCase
 import com.example.mymovies.ui.models.MoviesDiscoveryFilters
-import com.example.mymovies.ui.views.MainMoviesState
+import com.example.mymovies.ui.views.MainMoviesUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,8 +15,8 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase) : ViewModel() {
 
-	private val _uiState: MutableStateFlow<MainMoviesState> = MutableStateFlow(MainMoviesState())
-	val uiState: StateFlow<MainMoviesState> = _uiState.asStateFlow()
+	private val _uiState: MutableStateFlow<MainMoviesUiState> = MutableStateFlow(MainMoviesUiState())
+	val uiState: StateFlow<MainMoviesUiState> = _uiState.asStateFlow()
 
 	init {
 		getMovies()
