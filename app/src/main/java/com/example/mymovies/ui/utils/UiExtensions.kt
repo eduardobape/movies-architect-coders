@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -71,4 +72,14 @@ fun <T> LifecycleOwner.launchAndCollectFlow(
             flow.collect(body)
         }
     }
+}
+
+inline fun <T : Any> basicDiffUtil(
+    crossinline areItemsTheSame: (T, T) -> Boolean = { oldItem, newItem -> oldItem == newItem },
+    crossinline areContentsTheSame: (T, T) -> Boolean = { oldItem, newItem -> oldItem == newItem }
+): DiffUtil.ItemCallback<T> = object : DiffUtil.ItemCallback<T>() {
+    override fun areItemsTheSame(oldItem: T, newItem: T): Boolean = areItemsTheSame(oldItem, newItem)
+
+    override fun areContentsTheSame(oldItem: T, newItem: T): Boolean = areContentsTheSame(oldItem, newItem)
+
 }
