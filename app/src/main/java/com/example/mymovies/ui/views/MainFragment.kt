@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +28,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         FragmentMainBinding.bind(requireView())
     }
     private lateinit var moviesAdapter: MainMoviesAdapter
+    private lateinit var mainMoviesState: MainMoviesState
     private val viewModel by viewModels<MainViewModel> {
         MainViewModel.Factory(
             GetPopularMoviesUseCase(
@@ -42,6 +42,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainMoviesState = buildMainMoviesState()
         configMoviesAdapter()
         hookToUiState()
         onScrollMovies()
@@ -49,7 +50,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun configMoviesAdapter() {
         moviesAdapter = MainMoviesAdapter { movieId ->
-            findNavController().navigate(MainFragmentDirections.actionMainDestToMovieDetailsDest(movieId))
+            mainMoviesState.onMovieClicked(movieId)
         }
         with(binding.rvMoviesList) {
             adapter = moviesAdapter
