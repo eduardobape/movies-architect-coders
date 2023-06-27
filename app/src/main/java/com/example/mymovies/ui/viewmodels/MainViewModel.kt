@@ -15,46 +15,50 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase) : ViewModel() {
 
-	private val _uiState: MutableStateFlow<MainMoviesUiState> = MutableStateFlow(MainMoviesUiState())
-	val uiState: StateFlow<MainMoviesUiState> = _uiState.asStateFlow()
+    companion object {
+        private const val MAX_MOVIES_TO_FETCH = 100
+    }
 
-	init {
-		getMovies()
-	}
+    private val _uiState: MutableStateFlow<MainMoviesUiState> = MutableStateFlow(MainMoviesUiState())
+    val uiState: StateFlow<MainMoviesUiState> = _uiState.asStateFlow()
 
-	fun getMovies() {
-		viewModelScope.launch {
-			if (areMoreMoviesToFetch()) {
-				_uiState.value = _uiState.value.copy(isLoading = true)
-				val moviesFilters: MoviesDiscoveryFilters = _uiState.value.moviesDiscoveryFilters
-				val newMoviesDetails: MoviesDiscoveryDetails = getPopularMoviesUseCase(moviesFilters)
-				newMoviesDetails.movies = _uiState.value.moviesDiscoveryDetails?.let { lastMoviesDiscoveryDetails ->
-					lastMoviesDiscoveryDetails.movies + newMoviesDetails.movies
-				} ?: newMoviesDetails.movies
-				_uiState.value = _uiState.value.copy(
-					isLoading = false,
-					moviesDiscoveryDetails = newMoviesDetails
-				)
-				increaseMoviesPage()
-			}
-		}
-	}
+    init {
+        getMovies()
+    }
 
-	private fun areMoreMoviesToFetch(): Boolean {
-		_uiState.value.moviesDiscoveryDetails?.let {
-			return _uiState.value.moviesDiscoveryFilters.nextMoviesPageToFetch <= it.pages &&
-					_uiState.value.moviesDiscoveryFilters.maxNumMoviesToFetch > it.movies.size
-		}
-		return true
-	}
+    fun getMovies() {
+        viewModelScope.launch {
+            if (areMoreMoviesToFetch()) {
+                _uiState.value = _uiState.value.copy(isLoading = true)
+                val moviesFilters: MoviesDiscoveryFilters = _uiState.value.moviesDiscoveryFilters
+                val newMoviesDetails: MoviesDiscoveryDetails = getPopularMoviesUseCase(moviesFilters)
+                newMoviesDetails.movies = _uiState.value.moviesDiscoveryDetails?.let { lastMoviesDiscoveryDetails ->
+                    lastMoviesDiscoveryDetails.movies + newMoviesDetails.movies
+                } ?: newMoviesDetails.movies
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    moviesDiscoveryDetails = newMoviesDetails
+                )
+                increaseMoviesPage()
+            }
+        }
+    }
 
-	private fun increaseMoviesPage() {
-		_uiState.value.moviesDiscoveryFilters.nextMoviesPageToFetch++
-	}
+    private fun areMoreMoviesToFetch(): Boolean {
+        _uiState.value.moviesDiscoveryDetails?.let {
+            return _uiState.value.moviesDiscoveryFilters.nextMoviesPageToFetch <= it.pages &&
+                    MAX_MOVIES_TO_FETCH > it.movies.size
+        }
+        return true
+    }
+
+    private fun increaseMoviesPage() {
+        _uiState.value.moviesDiscoveryFilters.nextMoviesPageToFetch++
+    }
 
 
-	class Factory(private val getPopularMoviesUseCase: GetPopularMoviesUseCase) : ViewModelProvider.Factory {
-		@Suppress("UNCHECKED_CAST")
-		override fun <T : ViewModel> create(modelClass: Class<T>): T = MainViewModel(getPopularMoviesUseCase) as T
-	}
+    class Factory(private val getPopularMoviesUseCase: GetPopularMoviesUseCase) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = MainViewModel(getPopularMoviesUseCase) as T
+    }
 }
