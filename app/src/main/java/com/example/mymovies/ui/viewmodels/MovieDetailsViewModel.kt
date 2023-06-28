@@ -24,11 +24,11 @@ class MovieDetailsViewModel(
 
     private fun fetchMovieDetails(movieId: Int?) {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true, isError = false)
+            _uiState.value = uiState.value.copy(isLoading = true, isError = false)
             if (movieId == null) {
-                _uiState.value = _uiState.value.copy(isLoading = false, movieDetails = null, isError = true)
+                _uiState.value = uiState.value.copy(isLoading = false, movieDetails = null, isError = true)
             } else {
-                _uiState.value = _uiState.value.copy(
+                _uiState.value = uiState.value.copy(
                     isLoading = false, movieDetails = movieDetailsUseCase(movieId), isError = false
                 )
             }
