@@ -21,6 +21,7 @@ class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase
 
     private val _uiState: MutableStateFlow<MainMoviesUiState> = MutableStateFlow(MainMoviesUiState())
     val uiState: StateFlow<MainMoviesUiState> = _uiState.asStateFlow()
+    private var isFirstLoadOfMovies: Boolean = true
 
     init {
         getMovies()
@@ -28,32 +29,26 @@ class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase
 
     fun getMovies() {
         viewModelScope.launch {
-            if (areMoreMoviesToFetch()) {
+            if (isFirstLoadOfMovies || areMoreMoviesToFetch()) {
                 _uiState.value = _uiState.value.copy(isLoading = true)
                 val moviesFilters: MoviesDiscoveryFilters = _uiState.value.moviesDiscoveryFilters
-                val newMoviesDetails: MoviesDiscoveryDetails = getPopularMoviesUseCase(moviesFilters)
-                newMoviesDetails.movies = _uiState.value.moviesDiscoveryDetails?.let { lastMoviesDiscoveryDetails ->
-                    lastMoviesDiscoveryDetails.movies + newMoviesDetails.movies
-                } ?: newMoviesDetails.movies
+                val newMoviesDetails: MoviesDiscoveryDetails =
+                    getPopularMoviesUseCase(moviesFilters, _uiState.value.moviesDiscoveryDetails.page + 1)
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    moviesDiscoveryDetails = newMoviesDetails
+                    moviesDiscoveryDetails = newMoviesDetails.copy(
+                        movies = _uiState.value.moviesDiscoveryDetails.movies + newMoviesDetails.movies
+                    )
                 )
-                increaseMoviesPage()
+                isFirstLoadOfMovies = false
             }
         }
     }
 
     private fun areMoreMoviesToFetch(): Boolean {
-        _uiState.value.moviesDiscoveryDetails?.let {
-            return _uiState.value.moviesDiscoveryFilters.nextMoviesPageToFetch <= it.pages &&
-                    MAX_MOVIES_TO_FETCH > it.movies.size
+        return with(_uiState.value.moviesDiscoveryDetails) {
+            page < pages && MAX_MOVIES_TO_FETCH > movies.size
         }
-        return true
-    }
-
-    private fun increaseMoviesPage() {
-        _uiState.value.moviesDiscoveryFilters.nextMoviesPageToFetch++
     }
 
 

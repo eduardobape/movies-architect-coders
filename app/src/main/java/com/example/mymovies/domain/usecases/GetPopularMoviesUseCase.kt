@@ -7,6 +7,9 @@ import com.example.mymovies.ui.models.MoviesDiscoveryFilters
 
 class GetPopularMoviesUseCase(private val repository: MoviesDiscoveryRepository) {
 
-	suspend operator fun invoke(moviesDiscoveryFilters: MoviesDiscoveryFilters): MoviesDiscoveryDetails =
-		repository.getPopularMovies(moviesDiscoveryFilters).toDomainModel()
+    suspend operator fun invoke(
+        moviesDiscoveryFilters: MoviesDiscoveryFilters,
+        pageToFetch: Int
+    ): MoviesDiscoveryDetails =
+        repository.getPopularMovies(moviesDiscoveryFilters, pageToFetch).toDomainModel()
 }

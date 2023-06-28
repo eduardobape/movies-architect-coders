@@ -5,6 +5,6 @@ import com.example.mymovies.ui.models.MoviesDiscoveryFilters
 
 data class MainMoviesUiState(
     val isLoading: Boolean = false,
-    val moviesDiscoveryDetails: MoviesDiscoveryDetails? = null,
+    val moviesDiscoveryDetails: MoviesDiscoveryDetails = MoviesDiscoveryDetails(),
     val moviesDiscoveryFilters: MoviesDiscoveryFilters = MoviesDiscoveryFilters()
 )

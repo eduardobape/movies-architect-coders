@@ -4,8 +4,8 @@ import com.example.mymovies.data.remote.models.MoviesDiscoveryResult
 
 data class MoviesDiscoveryDetails(
 	val pages: Int = 0,
-	val page: Int = 1,
-	var movies: List<MovieMainDetails> = emptyList()
+	val page: Int = 0,
+	val movies: List<MovieMainDetails> = emptyList()
 )
 
 data class MovieMainDetails(
