@@ -30,14 +30,14 @@ class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase
     fun getMovies() {
         viewModelScope.launch {
             if (isFirstLoadOfMovies || areMoreMoviesToFetch()) {
-                _uiState.value = _uiState.value.copy(isLoading = true)
-                val moviesFilters: MoviesDiscoveryFilters = _uiState.value.moviesDiscoveryFilters
+                _uiState.value = uiState.value.copy(isLoading = true)
+                val moviesFilters: MoviesDiscoveryFilters = uiState.value.moviesDiscoveryFilters
                 val newMoviesDetails: MoviesDiscoveryDetails =
-                    getPopularMoviesUseCase(moviesFilters, _uiState.value.moviesDiscoveryDetails.page + 1)
-                _uiState.value = _uiState.value.copy(
+                    getPopularMoviesUseCase(moviesFilters, uiState.value.moviesDiscoveryDetails.page + 1)
+                _uiState.value = uiState.value.copy(
                     isLoading = false,
                     moviesDiscoveryDetails = newMoviesDetails.copy(
-                        movies = _uiState.value.moviesDiscoveryDetails.movies + newMoviesDetails.movies
+                        movies = uiState.value.moviesDiscoveryDetails.movies + newMoviesDetails.movies
                     )
                 )
                 isFirstLoadOfMovies = false
@@ -46,7 +46,7 @@ class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase
     }
 
     private fun areMoreMoviesToFetch(): Boolean {
-        return with(_uiState.value.moviesDiscoveryDetails) {
+        return with(uiState.value.moviesDiscoveryDetails) {
             page < pages && MAX_MOVIES_TO_FETCH > movies.size
         }
     }
