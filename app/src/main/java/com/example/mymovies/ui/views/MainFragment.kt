@@ -69,7 +69,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun updateViewsFromUiState(uiState: MainMoviesUiState) {
-        moviesAdapter.submitList(uiState.moviesDiscoveryDetails?.movies)
+        moviesAdapter.submitList(uiState.moviesDiscoveryDetails.movies)
         binding.pbMoviesList.visible = uiState.isLoading
     }
 
