@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.mymovies.domain.models.MoviesDiscoveryDetails
 import com.example.mymovies.domain.usecases.GetPopularMoviesUseCase
 import com.example.mymovies.ui.models.MoviesDiscoveryFilters
-import com.example.mymovies.ui.views.MainMoviesUiState
+import com.example.mymovies.ui.views.PaginatedMoviesMainUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,8 +19,8 @@ class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase
         private const val MAX_MOVIES_TO_FETCH = 100
     }
 
-    private val _uiState: MutableStateFlow<MainMoviesUiState> = MutableStateFlow(MainMoviesUiState())
-    val uiState: StateFlow<MainMoviesUiState> = _uiState.asStateFlow()
+    private val _uiState: MutableStateFlow<PaginatedMoviesMainUiState> = MutableStateFlow(PaginatedMoviesMainUiState())
+    val uiState: StateFlow<PaginatedMoviesMainUiState> = _uiState.asStateFlow()
     private var isFirstLoadOfMovies: Boolean = true
 
     init {
