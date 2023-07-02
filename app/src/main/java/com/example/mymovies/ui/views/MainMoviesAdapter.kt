@@ -11,8 +11,8 @@ import com.example.mymovies.data.remote.services.ApiUrlsManager.ApiImageUtils.Po
 import com.example.mymovies.databinding.MovieItemBinding
 import com.example.mymovies.domain.models.MovieMainDetails
 import com.example.mymovies.domain.usecases.GetUrlMoviePosterUseCase
-import com.example.mymovies.ui.utils.basicDiffUtil
-import com.example.mymovies.ui.utils.loadImageFromUrl
+import com.example.mymovies.ui.extensions.basicDiffUtil
+import com.example.mymovies.ui.extensions.loadImageFromUrl
 
 
 class MainMoviesAdapter(val onClickItem: (Int) -> Unit) :

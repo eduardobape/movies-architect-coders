@@ -13,9 +13,9 @@ import com.example.mymovies.data.remote.services.MoviesApi
 import com.example.mymovies.data.repository.MoviesDiscoveryRepositoryImpl
 import com.example.mymovies.databinding.FragmentMainBinding
 import com.example.mymovies.domain.usecases.GetPopularMoviesUseCase
-import com.example.mymovies.ui.utils.launchAndCollectFlow
-import com.example.mymovies.ui.utils.viewLifecycleBinding
-import com.example.mymovies.ui.utils.visible
+import com.example.mymovies.ui.extensions.launchAndCollectFlow
+import com.example.mymovies.ui.extensions.viewLifecycleBinding
+import com.example.mymovies.ui.extensions.visible
 import com.example.mymovies.ui.viewmodels.MainViewModel
 
 class MainFragment : Fragment(R.layout.fragment_main) {

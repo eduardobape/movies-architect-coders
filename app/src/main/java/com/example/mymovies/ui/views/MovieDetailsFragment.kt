@@ -16,10 +16,10 @@ import com.example.mymovies.databinding.FragmentMovieDetailsBinding
 import com.example.mymovies.domain.models.MovieDetails
 import com.example.mymovies.domain.usecases.GetUrlMovieBackdropUseCase
 import com.example.mymovies.domain.usecases.MovieDetailsUseCase
-import com.example.mymovies.ui.utils.launchAndCollectFlow
-import com.example.mymovies.ui.utils.loadImageFromUrl
-import com.example.mymovies.ui.utils.viewLifecycleBinding
-import com.example.mymovies.ui.utils.visible
+import com.example.mymovies.ui.extensions.launchAndCollectFlow
+import com.example.mymovies.ui.extensions.loadImageFromUrl
+import com.example.mymovies.ui.extensions.viewLifecycleBinding
+import com.example.mymovies.ui.extensions.visible
 import com.example.mymovies.ui.viewmodels.MovieDetailsViewModel
 
 
