@@ -15,7 +15,7 @@ import com.example.mymovies.data.repository.MovieDetailsRepositoryImpl
 import com.example.mymovies.databinding.FragmentMovieDetailsBinding
 import com.example.mymovies.domain.models.MovieDetails
 import com.example.mymovies.domain.usecases.GetUrlMovieBackdropUseCase
-import com.example.mymovies.domain.usecases.MovieDetailsUseCase
+import com.example.mymovies.domain.usecases.GetMovieDetailsUseCase
 import com.example.mymovies.ui.extensions.launchAndCollectFlow
 import com.example.mymovies.ui.extensions.loadImageFromUrl
 import com.example.mymovies.ui.extensions.viewLifecycleBinding
@@ -31,7 +31,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     private val args: MovieDetailsFragmentArgs by navArgs()
     private val viewModel by viewModels<MovieDetailsViewModel> {
         MovieDetailsViewModel.Factory(
-            MovieDetailsUseCase(
+            GetMovieDetailsUseCase(
                 MovieDetailsRepositoryImpl(MoviesApi(RetrofitServiceBuilder).movieDetailsApiService)
             ),
             getMovieIdFromSafeArgs()
