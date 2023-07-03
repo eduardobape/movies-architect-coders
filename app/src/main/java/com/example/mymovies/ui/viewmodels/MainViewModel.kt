@@ -33,12 +33,12 @@ class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase
                 _uiState.value = uiState.value.copy(isLoading = true)
                 val moviesFilters: MoviesDiscoveryFilters = uiState.value.moviesDiscoveryFilters
                 val newMoviesDetails: MoviesDiscoveryDetails =
-                    getPopularMoviesUseCase(moviesFilters, uiState.value.moviesDiscoveryDetails.page + 1)
+                    getPopularMoviesUseCase(moviesFilters, uiState.value.currentPage + 1)
                 _uiState.value = uiState.value.copy(
                     isLoading = false,
-                    moviesDiscoveryDetails = newMoviesDetails.copy(
-                        movies = uiState.value.moviesDiscoveryDetails.movies + newMoviesDetails.movies
-                    )
+                    currentPage = newMoviesDetails.page,
+                    totalPages = newMoviesDetails.pages,
+                    movies = uiState.value.movies + newMoviesDetails.movies
                 )
                 isFirstLoadOfMovies = false
             }
@@ -46,8 +46,8 @@ class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase
     }
 
     private fun areMoreMoviesToFetch(): Boolean {
-        return with(uiState.value.moviesDiscoveryDetails) {
-            page < pages && MAX_MOVIES_TO_FETCH > movies.size
+        return with(uiState.value) {
+            currentPage < totalPages && MAX_MOVIES_TO_FETCH > movies.size
         }
     }
 
