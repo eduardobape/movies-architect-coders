@@ -1,5 +1,6 @@
 package com.example.mymovies.domain.models
 
+import com.example.mymovies.data.remote.models.MovieDetailsDiscovery
 import com.example.mymovies.data.remote.models.MoviesDiscoveryResult
 
 data class MoviesDiscoveryDetails(
@@ -20,12 +21,12 @@ data class MovieMainDetails(
 fun MoviesDiscoveryResult.toDomainModel(): MoviesDiscoveryDetails = MoviesDiscoveryDetails(
 	totalPages,
 	page,
-	movies.map { movie ->
-		MovieMainDetails(
-			movie.id,
-			movie.originalTitle,
-			movie.translatedTitle,
-			movie.posterPath
-		)
-	}
+	movies.map(MovieDetailsDiscovery::toDomainModel)
+)
+
+fun MovieDetailsDiscovery.toDomainModel(): MovieMainDetails = MovieMainDetails(
+	id = id,
+	originalTitle = originalTitle,
+	translatedTitle = translatedTitle,
+	posterPath = posterPath
 )
