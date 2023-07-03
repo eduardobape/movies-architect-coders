@@ -80,8 +80,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val isDownVerticalScroll = dy > 0
-                if (isDownVerticalScroll && !viewModel.uiState.value.isLoading
-                ) {
+                if (isDownVerticalScroll) {
                     val layoutManager: LinearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val visibleItemCount = layoutManager.childCount
                     val totalItemCount = layoutManager.itemCount
