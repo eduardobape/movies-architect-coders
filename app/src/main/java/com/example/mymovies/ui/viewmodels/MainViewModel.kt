@@ -28,8 +28,8 @@ class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase
     }
 
     fun fetchMovies() {
-        viewModelScope.launch {
-            if (isFirstLoadOfMovies || areMoreMoviesToFetch()) {
+        if (isFirstLoadOfMovies || areMoreMoviesToFetch()) {
+            viewModelScope.launch {
                 _uiState.value = uiState.value.copy(isLoading = true)
                 val moviesFilters: MoviesDiscoveryFilters = uiState.value.moviesDiscoveryFilters
                 val newMoviesDetails: MoviesDiscoveryDetails =
