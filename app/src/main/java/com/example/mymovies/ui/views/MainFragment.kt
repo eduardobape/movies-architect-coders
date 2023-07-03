@@ -87,7 +87,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                     val totalItemCount = layoutManager.itemCount
                     val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
                     if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
-                        viewModel.getMovies()
+                        viewModel.fetchMovies()
                     }
                 }
             }

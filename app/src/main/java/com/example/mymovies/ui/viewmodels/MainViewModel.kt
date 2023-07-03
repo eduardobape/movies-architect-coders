@@ -24,10 +24,10 @@ class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase
     private var isFirstLoadOfMovies: Boolean = true
 
     init {
-        getMovies()
+        fetchMovies()
     }
 
-    fun getMovies() {
+    fun fetchMovies() {
         viewModelScope.launch {
             if (isFirstLoadOfMovies || areMoreMoviesToFetch()) {
                 _uiState.value = uiState.value.copy(isLoading = true)
