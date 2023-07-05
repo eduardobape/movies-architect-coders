@@ -11,6 +11,7 @@ import com.example.mymovies.ui.views.PaginatedMoviesMainUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase) : ViewModel() {
@@ -30,16 +31,20 @@ class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase
     fun fetchMovies() {
         if ((isFirstLoadOfMovies || areMoreMoviesToFetch()) && !uiState.value.isLoading) {
             viewModelScope.launch {
-                _uiState.value = uiState.value.copy(isLoading = true)
+                _uiState.update {
+                    it.copy(isLoading = true)
+                }
                 val moviesFilters: MoviesDiscoveryFilters = uiState.value.moviesDiscoveryFilters
                 val newMoviesDetails: MoviesDiscoveryDetails =
                     getPopularMoviesUseCase(moviesFilters, uiState.value.currentPage + 1)
-                _uiState.value = uiState.value.copy(
-                    isLoading = false,
-                    currentPage = newMoviesDetails.page,
-                    totalPages = newMoviesDetails.pages,
-                    movies = uiState.value.movies + newMoviesDetails.movies
-                )
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        currentPage = newMoviesDetails.page,
+                        totalPages = newMoviesDetails.pages,
+                        movies = uiState.value.movies + newMoviesDetails.movies
+                    )
+                }
                 isFirstLoadOfMovies = false
             }
         }
