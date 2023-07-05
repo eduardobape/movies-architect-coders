@@ -8,6 +8,7 @@ import com.example.mymovies.ui.views.MovieDetailsUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MovieDetailsViewModel(
@@ -24,13 +25,17 @@ class MovieDetailsViewModel(
 
     private fun fetchMovieDetails(movieId: Int?) {
         viewModelScope.launch {
-            _uiState.value = uiState.value.copy(isLoading = true, isError = false)
+            _uiState.update {
+                it.copy(isLoading = true, isError = false)
+            }
             if (movieId == null) {
-                _uiState.value = uiState.value.copy(isLoading = false, movieDetails = null, isError = true)
+                _uiState.update {
+                    it.copy(isLoading = false, movieDetails = null, isError = true)
+                }
             } else {
-                _uiState.value = uiState.value.copy(
-                    isLoading = false, movieDetails = getMovieDetailsUseCase(movieId), isError = false
-                )
+                _uiState.update {
+                    it.copy(isLoading = false, movieDetails = getMovieDetailsUseCase(movieId), isError = false)
+                }
             }
         }
     }
