@@ -29,7 +29,7 @@ class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase
     }
 
     fun fetchMovies() {
-        if ((isFirstLoadOfMovies || areMoreMoviesToFetch()) && !uiState.value.isLoading) {
+        if (canLoadMovies()) {
             viewModelScope.launch {
                 _uiState.update {
                     it.copy(isLoading = true)
@@ -50,9 +50,10 @@ class MainViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase
         }
     }
 
-    private fun areMoreMoviesToFetch(): Boolean {
+    private fun canLoadMovies(): Boolean {
         return with(uiState.value) {
-            currentPage < totalPages && MAX_MOVIES_TO_FETCH > movies.size
+            (isFirstLoadOfMovies || (currentPage < totalPages && MAX_MOVIES_TO_FETCH > movies.size)) &&
+                    !uiState.value.isLoading
         }
     }
 
