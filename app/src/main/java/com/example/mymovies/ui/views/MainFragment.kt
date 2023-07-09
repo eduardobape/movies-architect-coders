@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovies.R
 import com.example.mymovies.data.remote.client.RetrofitServiceBuilder
 import com.example.mymovies.data.remote.services.MoviesApi
-import com.example.mymovies.data.repository.MoviesDiscoveryRepositoryImpl
+import com.example.mymovies.data.repository.MoviesDiscoveryRemoteRepository
 import com.example.mymovies.databinding.FragmentMainBinding
 import com.example.mymovies.domain.usecases.GetPopularMoviesUseCase
 import com.example.mymovies.ui.extensions.launchAndCollectFlow
@@ -32,7 +32,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private val viewModel by viewModels<MainViewModel> {
         MainViewModel.Factory(
             GetPopularMoviesUseCase(
-                MoviesDiscoveryRepositoryImpl(
+                MoviesDiscoveryRemoteRepository(
                     MoviesApi(RetrofitServiceBuilder).moviesDiscoveryApiService
                 )
             )

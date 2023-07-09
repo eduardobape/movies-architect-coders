@@ -7,7 +7,7 @@ import com.example.mymovies.ui.models.MoviesDiscoveryFilters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MoviesDiscoveryRepositoryImpl(private val moviesDiscoveryApiService: MoviesDiscoveryApiService) :
+class MoviesDiscoveryRemoteRepository(private val moviesDiscoveryApiService: MoviesDiscoveryApiService) :
     MoviesDiscoveryRepository {
 
     override suspend fun getPopularMovies(
