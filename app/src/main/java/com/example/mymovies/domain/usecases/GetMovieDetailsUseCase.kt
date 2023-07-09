@@ -1,6 +1,6 @@
 package com.example.mymovies.domain.usecases
 
-import com.example.mymovies.data.repository.MovieDetailsRepository
+import com.example.mymovies.domain.repositories.MovieDetailsRepository
 import com.example.mymovies.domain.models.MovieDetails
 import com.example.mymovies.domain.models.toDomainModel
 
