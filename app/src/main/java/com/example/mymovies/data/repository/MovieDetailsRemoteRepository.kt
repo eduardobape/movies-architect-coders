@@ -6,7 +6,7 @@ import com.example.mymovies.domain.repositories.MovieDetailsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MovieDetailsRepositoryImpl(private val movieDetailsApiService: MovieDetailsApiService) :
+class MovieDetailsRemoteRepository(private val movieDetailsApiService: MovieDetailsApiService) :
     MovieDetailsRepository {
 
     override suspend fun getMovieDetails(movieId: Int): MovieDetailsResult {
