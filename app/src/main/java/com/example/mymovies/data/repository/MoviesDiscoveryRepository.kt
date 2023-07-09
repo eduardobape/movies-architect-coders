@@ -2,17 +2,10 @@ package com.example.mymovies.data.repository
 
 import com.example.mymovies.data.remote.models.MoviesDiscoveryResult
 import com.example.mymovies.data.remote.services.MoviesDiscoveryApiService
+import com.example.mymovies.domain.repositories.MoviesDiscoveryRepository
 import com.example.mymovies.ui.models.MoviesDiscoveryFilters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-
-interface MoviesDiscoveryRepository {
-
-    suspend fun getPopularMovies(
-        moviesDiscoveryFilters: MoviesDiscoveryFilters,
-        pageToFetch: Int
-    ): MoviesDiscoveryResult
-}
 
 class MoviesDiscoveryRepositoryImpl(private val moviesDiscoveryApiService: MoviesDiscoveryApiService) :
     MoviesDiscoveryRepository {
