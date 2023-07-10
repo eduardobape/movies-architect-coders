@@ -68,7 +68,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         viewLifecycleOwner.launchAndCollectFlow(viewModel.uiState, ::updateViewsFromUiState)
     }
 
-    private fun updateViewsFromUiState(uiState: PaginatedMoviesMainUiState) {
+    private fun updateViewsFromUiState(uiState: MainMoviesUiState) {
         moviesAdapter.submitList(uiState.movies)
         binding.pbMoviesList.visible = uiState.isLoading
     }

@@ -3,7 +3,7 @@ package com.example.mymovies.ui.views
 import com.example.mymovies.domain.models.MovieMainDetails
 import com.example.mymovies.ui.models.MoviesDiscoveryFilters
 
-data class PaginatedMoviesMainUiState(
+data class MainMoviesUiState(
     val isLoading: Boolean = false,
     val movies: List<MovieMainDetails> = emptyList(),
     val currentPage: Int = 0,
