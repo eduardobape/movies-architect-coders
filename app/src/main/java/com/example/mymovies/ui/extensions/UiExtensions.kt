@@ -76,7 +76,7 @@ fun <T> LifecycleOwner.launchAndCollectFlow(
     }
 }
 
-fun <T, U> Flow<T>.diffUiState(lifecycleOwner: LifecycleOwner, transformFlow: (T) -> U, body: (U) -> Unit) {
+fun <T, U> Flow<T>.diffingUiState(lifecycleOwner: LifecycleOwner, transformFlow: (T) -> U, body: (U) -> Unit) {
     lifecycleOwner.launchAndCollectFlow(flow = map(transformFlow).distinctUntilChanged(), body = body)
 }
 

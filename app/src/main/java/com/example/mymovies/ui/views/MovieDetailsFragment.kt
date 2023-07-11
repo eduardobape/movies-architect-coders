@@ -16,7 +16,7 @@ import com.example.mymovies.databinding.FragmentMovieDetailsBinding
 import com.example.mymovies.domain.models.MovieDetails
 import com.example.mymovies.domain.usecases.GetMovieDetailsUseCase
 import com.example.mymovies.domain.usecases.GetUrlMovieBackdropUseCase
-import com.example.mymovies.ui.extensions.diffUiState
+import com.example.mymovies.ui.extensions.diffingUiState
 import com.example.mymovies.ui.extensions.loadImageFromUrl
 import com.example.mymovies.ui.extensions.viewLifecycleBinding
 import com.example.mymovies.ui.extensions.visible
@@ -54,7 +54,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     }
 
     private fun manageLoadingUiState() {
-        viewModel.uiState.diffUiState(
+        viewModel.uiState.diffingUiState(
             viewLifecycleOwner,
             { it.isLoading },
             { binding.pbMovieDetails.visible = it }
@@ -62,7 +62,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     }
 
     private fun manageMoviesUiState() {
-        viewModel.uiState.diffUiState(
+        viewModel.uiState.diffingUiState(
             viewLifecycleOwner,
             { it.movieDetails },
             {
@@ -75,7 +75,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     }
 
     private fun manageErrorUiState() {
-        viewModel.uiState.diffUiState(
+        viewModel.uiState.diffingUiState(
             viewLifecycleOwner,
             { it.isError },
             { isError ->

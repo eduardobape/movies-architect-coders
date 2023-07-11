@@ -13,7 +13,7 @@ import com.example.mymovies.data.remote.services.MoviesApi
 import com.example.mymovies.data.repository.MoviesDiscoveryRemoteRepository
 import com.example.mymovies.databinding.FragmentMainBinding
 import com.example.mymovies.domain.usecases.GetPopularMoviesUseCase
-import com.example.mymovies.ui.extensions.diffUiState
+import com.example.mymovies.ui.extensions.diffingUiState
 import com.example.mymovies.ui.extensions.viewLifecycleBinding
 import com.example.mymovies.ui.extensions.visible
 import com.example.mymovies.ui.viewmodels.MainViewModel
@@ -66,11 +66,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun hookToUiState() {
         with(viewModel.uiState) {
-            diffUiState(
+            diffingUiState(
                 viewLifecycleOwner,
                 { uiState -> uiState.isLoading },
                 { isVisible -> binding.pbMoviesList.visible = isVisible })
-            diffUiState(viewLifecycleOwner, { uiState -> uiState.movies }, { moviesAdapter.submitList(it) })
+            diffingUiState(viewLifecycleOwner, { uiState -> uiState.movies }, { moviesAdapter.submitList(it) })
         }
     }
 
