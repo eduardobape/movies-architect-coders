@@ -15,6 +15,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -72,6 +74,10 @@ fun <T> LifecycleOwner.launchAndCollectFlow(
             flow.collect(body)
         }
     }
+}
+
+fun <T, U> Flow<T>.diffUiState(lifecycleOwner: LifecycleOwner, transformFlow: (T) -> U, body: (U) -> Unit) {
+    lifecycleOwner.launchAndCollectFlow(flow = map(transformFlow).distinctUntilChanged(), body = body)
 }
 
 inline fun <T : Any> basicDiffUtil(
