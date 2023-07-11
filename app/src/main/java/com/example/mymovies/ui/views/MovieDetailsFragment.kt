@@ -14,9 +14,9 @@ import com.example.mymovies.data.remote.services.MoviesApi
 import com.example.mymovies.data.repository.MovieDetailsRemoteRepository
 import com.example.mymovies.databinding.FragmentMovieDetailsBinding
 import com.example.mymovies.domain.models.MovieDetails
-import com.example.mymovies.domain.usecases.GetUrlMovieBackdropUseCase
 import com.example.mymovies.domain.usecases.GetMovieDetailsUseCase
-import com.example.mymovies.ui.extensions.launchAndCollectFlow
+import com.example.mymovies.domain.usecases.GetUrlMovieBackdropUseCase
+import com.example.mymovies.ui.extensions.diffUiState
 import com.example.mymovies.ui.extensions.loadImageFromUrl
 import com.example.mymovies.ui.extensions.viewLifecycleBinding
 import com.example.mymovies.ui.extensions.visible
@@ -48,19 +48,43 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     }
 
     private fun hookToUiState() {
-        viewLifecycleOwner.launchAndCollectFlow(viewModel.uiState, ::updateViewsFromUiState)
+        manageLoadingUiState()
+        manageMoviesUiState()
+        manageErrorUiState()
     }
 
-    private fun updateViewsFromUiState(uiState: MovieDetailsUiState) {
-        binding.pbMovieDetails.visible = uiState.isLoading
-        if (uiState.isError) {
-            Toast.makeText(requireContext(), getString(R.string.movie_id_intent_error), Toast.LENGTH_SHORT).show()
-        } else {
-            uiState.movieDetails?.let {
-                displayMovieDetails(it)
-                binding.nesScrollMovieDetails.visible = !uiState.isLoading
+    private fun manageLoadingUiState() {
+        viewModel.uiState.diffUiState(
+            viewLifecycleOwner,
+            { it.isLoading },
+            { binding.pbMovieDetails.visible = it }
+        )
+    }
+
+    private fun manageMoviesUiState() {
+        viewModel.uiState.diffUiState(
+            viewLifecycleOwner,
+            { it.movieDetails },
+            {
+                it?.let { movieDetails ->
+                    displayMovieDetails(movieDetails)
+                    binding.nesScrollMovieDetails.visible = true
+                }
             }
-        }
+        )
+    }
+
+    private fun manageErrorUiState() {
+        viewModel.uiState.diffUiState(
+            viewLifecycleOwner,
+            { it.isError },
+            { isError ->
+                if (isError) {
+                    Toast.makeText(requireContext(), getString(R.string.movie_id_intent_error), Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        )
     }
 
     private fun displayMovieDetails(movieDetails: MovieDetails) {
