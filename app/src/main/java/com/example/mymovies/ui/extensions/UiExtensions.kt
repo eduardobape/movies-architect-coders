@@ -1,10 +1,7 @@
 package com.example.mymovies.ui.extensions
 
-import android.content.Intent
-import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -20,14 +17,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
-
-inline fun <reified T> AppCompatActivity.startActivity(intentExtras: Bundle? = null) {
-    Intent(this, T::class.java).apply {
-        intentExtras?.let {
-            putExtras(it)
-        }
-    }.also(::startActivity)
-}
 
 fun ImageView.loadImageFromUrl(imageUrl: String) {
     Glide.with(this).load(imageUrl).into(this)
