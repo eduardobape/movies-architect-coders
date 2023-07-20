@@ -2,7 +2,6 @@ package com.example.mymovies.data.repositories
 
 import com.example.mymovies.data.remote.models.MoviesDiscoveryResult
 import com.example.mymovies.data.remote.services.MoviesDiscoveryApiService
-import com.example.mymovies.domain.repositories.MoviesDiscoveryRepository
 import com.example.mymovies.ui.models.MoviesDiscoveryFilters
 
 class MoviesDiscoveryRemoteRepository(private val moviesDiscoveryApiService: MoviesDiscoveryApiService) :
