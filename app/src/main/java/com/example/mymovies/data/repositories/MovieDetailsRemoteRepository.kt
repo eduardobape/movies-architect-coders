@@ -1,4 +1,4 @@
-package com.example.mymovies.data.repository
+package com.example.mymovies.data.repositories
 
 import com.example.mymovies.data.remote.models.MovieDetailsResult
 import com.example.mymovies.data.remote.services.MovieDetailsApiService
