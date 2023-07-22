@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class MoviesDiscoveryResult(
+data class MoviesDiscoveryRemote(
 	@Json(name = "page") val page: Int,
 	@Json(name = "results") val movies: List<MovieDetailsDiscovery>,
 	@Json(name = "total_pages") val totalPages: Int,

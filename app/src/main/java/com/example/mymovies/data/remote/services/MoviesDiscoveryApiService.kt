@@ -1,6 +1,6 @@
 package com.example.mymovies.data.remote.services
 
-import com.example.mymovies.data.remote.models.MoviesDiscoveryResult
+import com.example.mymovies.data.remote.models.MoviesDiscoveryRemote
 import com.example.mymovies.ui.models.SortOptionMoviesDiscovery
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -13,5 +13,5 @@ interface MoviesDiscoveryApiService {
 		@Query("language") language: String,
 		@Query("page") page: Int,
 		@Query("sort_by") sortBy: String = SortOptionMoviesDiscovery.POPULARITY_DESC.sortOption
-	): MoviesDiscoveryResult
+	): MoviesDiscoveryRemote
 }
