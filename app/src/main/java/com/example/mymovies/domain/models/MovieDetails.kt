@@ -1,6 +1,6 @@
 package com.example.mymovies.domain.models
 
-import com.example.mymovies.data.remote.models.MovieDetailsResult
+import com.example.mymovies.data.remote.models.MovieDetailsRemote
 
 data class MovieDetails(
     val id: Int,
@@ -14,7 +14,7 @@ data class MovieDetails(
     val backdropImagePath: String?
 )
 
-fun MovieDetailsResult.toDomainModel(): MovieDetails = MovieDetails(
+fun MovieDetailsRemote.toDomainModel(): MovieDetails = MovieDetails(
     id,
     translatedTitle,
     originalTitle,

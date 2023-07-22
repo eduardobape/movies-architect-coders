@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class MovieDetailsResult(
+data class MovieDetailsRemote(
     @Json(name = "adult") val adultRating: Boolean,
     @Json(name = "backdrop_path") val backdropImagePath: String?,
     @Json(name = "belongs_to_collection") val moviesCollection: MoviesCollection?,
