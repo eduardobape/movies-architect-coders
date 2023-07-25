@@ -8,9 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovies.R
-import com.example.mymovies.data.remote.client.RetrofitServiceBuilder
-import com.example.mymovies.data.remote.services.MoviesApi
-import com.example.mymovies.data.repositories.MoviesDiscoveryRemoteRepository
+import com.example.mymovies.data.repositories.MoviesDiscoveryRepository
 import com.example.mymovies.databinding.FragmentMainBinding
 import com.example.mymovies.domain.usecases.GetPopularMoviesUseCase
 import com.example.mymovies.ui.extensions.diffingUiState
@@ -30,13 +28,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private lateinit var moviesAdapter: MainMoviesAdapter
     private lateinit var mainMoviesState: MainMoviesState
     private val viewModel by viewModels<MainViewModel> {
-        MainViewModel.Factory(
-            GetPopularMoviesUseCase(
-                MoviesDiscoveryRemoteRepository(
-                    MoviesApi(RetrofitServiceBuilder).moviesDiscoveryApiService
-                )
-            )
-        )
+        MainViewModel.Factory(GetPopularMoviesUseCase(MoviesDiscoveryRepository()))
     }
     private val numColumnsMoviesList = 2
 

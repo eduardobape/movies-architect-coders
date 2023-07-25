@@ -8,10 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.mymovies.R
-import com.example.mymovies.data.remote.client.RetrofitServiceBuilder
 import com.example.mymovies.data.remote.services.ApiUrlsManager.ApiImageUtils.PosterMovieSize
-import com.example.mymovies.data.remote.services.MoviesApi
-import com.example.mymovies.data.repositories.MovieDetailsRemoteRepository
+import com.example.mymovies.data.repositories.MovieDetailsRepository
 import com.example.mymovies.databinding.FragmentMovieDetailsBinding
 import com.example.mymovies.domain.models.MovieDetails
 import com.example.mymovies.domain.usecases.GetMovieDetailsUseCase
@@ -31,9 +29,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     private val args: MovieDetailsFragmentArgs by navArgs()
     private val viewModel by viewModels<MovieDetailsViewModel> {
         MovieDetailsViewModel.Factory(
-            GetMovieDetailsUseCase(
-                MovieDetailsRemoteRepository(MoviesApi(RetrofitServiceBuilder).movieDetailsApiService)
-            ),
+            GetMovieDetailsUseCase(MovieDetailsRepository()),
             getMovieIdFromSafeArgs()
         )
     }
