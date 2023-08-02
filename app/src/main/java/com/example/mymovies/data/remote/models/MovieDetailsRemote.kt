@@ -9,7 +9,7 @@ data class MovieDetailsRemote(
     @Json(name = "backdrop_path") val backdropImagePath: String?,
     @Json(name = "belongs_to_collection") val moviesCollection: MoviesCollection?,
     @Json(name = "budget") val budget: Long,
-    @Json(name = "genres") val genres: List<MovieGenre>,
+    @Json(name = "genres") val genres: List<RemoteMovieGenre>,
     @Json(name = "homepage") val homepageUrl: String?,
     @Json(name = "id") val id: Int,
     @Json(name = "imdb_id") val imdbId: String?,
@@ -41,7 +41,7 @@ data class MoviesCollection(
 )
 
 @JsonClass(generateAdapter = true)
-data class MovieGenre(
+data class RemoteMovieGenre(
     @Json(name = "id") val id: Int,
     @Json(name = "name") val name: String
 )
