@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/mainDest"
-        android:name="com.example.mymovies.ui.views.MainFragment"
+        android:name="com.example.mymovies.ui.views.PaginatedMoviesMainFragment"
         android:label="@string/toolbar_title_popular_movies"
-        tools:layout="@layout/fragment_main" >
+        tools:layout="@layout/fragment_paginated_movies_main" >
         <action
             android:id="@+id/action_mainDest_to_movieDetailsDest"
             app:destination="@id/movieDetailsDest"
@@ -25,6 +25,6 @@
         tools:layout="@layout/fragment_movie_details" >
         <argument
             android:name="movieId"
-            app:argType="integer" />
+            app:argType="long" />
     </fragment>
 </navigation>

@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class MovieDetailsViewModel(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
-    movieId: Int?
+    movieId: Long?
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<MovieDetailsUiState> = MutableStateFlow(MovieDetailsUiState())
@@ -23,7 +23,7 @@ class MovieDetailsViewModel(
         fetchMovieDetails(movieId)
     }
 
-    private fun fetchMovieDetails(movieId: Int?) {
+    private fun fetchMovieDetails(movieId: Long?) {
         viewModelScope.launch {
             if (movieId == null) {
                 _uiState.update {
@@ -40,7 +40,7 @@ class MovieDetailsViewModel(
         }
     }
 
-    class Factory(private val getMovieDetailsUseCase: GetMovieDetailsUseCase, private val movieId: Int?) :
+    class Factory(private val getMovieDetailsUseCase: GetMovieDetailsUseCase, private val movieId: Long?) :
         ViewModelProvider.Factory {
 
         @Suppress("UNCHECKED_CAST")

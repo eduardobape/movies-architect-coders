@@ -1,13 +1,12 @@
-package com.example.mymovies.data.remote.client
+package com.example.mymovies.data.remote.services
 
 import com.example.mymovies.BuildConfig
-import com.example.mymovies.data.remote.services.ApiUrlsManager
-import com.example.mymovies.data.remote.services.ApiServiceFactory
+import com.example.mymovies.data.remote.apiurls.ApiUrlsManager
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-object RetrofitServiceBuilder : ApiServiceFactory {
+object RetrofitApiServices : ApiServicesFactory {
 	private val networkClient: OkHttpClient = OkHttpClient.Builder()
 		.addInterceptor { chain ->
 			val originalRequest = chain.request()
@@ -23,7 +22,7 @@ object RetrofitServiceBuilder : ApiServiceFactory {
 		.build()
 
 	private val retrofit: Retrofit = Retrofit.Builder()
-		.baseUrl(ApiUrlsManager.theMovieDbBaseUrl)
+		.baseUrl(ApiUrlsManager.apiBaseUrl)
 		.client(networkClient)
 		.addConverterFactory(MoshiConverterFactory.create())
 		.build()

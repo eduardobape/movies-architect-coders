@@ -7,22 +7,23 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.mymovies.R
-import com.example.mymovies.data.remote.services.ApiUrlsManager.ApiImageUtils.PosterMovieSize
-import com.example.mymovies.databinding.MovieItemBinding
-import com.example.mymovies.domain.models.MovieMainDetails
-import com.example.mymovies.domain.usecases.GetUrlMoviePosterUseCase
-import com.example.mymovies.ui.extensions.basicDiffUtil
+import com.example.mymovies.data.remote.apiurls.ApiUrlsManager
+import com.example.mymovies.databinding.PaginatedMovieItemBinding
+import com.example.mymovies.domain.models.PaginatedMovieDetails
+import com.example.mymovies.domain.models.hasPoster
+import com.example.mymovies.domain.usecases.BuildUrlMoviePosterUseCase
+import com.example.mymovies.ui.extensions.basicDiffUtilForAdapter
 import com.example.mymovies.ui.extensions.loadImageFromUrl
 
 
-class MainMoviesAdapter(val onClickItem: (Int) -> Unit) :
-    ListAdapter<MovieMainDetails, MainMoviesAdapter.MovieViewHolder>(
-        basicDiffUtil { oldMovieItem, newMovieItem -> oldMovieItem.id == newMovieItem.id }
+class MainMoviesAdapter(val onClickItem: (Long) -> Unit) :
+    ListAdapter<PaginatedMovieDetails, MainMoviesAdapter.MovieViewHolder>(
+        basicDiffUtilForAdapter { oldMovieItem, newMovieItem -> oldMovieItem.id == newMovieItem.id }
     ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val itemView =
-            LayoutInflater.from(parent.context).inflate(R.layout.movie_item, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.paginated_movie_item, parent, false)
         return MovieViewHolder(itemView)
     }
 
@@ -31,25 +32,25 @@ class MainMoviesAdapter(val onClickItem: (Int) -> Unit) :
     }
 
     inner class MovieViewHolder(itemView: View) : ViewHolder(itemView) {
-        private val binding: MovieItemBinding = MovieItemBinding.bind(itemView)
+        private val binding: PaginatedMovieItemBinding = PaginatedMovieItemBinding.bind(itemView)
 
-        fun bind(movieMainDetails: MovieMainDetails) {
+        fun bind(movieMainDetails: PaginatedMovieDetails) {
             displayMovieDetails(movieMainDetails)
             itemView.setOnClickListener {
                 onClickItem(movieMainDetails.id)
             }
         }
 
-        private fun displayMovieDetails(movieMainDetails: MovieMainDetails) {
+        private fun displayMovieDetails(movieMainDetails: PaginatedMovieDetails) {
             displayMoviePoster(movieMainDetails)
             displayMovieTitle(movieMainDetails)
         }
 
-        private fun displayMoviePoster(movieMainDetails: MovieMainDetails) {
+        private fun displayMoviePoster(movieMainDetails: PaginatedMovieDetails) {
             if (movieMainDetails.hasPoster()) {
-                val urlMoviePoster = GetUrlMoviePosterUseCase(
+                val urlMoviePoster = BuildUrlMoviePosterUseCase(
                     movieMainDetails.posterPath!!,
-                    PosterMovieSize.WIDTH_342PX
+                    ApiUrlsManager.PosterMovieSize.WIDTH_342PX
                 )
                 binding.ivMoviePoster.loadImageFromUrl(urlMoviePoster)
             } else {
@@ -59,7 +60,7 @@ class MainMoviesAdapter(val onClickItem: (Int) -> Unit) :
             }
         }
 
-        private fun displayMovieTitle(movieMainDetails: MovieMainDetails) {
+        private fun displayMovieTitle(movieMainDetails: PaginatedMovieDetails) {
             binding.tvMovieTitle.text = movieMainDetails.translatedTitle
         }
     }

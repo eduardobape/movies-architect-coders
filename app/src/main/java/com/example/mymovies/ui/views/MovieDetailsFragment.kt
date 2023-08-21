@@ -8,13 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.mymovies.R
-import com.example.mymovies.data.remote.services.ApiUrlsManager.ApiImageUtils.PosterMovieSize
+import com.example.mymovies.data.remote.apiurls.ApiUrlsManager
 import com.example.mymovies.data.repositories.MovieDetailsRepository
 import com.example.mymovies.databinding.FragmentMovieDetailsBinding
 import com.example.mymovies.domain.models.MovieDetails
 import com.example.mymovies.domain.usecases.GetMovieDetailsUseCase
-import com.example.mymovies.domain.usecases.GetUrlMovieBackdropUseCase
-import com.example.mymovies.ui.extensions.diffingUiState
+import com.example.mymovies.domain.usecases.BuildUrlMovieBackdropUseCase
+import com.example.mymovies.ui.extensions.collectFlowWithDiffing
 import com.example.mymovies.ui.extensions.loadImageFromUrl
 import com.example.mymovies.ui.extensions.viewLifecycleBinding
 import com.example.mymovies.ui.extensions.visible
@@ -39,7 +39,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         hookToUiState()
     }
 
-    private fun getMovieIdFromSafeArgs(): Int {
+    private fun getMovieIdFromSafeArgs(): Long {
         return args.movieId
     }
 
@@ -50,7 +50,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     }
 
     private fun manageLoadingUiState() {
-        viewModel.uiState.diffingUiState(
+        viewModel.uiState.collectFlowWithDiffing(
             viewLifecycleOwner,
             { it.isLoading },
             { binding.pbMovieDetails.visible = it }
@@ -58,7 +58,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     }
 
     private fun manageMoviesUiState() {
-        viewModel.uiState.diffingUiState(
+        viewModel.uiState.collectFlowWithDiffing(
             viewLifecycleOwner,
             { it.movieDetails },
             {
@@ -71,7 +71,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     }
 
     private fun manageErrorUiState() {
-        viewModel.uiState.diffingUiState(
+        viewModel.uiState.collectFlowWithDiffing(
             viewLifecycleOwner,
             { it.isError },
             { isError ->
@@ -84,21 +84,21 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     }
 
     private fun displayMovieDetails(movieDetails: MovieDetails) {
-        movieDetails.also {
-            displayMovieImage(it)
-            displayMovieTranslatedTitle(it.translatedTitle)
-            displayMovieOriginalTitle(it.originalTitle)
-            displayMovieReleaseDate(it.releaseDate)
-            displayMovieVoteAverage(it.voteAverage)
-            displayMovieGenres(it.genres)
-            displayMovieOverview(it.overview.orEmpty())
+        with(movieDetails) {
+            displayMovieImage(this)
+            displayMovieTranslatedTitle(translatedTitle)
+            displayMovieOriginalTitle(originalTitle)
+            displayMovieReleaseDate(releaseDate)
+            displayMovieVoteAverage(voteAverage)
+            displayMovieGenres(genres)
+            displayMovieOverview(overview.orEmpty())
         }
     }
 
     private fun displayMovieImage(movieDetails: MovieDetails) {
         val pathMovieImage = movieDetails.backdropImagePath ?: movieDetails.posterPath
         if (pathMovieImage != null) {
-            val urlMovieImage = GetUrlMovieBackdropUseCase(pathMovieImage, PosterMovieSize.WIDTH_780PX)
+            val urlMovieImage = BuildUrlMovieBackdropUseCase(pathMovieImage, ApiUrlsManager.PosterMovieSize.WIDTH_780PX)
             binding.ivMovieHeaderImage.loadImageFromUrl(urlMovieImage)
         } else {
             binding.ivMovieHeaderImage.setImageDrawable(

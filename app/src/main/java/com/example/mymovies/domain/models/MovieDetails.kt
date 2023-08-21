@@ -1,7 +1,5 @@
 package com.example.mymovies.domain.models
 
-import com.example.mymovies.data.remote.models.MovieDetailsRemote
-
 data class MovieDetails(
     val id: Int,
     val translatedTitle: String,
@@ -12,16 +10,4 @@ data class MovieDetails(
     val voteAverage: Float,
     val posterPath: String?,
     val backdropImagePath: String?
-)
-
-fun MovieDetailsRemote.toDomainModel(): MovieDetails = MovieDetails(
-    id,
-    translatedTitle,
-    originalTitle,
-    overview,
-    releaseDate,
-    genres.map { it.name },
-    voteAverage,
-    posterPath,
-    backdropImagePath
 )

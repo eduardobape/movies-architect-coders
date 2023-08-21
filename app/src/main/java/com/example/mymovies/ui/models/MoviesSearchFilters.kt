@@ -2,12 +2,12 @@ package com.example.mymovies.ui.models
 
 import java.util.Locale
 
-data class MoviesDiscoveryFilters(
+data class MoviesSearchFilters(
 	var region: String = Locale.getDefault().country,
 	var language: String = Locale.getDefault().language
 )
 
-enum class SortOptionMoviesDiscovery(val sortOption: String) {
+enum class MoviesSortFields(val sortOption: String) {
 	POPULARITY_ASC("popularity.asc"),
 	POPULARITY_DESC("popularity.desc"),
 	RELEASE_DATE_ASC("release_date.asc"),

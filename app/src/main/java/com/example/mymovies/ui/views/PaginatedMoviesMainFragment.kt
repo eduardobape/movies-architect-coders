@@ -8,33 +8,35 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovies.R
-import com.example.mymovies.data.repositories.MoviesDiscoveryRepository
-import com.example.mymovies.databinding.FragmentMainBinding
-import com.example.mymovies.domain.usecases.GetPopularMoviesUseCase
-import com.example.mymovies.ui.extensions.diffingUiState
+import com.example.mymovies.appContext
+import com.example.mymovies.data.repositories.MoviesMainRepository
+import com.example.mymovies.databinding.FragmentPaginatedMoviesMainBinding
+import com.example.mymovies.domain.usecases.GetPaginatedMoviesMainUseCase
+import com.example.mymovies.ui.extensions.collectFlowWithDiffing
 import com.example.mymovies.ui.extensions.viewLifecycleBinding
 import com.example.mymovies.ui.extensions.visible
 import com.example.mymovies.ui.viewmodels.MainViewModel
 
-class MainFragment : Fragment(R.layout.fragment_main) {
+class PaginatedMoviesMainFragment : Fragment(R.layout.fragment_paginated_movies_main) {
 
     companion object {
         private const val GRIDLAYOUT_COLUMNS_SPACE = 50
     }
 
-    private val binding: FragmentMainBinding by viewLifecycleBinding {
-        FragmentMainBinding.bind(requireView())
+    private val binding: FragmentPaginatedMoviesMainBinding by viewLifecycleBinding {
+        FragmentPaginatedMoviesMainBinding.bind(requireView())
     }
     private lateinit var moviesAdapter: MainMoviesAdapter
-    private lateinit var mainMoviesState: MainMoviesState
+    private lateinit var paginatedMoviesMainState: PaginatedMoviesMainState
     private val viewModel by viewModels<MainViewModel> {
-        MainViewModel.Factory(GetPopularMoviesUseCase(MoviesDiscoveryRepository()))
+        val moviesMainRepository = MoviesMainRepository(requireContext().appContext)
+        MainViewModel.Factory(GetPaginatedMoviesMainUseCase(moviesMainRepository))
     }
     private val numColumnsMoviesList = 2
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainMoviesState = buildMainMoviesState()
+        paginatedMoviesMainState = buildPaginatedMoviesMainState()
         configMoviesAdapter()
         hookToUiState()
         onScrollMovies()
@@ -42,7 +44,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun configMoviesAdapter() {
         moviesAdapter = MainMoviesAdapter { movieId ->
-            mainMoviesState.onMovieClicked(movieId)
+            paginatedMoviesMainState.onMovieClicked(movieId)
         }
         with(binding.rvMoviesList) {
             adapter = moviesAdapter
@@ -58,11 +60,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun hookToUiState() {
         with(viewModel.uiState) {
-            diffingUiState(
+            collectFlowWithDiffing(
                 viewLifecycleOwner,
                 { uiState -> uiState.isLoading },
                 { isVisible -> binding.pbMoviesList.visible = isVisible })
-            diffingUiState(viewLifecycleOwner, { uiState -> uiState.movies }, { moviesAdapter.submitList(it) })
+            collectFlowWithDiffing(viewLifecycleOwner, { uiState -> uiState.movies }, { moviesAdapter.submitList(it) })
         }
     }
 
@@ -77,7 +79,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                     val totalItemCount = layoutManager.itemCount
                     val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
                     if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
-                        viewModel.fetchMovies()
+                        viewModel.fetchPaginatedMovies()
                     }
                 }
             }

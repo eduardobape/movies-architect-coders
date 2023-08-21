@@ -65,11 +65,11 @@ fun <T> LifecycleOwner.launchAndCollectFlow(
     }
 }
 
-fun <T, U> Flow<T>.diffingUiState(lifecycleOwner: LifecycleOwner, transformFlow: (T) -> U, body: (U) -> Unit) {
+fun <T, U> Flow<T>.collectFlowWithDiffing(lifecycleOwner: LifecycleOwner, transformFlow: (T) -> U, body: (U) -> Unit) {
     lifecycleOwner.launchAndCollectFlow(flow = map(transformFlow).distinctUntilChanged(), body = body)
 }
 
-inline fun <T : Any> basicDiffUtil(
+inline fun <T : Any> basicDiffUtilForAdapter(
     crossinline areItemsTheSame: (T, T) -> Boolean = { oldItem, newItem -> oldItem == newItem },
     crossinline areContentsTheSame: (T, T) -> Boolean = { oldItem, newItem -> oldItem == newItem }
 ): DiffUtil.ItemCallback<T> = object : DiffUtil.ItemCallback<T>() {
