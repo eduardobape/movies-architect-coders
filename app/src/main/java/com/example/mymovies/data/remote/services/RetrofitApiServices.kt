@@ -7,27 +7,23 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 object RetrofitApiServices : ApiServicesFactory {
-	private val networkClient: OkHttpClient = OkHttpClient.Builder()
-		.addInterceptor { chain ->
-			val originalRequest = chain.request()
-			val originalHttpUrl = originalRequest.url()
+    private val networkClient: OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor { chain ->
+            val originalRequest = chain.request()
+            val modifiedRequest =
+                originalRequest.newBuilder().addHeader("Authorization", "Bearer ${BuildConfig.TMDB_ACCESS_TOKEN}")
+                    .build()
+            chain.proceed(modifiedRequest)
+        }
+        .build()
 
-			val modifiedUrl = originalHttpUrl.newBuilder()
-				.addQueryParameter("api_key", BuildConfig.TMDB_API_KEY)
-				.build()
+    private val retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl(ApiUrlsManager.apiBaseUrl)
+        .client(networkClient)
+        .addConverterFactory(MoshiConverterFactory.create())
+        .build()
 
-			val modifiedRequest = originalRequest.newBuilder().url(modifiedUrl).build()
-			chain.proceed(modifiedRequest)
-		}
-		.build()
-
-	private val retrofit: Retrofit = Retrofit.Builder()
-		.baseUrl(ApiUrlsManager.apiBaseUrl)
-		.client(networkClient)
-		.addConverterFactory(MoshiConverterFactory.create())
-		.build()
-
-	override fun <T> create(serviceClass: Class<T>): T {
-		return retrofit.create(serviceClass)
-	}
+    override fun <T> create(serviceClass: Class<T>): T {
+        return retrofit.create(serviceClass)
+    }
 }

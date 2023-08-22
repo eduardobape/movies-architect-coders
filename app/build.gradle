@@ -20,7 +20,7 @@ android {
 
 		Properties properties = new Properties()
 		properties.load(project.rootProject.file("local.properties").newInputStream())
-		buildConfigField "String", "TMDB_API_KEY", "\"${properties.getProperty("TMDB_API_KEY")}\""
+		buildConfigField "String", "TMDB_ACCESS_TOKEN", "\"${properties.getProperty("TMDB_ACCESS_TOKEN")}\""
 	}
 
 	buildTypes {
