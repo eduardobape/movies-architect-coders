@@ -6,7 +6,7 @@ import com.example.mymovies.data.local.models.PaginationInfo
 import com.example.mymovies.data.datasources.PaginationInfoLocalDataSource
 import com.example.mymovies.data.datasources.MoviesRemoteDataSource
 import com.example.mymovies.data.remote.services.RetrofitApiServices
-import com.example.mymovies.data.remote.models.MoviesSearchRemoteResult
+import com.example.mymovies.data.remote.models.PaginatedMoviesSearchRemoteResult
 import com.example.mymovies.data.remote.models.toDatabaseModel
 import com.example.mymovies.data.remote.services.MoviesApiServices
 import com.example.mymovies.data.local.datastore.dataStore
@@ -39,15 +39,15 @@ class MoviesMainRepository(application: App) {
         moviesSearchFilters: MoviesSearchFilters,
         pageToFetch: Int
     ) {
-        val popularMoviesSearchRemoteResult: MoviesSearchRemoteResult =
+        val popularPaginatedMoviesSearchRemoteResult: PaginatedMoviesSearchRemoteResult =
             mainMoviesRemoteDataSource.findPopularMovies(moviesSearchFilters, pageToFetch)
         moviesPaginationInfoLocalDataSource.updatePopularMoviesPaginationInfo(
             PaginationInfo(
-                popularMoviesSearchRemoteResult.page,
-                popularMoviesSearchRemoteResult.totalPages,
-                popularMoviesSearchRemoteResult.totalResults,
+                popularPaginatedMoviesSearchRemoteResult.page,
+                popularPaginatedMoviesSearchRemoteResult.totalPages,
+                popularPaginatedMoviesSearchRemoteResult.totalResults,
             )
         )
-        moviesLocalDataSource.saveMovies(popularMoviesSearchRemoteResult.movies.map { it.toDatabaseModel() })
+        moviesLocalDataSource.saveMovies(popularPaginatedMoviesSearchRemoteResult.movies.map { it.toDatabaseModel() })
     }
 }

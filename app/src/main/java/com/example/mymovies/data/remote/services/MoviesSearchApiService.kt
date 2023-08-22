@@ -1,6 +1,6 @@
 package com.example.mymovies.data.remote.services
 
-import com.example.mymovies.data.remote.models.MoviesSearchRemoteResult
+import com.example.mymovies.data.remote.models.PaginatedMoviesSearchRemoteResult
 import com.example.mymovies.ui.models.MoviesSortFields
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -13,5 +13,5 @@ interface MoviesSearchApiService {
 		@Query("language") language: String,
 		@Query("page") page: Int,
 		@Query("sort_by") sortBy: String = MoviesSortFields.POPULARITY_DESC.sortOption
-	): MoviesSearchRemoteResult
+	): PaginatedMoviesSearchRemoteResult
 }

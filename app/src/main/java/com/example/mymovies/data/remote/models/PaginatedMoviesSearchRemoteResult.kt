@@ -5,15 +5,15 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class MoviesSearchRemoteResult(
+data class PaginatedMoviesSearchRemoteResult(
 	@Json(name = "page") val page: Int = 0,
-	@Json(name = "results") val movies: List<MovieDetailsRemoteResult> = emptyList(),
+	@Json(name = "results") val movies: List<PaginatedMovieDetailsRemoteResult> = emptyList(),
 	@Json(name = "total_pages") val totalPages: Int = 0,
 	@Json(name = "total_results") val totalResults: Int = 0,
 )
 
 @JsonClass(generateAdapter = true)
-data class MovieDetailsRemoteResult(
+data class PaginatedMovieDetailsRemoteResult(
 	@Json(name = "adult") val isAdultRating: Boolean,
 	@Json(name = "backdrop_path") val backdropUrlPath: String?,
 	@Json(name = "genre_ids") val genreIds: List<Int>,
@@ -30,7 +30,7 @@ data class MovieDetailsRemoteResult(
 	@Json(name = "vote_count") val voteCount: Int
 )
 
-fun MovieDetailsRemoteResult.toDatabaseModel(): Movie = Movie(
+fun PaginatedMovieDetailsRemoteResult.toDatabaseModel(): Movie = Movie(
 	id,
 	backdropUrlPath,
 	posterUrlPath,
