@@ -15,7 +15,7 @@ import com.example.mymovies.domain.usecases.GetPaginatedMoviesMainUseCase
 import com.example.mymovies.ui.extensions.collectFlowWithDiffing
 import com.example.mymovies.ui.extensions.viewLifecycleBinding
 import com.example.mymovies.ui.extensions.visible
-import com.example.mymovies.ui.viewmodels.MainViewModel
+import com.example.mymovies.ui.viewmodels.PaginatedMoviesMainViewModel
 
 class PaginatedMoviesMainFragment : Fragment(R.layout.fragment_paginated_movies_main) {
 
@@ -26,11 +26,11 @@ class PaginatedMoviesMainFragment : Fragment(R.layout.fragment_paginated_movies_
     private val binding: FragmentPaginatedMoviesMainBinding by viewLifecycleBinding {
         FragmentPaginatedMoviesMainBinding.bind(requireView())
     }
-    private lateinit var moviesAdapter: MainMoviesAdapter
+    private lateinit var moviesAdapter: PaginatedMoviesMainAdapter
     private lateinit var paginatedMoviesMainState: PaginatedMoviesMainState
-    private val viewModel by viewModels<MainViewModel> {
+    private val viewModel by viewModels<PaginatedMoviesMainViewModel> {
         val moviesMainRepository = MoviesMainRepository(requireContext().appContext)
-        MainViewModel.Factory(GetPaginatedMoviesMainUseCase(moviesMainRepository))
+        PaginatedMoviesMainViewModel.Factory(GetPaginatedMoviesMainUseCase(moviesMainRepository))
     }
     private val numColumnsMoviesList = 2
 
@@ -43,7 +43,7 @@ class PaginatedMoviesMainFragment : Fragment(R.layout.fragment_paginated_movies_
     }
 
     private fun configMoviesAdapter() {
-        moviesAdapter = MainMoviesAdapter { movieId ->
+        moviesAdapter = PaginatedMoviesMainAdapter { movieId ->
             paginatedMoviesMainState.onMovieClicked(movieId)
         }
         with(binding.rvMoviesList) {

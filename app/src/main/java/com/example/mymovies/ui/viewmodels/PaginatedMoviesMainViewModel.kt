@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MainViewModel(
+class PaginatedMoviesMainViewModel(
     private val getPaginatedMoviesMainUseCase: GetPaginatedMoviesMainUseCase) : ViewModel() {
 
     companion object {
@@ -67,6 +67,6 @@ class MainViewModel(
     class Factory(
         private val getPaginatedMoviesMainUseCase: GetPaginatedMoviesMainUseCase) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T = MainViewModel(getPaginatedMoviesMainUseCase) as T
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = PaginatedMoviesMainViewModel(getPaginatedMoviesMainUseCase) as T
     }
 }

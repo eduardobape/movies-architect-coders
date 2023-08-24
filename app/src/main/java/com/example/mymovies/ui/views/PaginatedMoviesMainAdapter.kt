@@ -16,8 +16,8 @@ import com.example.mymovies.ui.extensions.basicDiffUtilForAdapter
 import com.example.mymovies.ui.extensions.loadImageFromUrl
 
 
-class MainMoviesAdapter(val onClickItem: (Long) -> Unit) :
-    ListAdapter<PaginatedMovieDetails, MainMoviesAdapter.MovieViewHolder>(
+class PaginatedMoviesMainAdapter(val onClickItem: (Long) -> Unit) :
+    ListAdapter<PaginatedMovieDetails, PaginatedMoviesMainAdapter.MovieViewHolder>(
         basicDiffUtilForAdapter { oldMovieItem, newMovieItem -> oldMovieItem.id == newMovieItem.id }
     ) {
 
