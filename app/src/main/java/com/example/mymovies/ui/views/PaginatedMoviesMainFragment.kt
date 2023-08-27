@@ -75,10 +75,9 @@ class PaginatedMoviesMainFragment : Fragment(R.layout.fragment_paginated_movies_
                 val isDownVerticalScroll = dy > 0
                 if (isDownVerticalScroll) {
                     val layoutManager: LinearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
-                    val visibleItemCount = layoutManager.childCount
-                    val totalItemCount = layoutManager.itemCount
-                    val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-                    if (visibleItemCount + firstVisibleItemPosition >= totalItemCount) {
+                    if (layoutManager.findLastCompletelyVisibleItemPosition() + (numColumnsMoviesList - 1) ==
+                        layoutManager.itemCount
+                    ) {
                         viewModel.fetchPaginatedMovies()
                     }
                 }
