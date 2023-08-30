@@ -42,7 +42,4 @@ interface MovieDao {
     @Transaction
     @Query("SELECT * FROM movies WHERE id = :movieId")
     fun findMovieWithGenres(movieId: Long): Flow<MovieWithGenres>
-
-    @Query("SELECT COUNT(id) FROM movies WHERE id = :movieId")
-    suspend fun isMovieSaved(movieId: Long): Int
 }
