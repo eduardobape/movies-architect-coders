@@ -59,8 +59,8 @@ dependencies {
 	// Library to enable support for some Java 8 APIs without requiring a minimum API level in the app
 	coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
 	// Jetpack Navigation
-	implementation "androidx.navigation:navigation-fragment:2.6.0"
-	implementation "androidx.navigation:navigation-ui:2.6.0"
+	implementation "androidx.navigation:navigation-fragment:2.7.1"
+	implementation "androidx.navigation:navigation-ui:2.7.1"
 	// Retrofit
 	implementation 'com.squareup.retrofit2:retrofit:2.9.0'
 	// Moshi converter for Retrofit
