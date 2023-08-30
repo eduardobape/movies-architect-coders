@@ -1,6 +1,8 @@
 package com.example.mymovies.data.remote.models
 
-import com.example.mymovies.domain.models.MovieDetails
+import com.example.mymovies.data.local.database.entities.Movie
+import com.example.mymovies.data.local.database.entities.MovieGenre
+import com.example.mymovies.data.local.database.entities.MovieWithGenres
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -10,9 +12,9 @@ data class MovieDetailsSearchRemoteResult(
     @Json(name = "backdrop_path") val backdropUrlPath: String?,
     @Json(name = "belongs_to_collection") val moviesCollection: MoviesCollection?,
     @Json(name = "budget") val budget: Long,
-    @Json(name = "genres") val genres: List<RemoteMovieGenre>,
+    @Json(name = "genres") val genres: List<MovieGenreRemote>,
     @Json(name = "homepage") val homepageUrl: String?,
-    @Json(name = "id") val id: Int,
+    @Json(name = "id") val id: Long,
     @Json(name = "imdb_id") val imdbId: String?,
     @Json(name = "original_language") val originalLanguage: String,
     @Json(name = "original_title") val originalTitle: String,
@@ -42,7 +44,7 @@ data class MoviesCollection(
 )
 
 @JsonClass(generateAdapter = true)
-data class RemoteMovieGenre(
+data class MovieGenreRemote(
     @Json(name = "id") val id: Int,
     @Json(name = "name") val name: String
 )
@@ -69,14 +71,24 @@ data class MovieLanguage(
 
 )
 
-fun MovieDetailsSearchRemoteResult.toDomainModel(): MovieDetails = MovieDetails(
-    id,
-    translatedTitle,
-    originalTitle,
-    overview,
-    releaseDate,
-    genres.map { it.name },
-    voteAverage,
-    posterUrlPath,
-    backdropUrlPath
+fun MovieDetailsSearchRemoteResult.toDatabaseMovieModel(): MovieWithGenres = MovieWithGenres(
+    Movie(
+        id,
+        backdropUrlPath,
+        posterUrlPath,
+        budget,
+        originalLanguage,
+        originalTitle,
+        overview,
+        popularity,
+        releaseDate,
+        revenue,
+        runningTime,
+        translatedTitle,
+        voteAverage,
+        voteCount
+    ),
+    genres.map { it.toDatabaseGenreModel() }
 )
+
+fun MovieGenreRemote.toDatabaseGenreModel(): MovieGenre = MovieGenre(id, name)

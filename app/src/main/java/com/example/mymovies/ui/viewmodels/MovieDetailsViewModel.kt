@@ -11,40 +11,38 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MovieDetailsViewModel(
-    private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
-    movieId: Long?
-) : ViewModel() {
+class MovieDetailsViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUseCase) : ViewModel() {
 
     private val _uiState: MutableStateFlow<MovieDetailsUiState> = MutableStateFlow(MovieDetailsUiState())
     val uiState: StateFlow<MovieDetailsUiState> = _uiState.asStateFlow()
 
     init {
-        fetchMovieDetails(movieId)
+        fetchMovieDetails()
+        collectMovieDetails()
     }
 
-    private fun fetchMovieDetails(movieId: Long?) {
+    private fun fetchMovieDetails() {
         viewModelScope.launch {
-            if (movieId == null) {
+            _uiState.update {
+                it.copy(isLoading = true)
+            }
+            getMovieDetailsUseCase()
+        }
+    }
+
+    private fun collectMovieDetails() {
+        viewModelScope.launch {
+            getMovieDetailsUseCase.movieDetailsWithGenres.collect { movieDetails ->
                 _uiState.update {
-                    it.copy(isError = true)
-                }
-            } else {
-                _uiState.update {
-                    it.copy(isLoading = true)
-                }
-                _uiState.update {
-                    it.copy(isLoading = false, movieDetails = getMovieDetailsUseCase(movieId))
+                    it.copy(isLoading = false, movieDetails = movieDetails)
                 }
             }
         }
     }
 
-    class Factory(private val getMovieDetailsUseCase: GetMovieDetailsUseCase, private val movieId: Long?) :
-        ViewModelProvider.Factory {
-
+    class Factory(private val getMovieDetailsUseCase: GetMovieDetailsUseCase) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T =
-            MovieDetailsViewModel(getMovieDetailsUseCase, movieId) as T
+            MovieDetailsViewModel(getMovieDetailsUseCase) as T
     }
 }

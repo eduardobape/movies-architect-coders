@@ -2,18 +2,18 @@ package com.example.mymovies.ui.views
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.mymovies.R
+import com.example.mymovies.appContext
 import com.example.mymovies.data.remote.apiurls.ApiUrlsManager
 import com.example.mymovies.data.repositories.MovieDetailsRepository
 import com.example.mymovies.databinding.FragmentMovieDetailsBinding
 import com.example.mymovies.domain.models.MovieDetails
-import com.example.mymovies.domain.usecases.GetMovieDetailsUseCase
 import com.example.mymovies.domain.usecases.BuildUrlMovieBackdropUseCase
+import com.example.mymovies.domain.usecases.GetMovieDetailsUseCase
 import com.example.mymovies.ui.extensions.collectFlowWithDiffing
 import com.example.mymovies.ui.extensions.loadImageFromUrl
 import com.example.mymovies.ui.extensions.viewLifecycleBinding
@@ -29,8 +29,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     private val args: MovieDetailsFragmentArgs by navArgs()
     private val viewModel by viewModels<MovieDetailsViewModel> {
         MovieDetailsViewModel.Factory(
-            GetMovieDetailsUseCase(MovieDetailsRepository()),
-            getMovieIdFromSafeArgs()
+            GetMovieDetailsUseCase(MovieDetailsRepository(requireActivity().appContext), getMovieIdFromSafeArgs())
         )
     }
 
@@ -46,7 +45,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     private fun hookToUiState() {
         manageLoadingUiState()
         manageMoviesUiState()
-        manageErrorUiState()
     }
 
     private fun manageLoadingUiState() {
@@ -65,19 +63,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                 it?.let { movieDetails ->
                     displayMovieDetails(movieDetails)
                     binding.nesScrollMovieDetails.visible = true
-                }
-            }
-        )
-    }
-
-    private fun manageErrorUiState() {
-        viewModel.uiState.collectFlowWithDiffing(
-            viewLifecycleOwner,
-            { it.isError },
-            { isError ->
-                if (isError) {
-                    Toast.makeText(requireContext(), getString(R.string.movie_id_intent_error), Toast.LENGTH_SHORT)
-                        .show()
                 }
             }
         )

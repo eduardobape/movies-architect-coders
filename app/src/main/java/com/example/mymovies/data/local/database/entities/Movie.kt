@@ -53,7 +53,7 @@ data class MovieGenre(
     )]
 )
 data class MoviesGenresCrossRef(
-    @ColumnInfo(name = "movie_id") val movieId: Int,
+    @ColumnInfo(name = "movie_id") val movieId: Long,
     @ColumnInfo(name = "genre_id", index = true) val genreId: Int
 )
 

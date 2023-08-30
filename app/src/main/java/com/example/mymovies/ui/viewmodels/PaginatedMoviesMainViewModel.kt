@@ -18,7 +18,7 @@ class PaginatedMoviesMainViewModel(
 
     companion object {
         private const val MAX_MOVIES_TO_LOAD = 100
-        private const val PAGE_SIZE = 20
+        const val PAGE_SIZE = 20
     }
 
     private val _uiState: MutableStateFlow<PaginatedMoviesMainUiState> = MutableStateFlow(PaginatedMoviesMainUiState())

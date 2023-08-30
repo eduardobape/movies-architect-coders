@@ -1,7 +1,7 @@
 package com.example.mymovies.domain.models
 
 data class MovieDetails(
-    val id: Int,
+    val id: Long,
     val translatedTitle: String,
     val originalTitle: String,
     val overview: String?,

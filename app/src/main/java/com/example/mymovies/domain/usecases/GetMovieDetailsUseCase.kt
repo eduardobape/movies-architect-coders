@@ -2,10 +2,26 @@ package com.example.mymovies.domain.usecases
 
 import com.example.mymovies.data.repositories.MovieDetailsRepository
 import com.example.mymovies.domain.models.MovieDetails
-import com.example.mymovies.data.remote.models.toDomainModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-class GetMovieDetailsUseCase(private val repository: MovieDetailsRepository) {
+class GetMovieDetailsUseCase(private val repository: MovieDetailsRepository, private val movieId: Long) {
 
-    suspend operator fun invoke(movieId: Long): MovieDetails =
-        repository.getMovieDetails(movieId).toDomainModel()
+    val movieDetailsWithGenres: Flow<MovieDetails> = repository.getMovieDetailsWithGenres(movieId).map {
+        MovieDetails(
+            it.movie.id,
+            it.movie.title,
+            it.movie.originalTitle,
+            it.movie.overview,
+            it.movie.releaseDate,
+            it.genres.map { movieGenre -> movieGenre.name },
+            it.movie.voteAverage,
+            it.movie.posterPathUrl,
+            it.movie.backdropPathUrl
+        )
+    }
+
+    suspend operator fun invoke() {
+        repository.findMovieDetailsById(movieId)
+    }
 }
