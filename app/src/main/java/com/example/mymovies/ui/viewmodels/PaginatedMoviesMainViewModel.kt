@@ -3,6 +3,7 @@ package com.example.mymovies.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.mymovies.data.repositories.MoviesMainRepository
 import com.example.mymovies.domain.usecases.GetPaginatedMoviesMainUseCase
 import com.example.mymovies.ui.models.MoviesSearchFilters
 import com.example.mymovies.ui.views.PaginatedMoviesMainUiState
@@ -18,7 +19,6 @@ class PaginatedMoviesMainViewModel(
 
     companion object {
         private const val MAX_MOVIES_TO_LOAD = 100
-        const val PAGE_SIZE = 20
     }
 
     private val _uiState: MutableStateFlow<PaginatedMoviesMainUiState> = MutableStateFlow(PaginatedMoviesMainUiState())
@@ -60,7 +60,7 @@ class PaginatedMoviesMainViewModel(
     }
 
     private fun canLoadMovies(): Boolean = with(uiState.value) {
-        !isLoading && (currentPage == 0 || currentPage < totalPages && MAX_MOVIES_TO_LOAD > currentPage * PAGE_SIZE)
+        !isLoading && (currentPage == 0 || currentPage < totalPages && MAX_MOVIES_TO_LOAD > currentPage * MoviesMainRepository.PAGE_SIZE)
     }
 
 

@@ -20,6 +20,10 @@ import kotlinx.coroutines.flow.map
 
 class MoviesMainRepository(application: App) {
 
+    companion object {
+        const val PAGE_SIZE = 20
+    }
+
     private val mainMoviesRemoteDataSource = MoviesRemoteDataSource(
         MoviesApiServices(RetrofitApiServices).moviesSearchApiService
     )
