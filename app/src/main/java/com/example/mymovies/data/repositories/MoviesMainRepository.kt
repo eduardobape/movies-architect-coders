@@ -35,7 +35,7 @@ class MoviesMainRepository(application: App) {
         moviesPaginationInfoLocalDataSource.popularMoviesPaginationInfo
             .flatMapLatest { paginationInfo ->
                 moviesLocalDataSource.popularMovies
-                    .filter { popularMovies -> popularMovies.size == paginationInfo.currentPage * 20 }
+                    .filter { popularMovies -> popularMovies.size == paginationInfo.currentPage * PAGE_SIZE }
                     .map { popularMovies ->
                         PaginatedMoviesDatabase(
                             popularMovies,
