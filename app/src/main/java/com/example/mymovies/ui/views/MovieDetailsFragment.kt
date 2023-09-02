@@ -1,5 +1,6 @@
 package com.example.mymovies.ui.views
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -14,6 +15,7 @@ import com.example.mymovies.databinding.FragmentMovieDetailsBinding
 import com.example.mymovies.domain.models.MovieDetails
 import com.example.mymovies.domain.usecases.BuildUrlMovieBackdropUseCase
 import com.example.mymovies.domain.usecases.GetMovieDetailsUseCase
+import com.example.mymovies.domain.usecases.SwitchMovieFavouriteUseCase
 import com.example.mymovies.ui.extensions.collectFlowWithDiffing
 import com.example.mymovies.ui.extensions.loadImageFromUrl
 import com.example.mymovies.ui.extensions.viewLifecycleBinding
@@ -29,13 +31,15 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     private val args: MovieDetailsFragmentArgs by navArgs()
     private val viewModel by viewModels<MovieDetailsViewModel> {
         MovieDetailsViewModel.Factory(
-            GetMovieDetailsUseCase(MovieDetailsRepository(requireActivity().appContext), getMovieIdFromSafeArgs())
+            GetMovieDetailsUseCase(MovieDetailsRepository(requireActivity().appContext), getMovieIdFromSafeArgs()),
+            SwitchMovieFavouriteUseCase(MovieDetailsRepository(requireActivity().appContext))
         )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         hookToUiState()
+        manageSwitchingFavourite()
     }
 
     private fun getMovieIdFromSafeArgs(): Long {
@@ -68,6 +72,12 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         )
     }
 
+    private fun manageSwitchingFavourite() {
+        binding.fabFavouriteMovieDetails.setOnClickListener {
+            viewModel.onFavouriteClicked()
+        }
+    }
+
     private fun displayMovieDetails(movieDetails: MovieDetails) {
         with(movieDetails) {
             displayMovieImage(this)
@@ -77,6 +87,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
             displayMovieVoteAverage(voteAverage)
             displayMovieGenres(genres)
             displayMovieOverview(overview.orEmpty())
+            displayFavourite(isFavourite)
         }
     }
 
@@ -115,6 +126,14 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     private fun displayMovieOverview(movieOverview: String) {
         binding.tvMovieOverview.text = movieOverview.ifEmpty {
             resources.getString(R.string.movie_overview_headline)
+        }
+    }
+
+    private fun displayFavourite(isFavourite: Boolean) {
+        binding.fabFavouriteMovieDetails.imageTintList = if (isFavourite) {
+            ColorStateList.valueOf(requireActivity().getColor(R.color.movie_favourite_on))
+        } else {
+            ColorStateList.valueOf(requireActivity().getColor(R.color.movie_favourite_off))
         }
     }
 }

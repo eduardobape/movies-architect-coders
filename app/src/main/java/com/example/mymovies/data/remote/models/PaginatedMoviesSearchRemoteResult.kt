@@ -44,5 +44,6 @@ fun PaginatedMovieDetailsRemoteResult.toDatabaseModel(): Movie = Movie(
 	runningTime = 0,
 	translatedTitle,
 	voteAverage,
-	voteCount
+	voteCount,
+	isFavourite = false
 )

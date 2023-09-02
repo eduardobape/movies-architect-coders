@@ -10,4 +10,5 @@
     <string name="movie_overview_headline">Descripción:</string>
     <string name="movie_no_overview">Esta película no tiene descripción</string>
     <string name="movie_id_intent_error">No se pudo obtener el identificador de la película</string>
+    <string name="description_favourite_movie_details">Botón para marcar o desmarcar como favorita la película mostrada en pantalla</string>
 </resources>

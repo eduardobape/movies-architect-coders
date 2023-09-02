@@ -17,7 +17,8 @@ class GetMovieDetailsUseCase(private val repository: MovieDetailsRepository, pri
             it.genres.map { movieGenre -> movieGenre.name },
             it.movie.voteAverage,
             it.movie.posterPathUrl,
-            it.movie.backdropPathUrl
+            it.movie.backdropPathUrl,
+            it.movie.isFavourite
         )
     }
 

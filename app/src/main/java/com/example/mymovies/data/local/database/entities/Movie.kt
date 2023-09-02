@@ -23,7 +23,8 @@ data class Movie(
     @ColumnInfo(name = "running_time") val runningTime: Int,
     val title: String,
     @ColumnInfo(name = "vote_average") val voteAverage: Float,
-    @ColumnInfo(name = "vote_count") val voteCount: Int
+    @ColumnInfo(name = "vote_count") val voteCount: Int,
+    @ColumnInfo(name = "favourite") val isFavourite: Boolean
 )
 
 @Entity(tableName = "movie_genres")

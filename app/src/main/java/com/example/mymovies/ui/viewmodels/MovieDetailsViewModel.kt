@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.mymovies.domain.usecases.GetMovieDetailsUseCase
+import com.example.mymovies.domain.usecases.SwitchMovieFavouriteUseCase
 import com.example.mymovies.ui.views.MovieDetailsUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,15 +12,32 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MovieDetailsViewModel(private val getMovieDetailsUseCase: GetMovieDetailsUseCase) : ViewModel() {
+class MovieDetailsViewModel(
+    private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
+    private val switchMovieFavouriteUseCase: SwitchMovieFavouriteUseCase
+) : ViewModel() {
 
     private val _uiState: MutableStateFlow<MovieDetailsUiState> = MutableStateFlow(MovieDetailsUiState())
     val uiState: StateFlow<MovieDetailsUiState> = _uiState.asStateFlow()
 
     init {
-        fetchMovieDetails()
         collectMovieDetails()
     }
+
+    private fun collectMovieDetails() {
+        viewModelScope.launch {
+            getMovieDetailsUseCase.movieDetailsWithGenres.collect { movieDetails ->
+                _uiState.update {
+                    it.copy(isLoading = false, movieDetails = movieDetails)
+                }
+            }
+            if (!areEmptyMovieDetails()) {
+                fetchMovieDetails()
+            }
+        }
+    }
+
+    private fun areEmptyMovieDetails(): Boolean = _uiState.value.movieDetails != null
 
     private fun fetchMovieDetails() {
         viewModelScope.launch {
@@ -30,19 +48,20 @@ class MovieDetailsViewModel(private val getMovieDetailsUseCase: GetMovieDetailsU
         }
     }
 
-    private fun collectMovieDetails() {
+    fun onFavouriteClicked() {
         viewModelScope.launch {
-            getMovieDetailsUseCase.movieDetailsWithGenres.collect { movieDetails ->
-                _uiState.update {
-                    it.copy(isLoading = false, movieDetails = movieDetails)
-                }
+            uiState.value.movieDetails?.let {
+                switchMovieFavouriteUseCase(it)
             }
         }
     }
 
-    class Factory(private val getMovieDetailsUseCase: GetMovieDetailsUseCase) : ViewModelProvider.Factory {
+    class Factory(
+        private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
+        private val switchMovieFavouriteUseCase: SwitchMovieFavouriteUseCase
+    ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T =
-            MovieDetailsViewModel(getMovieDetailsUseCase) as T
+            MovieDetailsViewModel(getMovieDetailsUseCase, switchMovieFavouriteUseCase) as T
     }
 }

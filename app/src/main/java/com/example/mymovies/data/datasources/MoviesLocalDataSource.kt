@@ -21,4 +21,8 @@ class MoviesLocalDataSource(private val movieDao: MovieDao) {
     }
 
     fun getMovieWithGenres(movieId: Long): Flow<MovieWithGenres> = movieDao.findMovieWithGenres(movieId)
+
+    suspend fun switchMovieFavourite(movieId: Long, toFavourite: Boolean) {
+        movieDao.switchMovieFavourite(movieId, toFavourite)
+    }
 }

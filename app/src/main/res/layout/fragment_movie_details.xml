@@ -7,6 +7,7 @@
     tools:context=".ui.views.MovieDetailsFragment">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayoutMovieDetails"
         android:layout_width="match_parent"
         android:layout_height="200dp">
 
@@ -152,6 +153,18 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabFavouriteMovieDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/purple_500"
+        android:contentDescription="@string/description_favourite_movie_details"
+        android:src="@drawable/ic_movie_favourite_on"
+        app:layout_anchor="@id/appBarLayoutMovieDetails"
+        app:layout_anchorGravity="bottom|end"
+        app:tint="@color/white" />
 
     <ProgressBar
         android:id="@+id/pbMovieDetails"

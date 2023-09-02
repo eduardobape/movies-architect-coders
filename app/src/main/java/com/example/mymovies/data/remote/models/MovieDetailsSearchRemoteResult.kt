@@ -86,7 +86,8 @@ fun MovieDetailsSearchRemoteResult.toDatabaseMovieModel(): MovieWithGenres = Mov
         runningTime,
         translatedTitle,
         voteAverage,
-        voteCount
+        voteCount,
+        isFavourite = false
     ),
     genres.map { it.toDatabaseGenreModel() }
 )

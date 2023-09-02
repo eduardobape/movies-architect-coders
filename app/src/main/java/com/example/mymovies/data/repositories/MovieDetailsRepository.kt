@@ -25,4 +25,8 @@ class MovieDetailsRepository(app: App) {
             moviesRemoteDataSource.fetchMovieDetailsById(movieId)
         moviesLocalDataSource.saveMovieDetailsWithGenres(movieDetailsRemoteResult.toDatabaseMovieModel())
     }
+
+    suspend fun switchMovieFavourite(movieId: Long, toFavourite: Boolean) {
+        moviesLocalDataSource.switchMovieFavourite(movieId, toFavourite)
+    }
 }
