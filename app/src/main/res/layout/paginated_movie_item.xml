@@ -1,41 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:elevation="4dp"
-	app:cardCornerRadius="8dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="4dp"
+    app:cardCornerRadius="8dp">
 
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:orientation="vertical">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-		<ImageView
-			android:id="@+id/ivMoviePoster"
-			android:layout_width="match_parent"
-			android:layout_height="200dp"
-			android:background="#72B8B6"
-			android:scaleType="fitXY"
-			android:contentDescription="@string/poster_movie_description"
-			tools:src="@tools:sample/backgrounds/scenic"
-			tools:srcCompat="@tools:sample/backgrounds/scenic[2]" />
+        <ImageView
+            android:id="@+id/ivMoviePoster"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#72B8B6"
+            android:contentDescription="@string/poster_movie_description"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/backgrounds/scenic"
+            tools:srcCompat="@tools:sample/backgrounds/scenic[2]" />
 
-		<TextView
-			android:id="@+id/tvMovieTitle"
-			style="@style/TextAppearance.MaterialComponents.Subtitle1"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="@color/purple_500"
-			android:padding="8dp"
-			android:gravity="center"
-			android:textColor="@color/white"
-			android:minLines="2"
-			android:maxLines="2"
-			android:ellipsize="end"
-			tools:text="Título de la película" />
+        <FrameLayout
+            android:id="@+id/flContainerFavouriteMoviePaginated"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@color/purple_500"
+            android:paddingStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvMovieTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivMoviePoster">
 
-	</LinearLayout>
+            <ImageView
+                android:id="@+id/ivFavouriteMoviePaginated"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_movie_favourite_on"
+                app:tint="@color/movie_favourite_off" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tvMovieTitle"
+            style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/purple_500"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:minLines="2"
+            android:padding="8dp"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/flContainerFavouriteMoviePaginated"
+            app:layout_constraintTop_toBottomOf="@+id/ivMoviePoster"
+            tools:text="Movie Title" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

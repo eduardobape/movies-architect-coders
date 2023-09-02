@@ -23,8 +23,8 @@ fun PaginatedMoviesDatabase.toDomain(): PaginatedMovies = PaginatedMovies(
             localMovie.id,
             localMovie.originalTitle,
             localMovie.title,
-            localMovie.posterPathUrl
+            localMovie.posterPathUrl,
+            localMovie.isFavourite
         )
-
     }
 )

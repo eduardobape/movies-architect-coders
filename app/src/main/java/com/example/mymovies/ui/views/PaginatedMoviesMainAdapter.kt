@@ -1,5 +1,6 @@
 package com.example.mymovies.ui.views
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,6 +45,7 @@ class PaginatedMoviesMainAdapter(val onClickItem: (Long) -> Unit) :
         private fun displayMovieDetails(movieMainDetails: PaginatedMovieDetails) {
             displayMoviePoster(movieMainDetails)
             displayMovieTitle(movieMainDetails)
+            displayFavourite(movieMainDetails)
         }
 
         private fun displayMoviePoster(movieMainDetails: PaginatedMovieDetails) {
@@ -62,6 +64,14 @@ class PaginatedMoviesMainAdapter(val onClickItem: (Long) -> Unit) :
 
         private fun displayMovieTitle(movieMainDetails: PaginatedMovieDetails) {
             binding.tvMovieTitle.text = movieMainDetails.translatedTitle
+        }
+
+        private fun displayFavourite(movieMainDetails: PaginatedMovieDetails) {
+            binding.ivFavouriteMoviePaginated.imageTintList = if (movieMainDetails.isFavourite) {
+                ColorStateList.valueOf(itemView.context.getColor(R.color.movie_favourite_on))
+            } else {
+                ColorStateList.valueOf(itemView.context.getColor(R.color.movie_favourite_off))
+            }
         }
     }
 }

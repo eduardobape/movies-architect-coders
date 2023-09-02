@@ -10,7 +10,8 @@ data class PaginatedMovieDetails(
     val id: Long,
     val originalTitle: String,
     val translatedTitle: String,
-    val posterPath: String?
+    val posterPath: String?,
+    val isFavourite: Boolean
 )
 
 fun PaginatedMovieDetails.hasPoster(): Boolean = posterPath != null
