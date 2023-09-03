@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovies.R
 import com.example.mymovies.appContext
-import com.example.mymovies.data.repositories.MoviesMainRepository
+import com.example.mymovies.data.repositories.PaginatedMoviesRepository
 import com.example.mymovies.databinding.FragmentPaginatedMoviesMainBinding
 import com.example.mymovies.domain.usecases.GetPaginatedMoviesMainUseCase
 import com.example.mymovies.ui.extensions.collectFlowWithDiffing
@@ -29,8 +29,8 @@ class PaginatedMoviesMainFragment : Fragment(R.layout.fragment_paginated_movies_
     private lateinit var moviesAdapter: PaginatedMoviesMainAdapter
     private lateinit var paginatedMoviesMainState: PaginatedMoviesMainState
     private val viewModel by viewModels<PaginatedMoviesMainViewModel> {
-        val moviesMainRepository = MoviesMainRepository(requireContext().appContext)
-        PaginatedMoviesMainViewModel.Factory(GetPaginatedMoviesMainUseCase(moviesMainRepository))
+        val paginatedMoviesRepository = PaginatedMoviesRepository(requireContext().appContext)
+        PaginatedMoviesMainViewModel.Factory(GetPaginatedMoviesMainUseCase(paginatedMoviesRepository))
     }
     private val numColumnsMoviesList = 2
 

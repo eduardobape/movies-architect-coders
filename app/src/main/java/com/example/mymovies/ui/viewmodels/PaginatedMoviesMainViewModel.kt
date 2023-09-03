@@ -3,7 +3,7 @@ package com.example.mymovies.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.mymovies.data.repositories.MoviesMainRepository
+import com.example.mymovies.data.repositories.PaginatedMoviesRepository
 import com.example.mymovies.domain.usecases.GetPaginatedMoviesMainUseCase
 import com.example.mymovies.ui.models.MoviesSearchFilters
 import com.example.mymovies.ui.views.PaginatedMoviesMainUiState
@@ -60,7 +60,7 @@ class PaginatedMoviesMainViewModel(
     }
 
     private fun canLoadMovies(): Boolean = with(uiState.value) {
-        !isLoading && (currentPage == 0 || currentPage < totalPages && MAX_MOVIES_TO_LOAD > currentPage * MoviesMainRepository.PAGE_SIZE)
+        !isLoading && (currentPage == 0 || currentPage < totalPages && MAX_MOVIES_TO_LOAD > currentPage * PaginatedMoviesRepository.PAGE_SIZE)
     }
 
 
