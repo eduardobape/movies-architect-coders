@@ -8,9 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class MoviesLocalDataSource(private val movieDao: MovieDao) {
 
     val popularMovies: Flow<List<Movie>>
-        get() {
-            return movieDao.findPopularMovies()
-        }
+        get() = movieDao.findPopularMovies()
 
     suspend fun saveMovies(movies: List<Movie>) {
         movieDao.saveMovies(movies)
