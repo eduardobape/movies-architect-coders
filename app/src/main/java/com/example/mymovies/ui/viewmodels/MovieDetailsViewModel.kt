@@ -21,6 +21,7 @@ class MovieDetailsViewModel(
     val uiState: StateFlow<MovieDetailsUiState> = _uiState.asStateFlow()
 
     init {
+        fetchMovieDetails()
         collectMovieDetails()
     }
 
@@ -31,13 +32,8 @@ class MovieDetailsViewModel(
                     it.copy(isLoading = false, movieDetails = movieDetails)
                 }
             }
-            if (!areEmptyMovieDetails()) {
-                fetchMovieDetails()
-            }
         }
     }
-
-    private fun areEmptyMovieDetails(): Boolean = _uiState.value.movieDetails != null
 
     private fun fetchMovieDetails() {
         viewModelScope.launch {
