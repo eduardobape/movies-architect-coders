@@ -63,7 +63,11 @@ class PaginatedMoviesMainFragment : Fragment(R.layout.fragment_paginated_movies_
             collectFlowWithDiffing(
                 viewLifecycleOwner,
                 { uiState -> uiState.isLoading },
-                { isVisible -> binding.pbMoviesList.visible = isVisible })
+                { isVisible ->
+                    binding.pbMoviesList.visible = isVisible
+                    moviesAdapter.changeActivationOnClickMovie(!isVisible)
+                }
+            )
             collectFlowWithDiffing(viewLifecycleOwner, { uiState -> uiState.movies }, { moviesAdapter.submitList(it) })
         }
     }
