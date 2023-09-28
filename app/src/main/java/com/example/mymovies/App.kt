@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.example.mymovies.data.local.database.AppDataBase
+import com.example.mymovies.data.remote.services.RetrofitApiServices
 
 class App : Application() {
 
@@ -12,6 +13,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        RetrofitApiServices.init(this)
         database = Room.databaseBuilder(
             this,
             AppDataBase::class.java,

@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.mymovies.R
 import com.example.mymovies.appContext
+import com.example.mymovies.data.errors.Error
 import com.example.mymovies.data.remote.apiurls.ApiUrlsManager
 import com.example.mymovies.data.repositories.MovieDetailsRepository
 import com.example.mymovies.databinding.FragmentMovieDetailsBinding
@@ -17,10 +18,13 @@ import com.example.mymovies.domain.usecases.BuildUrlMovieBackdropUseCase
 import com.example.mymovies.domain.usecases.GetMovieDetailsUseCase
 import com.example.mymovies.domain.usecases.SwitchMovieFavouriteUseCase
 import com.example.mymovies.ui.extensions.collectFlowWithDiffing
+import com.example.mymovies.ui.extensions.launchAndCollectFlow
 import com.example.mymovies.ui.extensions.loadImageFromUrl
 import com.example.mymovies.ui.extensions.viewLifecycleBinding
 import com.example.mymovies.ui.extensions.visible
 import com.example.mymovies.ui.viewmodels.MovieDetailsViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.flow.map
 
 
 class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
@@ -35,23 +39,26 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
             SwitchMovieFavouriteUseCase(MovieDetailsRepository(requireActivity().appContext))
         )
     }
+    private lateinit var movieDetailsState: MovieDetailsState
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        hookToUiState()
-        manageSwitchingFavourite()
+        movieDetailsState = buildMovieDetailsState()
+        handleUiStateChanges()
+        onFavouriteClicked()
     }
 
     private fun getMovieIdFromSafeArgs(): Long {
         return args.movieId
     }
 
-    private fun hookToUiState() {
-        manageLoadingUiState()
-        manageMoviesUiState()
+    private fun handleUiStateChanges() {
+        handleLoadingUiStateChanges()
+        handleMoviesUiStateChanges()
+        handleErrorUiStateChanges()
     }
 
-    private fun manageLoadingUiState() {
+    private fun handleLoadingUiStateChanges() {
         viewModel.uiState.collectFlowWithDiffing(
             viewLifecycleOwner,
             { it.isLoading },
@@ -59,7 +66,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         )
     }
 
-    private fun manageMoviesUiState() {
+    private fun handleMoviesUiStateChanges() {
         viewModel.uiState.collectFlowWithDiffing(
             viewLifecycleOwner,
             { it.movieDetails },
@@ -72,10 +79,16 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         )
     }
 
-    private fun manageSwitchingFavourite() {
-        binding.fabFavouriteMovieDetails.setOnClickListener {
-            viewModel.onFavouriteClicked()
-        }
+    private fun handleErrorUiStateChanges() {
+        viewLifecycleOwner.launchAndCollectFlow(
+            viewModel.uiState.map { it.error },
+            { error ->
+                error?.let {
+                    displayErrorMessage(it)
+                    viewModel.notifyErrorShown()
+                }
+            }
+        )
     }
 
     private fun displayMovieDetails(movieDetails: MovieDetails) {
@@ -129,11 +142,24 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         }
     }
 
+    private fun displayErrorMessage(error: Error) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setMessage(movieDetailsState.getErrorMessage(error))
+            .setPositiveButton(getString(R.string.default_positive_button_dialog), null)
+            .show()
+    }
+
     private fun displayFavourite(isFavourite: Boolean) {
         binding.fabFavouriteMovieDetails.imageTintList = if (isFavourite) {
             ColorStateList.valueOf(requireActivity().getColor(R.color.movie_favourite_on))
         } else {
             ColorStateList.valueOf(requireActivity().getColor(R.color.movie_favourite_off))
+        }
+    }
+
+    private fun onFavouriteClicked() {
+        binding.fabFavouriteMovieDetails.setOnClickListener {
+            viewModel.onFavouriteClicked()
         }
     }
 }

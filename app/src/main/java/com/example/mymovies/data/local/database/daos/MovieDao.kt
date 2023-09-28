@@ -8,26 +8,38 @@ import com.example.mymovies.data.local.database.entities.Movie
 import com.example.mymovies.data.local.database.entities.MovieGenre
 import com.example.mymovies.data.local.database.entities.MovieWithGenres
 import com.example.mymovies.data.local.database.entities.MoviesGenresCrossRef
+import com.example.mymovies.data.local.database.entities.MoviesPaginationInfo
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
 
     @Upsert
-    suspend fun saveMovies(movies: List<Movie>)
-
-    @Upsert
     suspend fun saveMovie(movie: Movie)
 
     @Upsert
-    suspend fun saveMovieGenres(movieGenre: List<MovieGenre>)
+    suspend fun saveMovies(movies: List<Movie>)
+
+    @Transaction
+    suspend fun savePaginatedMovies(movies: List<Movie>, moviesPaginationInfo: MoviesPaginationInfo) {
+        updateMoviesPaginationInfo(moviesPaginationInfo)
+        saveMovies(movies)
+    }
+
+    @Upsert
+    suspend fun updateMoviesPaginationInfo(moviesPaginationInfo: MoviesPaginationInfo)
+
+    @Query("SELECT * FROM movies_pagination_info")
+    suspend fun getMoviesPaginationInfo(): MoviesPaginationInfo?
+
+    @Upsert
+    suspend fun saveMovieGenres(movieGenres: List<MovieGenre>)
 
     @Upsert
     suspend fun saveMovieAndGenresRelation(movieWithGenres: List<MoviesGenresCrossRef>)
 
     @Transaction
-    suspend fun saveMovieDetailsWithGenres(movieDetailsWithGenres: MovieWithGenres) {
-        saveMovie(movieDetailsWithGenres.movie)
+    suspend fun saveMovieGenresAndRelation(movieDetailsWithGenres: MovieWithGenres) {
         saveMovieGenres(movieDetailsWithGenres.genres)
         saveMovieAndGenresRelation(
             movieDetailsWithGenres.genres.map {

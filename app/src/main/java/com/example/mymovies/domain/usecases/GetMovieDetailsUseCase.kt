@@ -1,5 +1,6 @@
 package com.example.mymovies.domain.usecases
 
+import com.example.mymovies.data.errors.Error
 import com.example.mymovies.data.repositories.MovieDetailsRepository
 import com.example.mymovies.domain.models.MovieDetails
 import kotlinx.coroutines.flow.Flow
@@ -22,7 +23,5 @@ class GetMovieDetailsUseCase(private val repository: MovieDetailsRepository, pri
         )
     }
 
-    suspend operator fun invoke() {
-        repository.findMovieDetailsById(movieId)
-    }
+    suspend operator fun invoke(): Error? = repository.findMovieDetailsById(movieId)
 }

@@ -27,6 +27,17 @@ data class Movie(
     @ColumnInfo(name = "favourite") val isFavourite: Boolean
 )
 
+/**
+ * This entity store the pagination info corresponding to the screen where paginated movies are displayed.
+ */
+@Entity(tableName = "movies_pagination_info")
+data class MoviesPaginationInfo(
+    @PrimaryKey val id: Int = 1,
+    @ColumnInfo(name = "last_page_loaded") val lastPageLoaded: Int,
+    @ColumnInfo(name = "total_pages") val totalPages: Int,
+    @ColumnInfo(name = "total_paginated_movies") val totalPaginatedMovies: Int
+)
+
 @Entity(tableName = "movie_genres")
 data class MovieGenre(
     @PrimaryKey val id: Int,
@@ -59,7 +70,7 @@ data class MoviesGenresCrossRef(
 )
 
 /**
- * This class manage the Many to Many relationship between the LocalMovie and LocalMovieGenre entities
+ * This class manage the Many-to-Many relationship between the LocalMovie and LocalMovieGenre entities
  */
 data class MovieWithGenres(
     @Embedded val movie: Movie,

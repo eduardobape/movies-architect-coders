@@ -22,7 +22,7 @@ class PaginatedMoviesMainAdapter(val onClickItem: (Long) -> Unit) :
         basicDiffUtilForAdapter { oldMovieItem, newMovieItem -> oldMovieItem.id == newMovieItem.id }
     ) {
 
-    private var onClickMovieActivated: Boolean = true
+    var onClickMovieActivated: Boolean = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val itemView =
@@ -34,8 +34,8 @@ class PaginatedMoviesMainAdapter(val onClickItem: (Long) -> Unit) :
         holder.bind(getItem(position))
     }
 
-    fun changeActivationOnClickMovie(enable: Boolean) {
-        onClickMovieActivated = enable
+    fun changeActivationOnClickMovie(activated: Boolean) {
+        onClickMovieActivated = activated
     }
 
     inner class MovieViewHolder(itemView: View) : ViewHolder(itemView) {

@@ -11,4 +11,20 @@
     <string name="movie_no_overview">Esta película no tiene descripción</string>
     <string name="movie_id_intent_error">No se pudo obtener el identificador de la película</string>
     <string name="description_favourite_movie_details">Botón para marcar o desmarcar como favorita la película mostrada en pantalla</string>
+
+    <string name="error_internet_connection_paginated_movies">You don\'t have Internet connection to fetch movies</string>
+    <string name="error_database_paginated_movies">Sorry, there was an error loading movies</string>
+    <string name="error_webservice_fetch_paginated_movies">Sorry, there was an error fetching new movies with a %1$s error code</string>
+    <string name="error_unexpected_paginated_movies">Sorry, an unexpected error happened fetching movies</string>
+
+    <string name="error_internet_connection_movie_details">You don\'t have Internet connection to fetch the movie details</string>
+    <string name="error_database_movie_details">Sorry, there was an error loading the movie details</string>
+    <string name="error_webservice_fetch_movie_details">Sorry, there was an error fetching the movie details with a %1$s error code</string>
+    <string name="error_unexpected_movie_details">Sorry, an unexpected error happened fetching the movie details</string>
+    <string name="error_saving_movie_as_favourite_database">Error saving movie as favourite. Try again, please</string>
+
+    <string name="try_again">Would you like to try again?</string>
+    <string name="try_again_button_dialog">Try again</string>
+    <string name="default_positive_button_dialog">OK</string>
+    <string name="default_negative_button_dialog">No</string>
 </resources>

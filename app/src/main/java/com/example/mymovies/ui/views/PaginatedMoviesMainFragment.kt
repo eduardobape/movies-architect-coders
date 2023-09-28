@@ -9,13 +9,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovies.R
 import com.example.mymovies.appContext
+import com.example.mymovies.data.errors.Error
 import com.example.mymovies.data.repositories.PaginatedMoviesRepository
 import com.example.mymovies.databinding.FragmentPaginatedMoviesMainBinding
 import com.example.mymovies.domain.usecases.GetPaginatedMoviesMainUseCase
 import com.example.mymovies.ui.extensions.collectFlowWithDiffing
+import com.example.mymovies.ui.extensions.launchAndCollectFlow
 import com.example.mymovies.ui.extensions.viewLifecycleBinding
 import com.example.mymovies.ui.extensions.visible
 import com.example.mymovies.ui.viewmodels.PaginatedMoviesMainViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.flow.map
 
 class PaginatedMoviesMainFragment : Fragment(R.layout.fragment_paginated_movies_main) {
 
@@ -38,7 +42,7 @@ class PaginatedMoviesMainFragment : Fragment(R.layout.fragment_paginated_movies_
         super.onViewCreated(view, savedInstanceState)
         paginatedMoviesMainState = buildPaginatedMoviesMainState()
         configMoviesAdapter()
-        hookToUiState()
+        handleUiStateChanges()
         onScrollMovies()
     }
 
@@ -58,18 +62,55 @@ class PaginatedMoviesMainFragment : Fragment(R.layout.fragment_paginated_movies_
         }
     }
 
-    private fun hookToUiState() {
-        with(viewModel.uiState) {
-            collectFlowWithDiffing(
-                viewLifecycleOwner,
-                { uiState -> uiState.isLoading },
-                { isVisible ->
-                    binding.pbMoviesList.visible = isVisible
-                    moviesAdapter.changeActivationOnClickMovie(!isVisible)
+    private fun handleUiStateChanges() {
+        handleLoadingUiStateChanges()
+        handleMovieInfoUiStateChanges()
+        handleErrorUiStateChanges()
+    }
+
+    private fun handleLoadingUiStateChanges() {
+        viewModel.uiState.collectFlowWithDiffing(
+            viewLifecycleOwner,
+            { uiState -> uiState.isLoading },
+            { isVisible ->
+                binding.pbMoviesList.visible = isVisible
+                moviesAdapter.changeActivationOnClickMovie(!isVisible)
+            }
+        )
+    }
+
+    private fun handleMovieInfoUiStateChanges() {
+        viewModel.uiState.collectFlowWithDiffing(
+            viewLifecycleOwner,
+            { uiState -> uiState.movies },
+            { moviesAdapter.submitList(it) }
+        )
+    }
+
+    private fun handleErrorUiStateChanges() {
+        viewLifecycleOwner.launchAndCollectFlow(
+            viewModel.uiState.map { it.error },
+            { error ->
+                error?.let {
+                    moviesAdapter.changeActivationOnClickMovie(false)
+                    displayError(it)
+                    viewModel.notifyErrorShown()
                 }
-            )
-            collectFlowWithDiffing(viewLifecycleOwner, { uiState -> uiState.movies }, { moviesAdapter.submitList(it) })
-        }
+            }
+        )
+    }
+
+    private fun displayError(error: Error) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setMessage("${paginatedMoviesMainState.getErrorMessage(error)}\n${getString(R.string.try_again)}")
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.try_again_button_dialog)) { _, _ ->
+                viewModel.fetchPaginatedMovies()
+            }
+            .setNegativeButton(getString(R.string.default_negative_button_dialog)) { _, _ ->
+                moviesAdapter.changeActivationOnClickMovie(true)
+            }
+            .show()
     }
 
     private fun onScrollMovies() {
