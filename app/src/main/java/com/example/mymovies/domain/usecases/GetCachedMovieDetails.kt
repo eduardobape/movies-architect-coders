@@ -1,14 +1,13 @@
 package com.example.mymovies.domain.usecases
 
-import com.example.mymovies.data.errors.Error
 import com.example.mymovies.data.repositories.MovieDetailsRepository
 import com.example.mymovies.domain.models.MovieDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class GetMovieDetailsUseCase(private val repository: MovieDetailsRepository, private val movieId: Long) {
+class GetCachedMovieDetails(private val repository: MovieDetailsRepository) {
 
-    val movieDetailsWithGenres: Flow<MovieDetails> = repository.getMovieDetailsWithGenres(movieId).map {
+    operator fun invoke(movieId: Long): Flow<MovieDetails> = repository.getMovieDetailsWithGenres(movieId).map {
         MovieDetails(
             it.movie.id,
             it.movie.title,
@@ -22,6 +21,4 @@ class GetMovieDetailsUseCase(private val repository: MovieDetailsRepository, pri
             it.movie.isFavourite
         )
     }
-
-    suspend operator fun invoke(): Error? = repository.findMovieDetailsById(movieId)
 }

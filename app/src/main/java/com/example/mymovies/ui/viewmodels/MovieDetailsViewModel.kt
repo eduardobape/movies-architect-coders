@@ -5,7 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.mymovies.data.errors.Error
 import com.example.mymovies.data.errors.toError
-import com.example.mymovies.domain.usecases.GetMovieDetailsUseCase
+import com.example.mymovies.domain.usecases.GetCachedMovieDetails
+import com.example.mymovies.domain.usecases.RequestMovieDetailsUseCase
 import com.example.mymovies.domain.usecases.SwitchMovieFavouriteUseCase
 import com.example.mymovies.ui.views.MovieDetailsUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +17,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MovieDetailsViewModel(
-    private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
+    private val movieId: Long,
+    private val requestMovieDetailsUseCase: RequestMovieDetailsUseCase,
+    private val getCachedMovieDetails: GetCachedMovieDetails,
     private val switchMovieFavouriteUseCase: SwitchMovieFavouriteUseCase
 ) : ViewModel() {
 
@@ -30,7 +33,7 @@ class MovieDetailsViewModel(
 
     private fun collectMovieDetails() {
         viewModelScope.launch {
-            getMovieDetailsUseCase.movieDetailsWithGenres
+            getCachedMovieDetails(movieId)
                 .catch { exception ->
                     _uiState.update {
                         it.copy(isLoading = false, error = exception.toError())
@@ -49,7 +52,7 @@ class MovieDetailsViewModel(
             _uiState.update {
                 it.copy(isLoading = true)
             }
-            val error: Error? = getMovieDetailsUseCase()
+            val error: Error? = requestMovieDetailsUseCase(movieId)
             error?.let {
                 _uiState.update {
                     it.copy(isLoading = false, error = error)
@@ -81,11 +84,18 @@ class MovieDetailsViewModel(
     }
 
     class Factory(
-        private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
+        private val movieId: Long,
+        private val requestMovieDetailsUseCase: RequestMovieDetailsUseCase,
+        private val getCachedMovieDetails: GetCachedMovieDetails,
         private val switchMovieFavouriteUseCase: SwitchMovieFavouriteUseCase
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T =
-            MovieDetailsViewModel(getMovieDetailsUseCase, switchMovieFavouriteUseCase) as T
+            MovieDetailsViewModel(
+                movieId,
+                requestMovieDetailsUseCase,
+                getCachedMovieDetails,
+                switchMovieFavouriteUseCase
+            ) as T
     }
 }

@@ -12,7 +12,8 @@ import com.example.mymovies.appContext
 import com.example.mymovies.data.errors.Error
 import com.example.mymovies.data.repositories.PaginatedMoviesRepository
 import com.example.mymovies.databinding.FragmentPaginatedMoviesMainBinding
-import com.example.mymovies.domain.usecases.GetPaginatedMoviesMainUseCase
+import com.example.mymovies.domain.usecases.GetCachedPaginatedMoviesUseCase
+import com.example.mymovies.domain.usecases.RequestMoviesPageUseCase
 import com.example.mymovies.ui.extensions.collectFlowWithDiffing
 import com.example.mymovies.ui.extensions.launchAndCollectFlow
 import com.example.mymovies.ui.extensions.viewLifecycleBinding
@@ -33,8 +34,11 @@ class PaginatedMoviesMainFragment : Fragment(R.layout.fragment_paginated_movies_
     private lateinit var moviesAdapter: PaginatedMoviesMainAdapter
     private lateinit var paginatedMoviesMainState: PaginatedMoviesMainState
     private val viewModel by viewModels<PaginatedMoviesMainViewModel> {
-        val paginatedMoviesRepository = PaginatedMoviesRepository(requireContext().appContext)
-        PaginatedMoviesMainViewModel.Factory(GetPaginatedMoviesMainUseCase(paginatedMoviesRepository))
+        val repository = PaginatedMoviesRepository(requireContext().appContext)
+        PaginatedMoviesMainViewModel.Factory(
+            RequestMoviesPageUseCase(repository),
+            GetCachedPaginatedMoviesUseCase(repository)
+        )
     }
     private val numColumnsMoviesList = 2
 

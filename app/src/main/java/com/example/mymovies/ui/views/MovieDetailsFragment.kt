@@ -15,7 +15,8 @@ import com.example.mymovies.data.repositories.MovieDetailsRepository
 import com.example.mymovies.databinding.FragmentMovieDetailsBinding
 import com.example.mymovies.domain.models.MovieDetails
 import com.example.mymovies.domain.usecases.BuildUrlMovieBackdropUseCase
-import com.example.mymovies.domain.usecases.GetMovieDetailsUseCase
+import com.example.mymovies.domain.usecases.GetCachedMovieDetails
+import com.example.mymovies.domain.usecases.RequestMovieDetailsUseCase
 import com.example.mymovies.domain.usecases.SwitchMovieFavouriteUseCase
 import com.example.mymovies.ui.extensions.collectFlowWithDiffing
 import com.example.mymovies.ui.extensions.launchAndCollectFlow
@@ -34,9 +35,12 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     }
     private val args: MovieDetailsFragmentArgs by navArgs()
     private val viewModel by viewModels<MovieDetailsViewModel> {
+        val repository = MovieDetailsRepository(requireActivity().appContext)
         MovieDetailsViewModel.Factory(
-            GetMovieDetailsUseCase(MovieDetailsRepository(requireActivity().appContext), getMovieIdFromSafeArgs()),
-            SwitchMovieFavouriteUseCase(MovieDetailsRepository(requireActivity().appContext))
+            getMovieIdFromSafeArgs(),
+            RequestMovieDetailsUseCase(repository),
+            GetCachedMovieDetails(repository),
+            SwitchMovieFavouriteUseCase(repository)
         )
     }
     private lateinit var movieDetailsState: MovieDetailsState
