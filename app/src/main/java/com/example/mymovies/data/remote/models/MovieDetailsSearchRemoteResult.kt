@@ -1,10 +1,9 @@
 package com.example.mymovies.data.remote.models
 
-import com.example.mymovies.data.local.database.entities.Movie
-import com.example.mymovies.data.local.database.entities.MovieGenre
-import com.example.mymovies.data.local.database.entities.MovieWithGenres
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.example.mymovies.data.local.models.Movie
+import com.example.mymovies.data.local.models.MovieGenre
 
 @JsonClass(generateAdapter = true)
 data class MovieDetailsSearchRemoteResult(
@@ -71,25 +70,23 @@ data class MovieLanguage(
 
 )
 
-fun MovieDetailsSearchRemoteResult.toDatabaseMovieModel(): MovieWithGenres = MovieWithGenres(
-    Movie(
-        id,
-        backdropUrlPath,
-        posterUrlPath,
-        budget,
-        originalLanguage,
-        originalTitle,
-        overview,
-        popularity,
-        releaseDate,
-        revenue,
-        runningTime,
-        translatedTitle,
-        voteAverage,
-        voteCount,
-        isFavourite = false
-    ),
-    genres.map { it.toDatabaseGenreModel() }
+fun MovieDetailsSearchRemoteResult.toMovieLocalModel(): Movie = Movie(
+    id,
+    backdropUrlPath,
+    posterUrlPath,
+    budget,
+    originalLanguage,
+    originalTitle,
+    overview,
+    popularity,
+    releaseDate,
+    revenue,
+    runningTime,
+    translatedTitle,
+    voteAverage,
+    voteCount,
+    genres.map { it.toMovieGenreLocalModel() },
+    isFavourite = false
 )
 
-fun MovieGenreRemote.toDatabaseGenreModel(): MovieGenre = MovieGenre(id, name)
+fun MovieGenreRemote.toMovieGenreLocalModel(): MovieGenre = MovieGenre(id, name)

@@ -7,7 +7,7 @@ import com.example.mymovies.data.errors.Error
 import com.example.mymovies.data.errors.toError
 import com.example.mymovies.data.local.database.entities.MovieWithGenres
 import com.example.mymovies.data.remote.models.MovieDetailsSearchRemoteResult
-import com.example.mymovies.data.remote.models.toDatabaseMovieModel
+import com.example.mymovies.data.remote.models.toMovieLocalModel
 import com.example.mymovies.data.remote.services.MoviesApiServices
 import com.example.mymovies.data.remote.services.RetrofitApiServices
 import kotlinx.coroutines.flow.Flow
@@ -25,7 +25,10 @@ class MovieDetailsRepository(app: App) {
         return runCatching {
             val movieDetailsRemoteResult: MovieDetailsSearchRemoteResult =
                 moviesRemoteDataSource.fetchMovieDetailsById(movieId)
-            moviesLocalDataSource.saveMovieDetailsWithGenres(movieDetailsRemoteResult.toDatabaseMovieModel())
+            val isMovieFavourite = moviesLocalDataSource.isMovieFlaggedAsFavourite(movieId)
+            moviesLocalDataSource.saveMovieDetailsWithGenres(
+                movieDetailsRemoteResult.toMovieLocalModel().copy(isFavourite = isMovieFavourite)
+            )
         }.fold(
             { null }
         ) { exception -> exception.toError() }

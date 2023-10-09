@@ -39,11 +39,11 @@ interface MovieDao {
     suspend fun saveMovieAndGenresRelation(movieWithGenres: List<MoviesGenresCrossRef>)
 
     @Transaction
-    suspend fun saveMovieGenresAndRelation(movieDetailsWithGenres: MovieWithGenres) {
-        saveMovieGenres(movieDetailsWithGenres.genres)
+    suspend fun saveMovieGenresAndRelation(movieId: Long, movieGenres: List<MovieGenre>) {
+        saveMovieGenres(movieGenres)
         saveMovieAndGenresRelation(
-            movieDetailsWithGenres.genres.map {
-                MoviesGenresCrossRef(movieDetailsWithGenres.movie.id, it.id)
+            movieGenres.map {
+                MoviesGenresCrossRef(movieId, it.id)
             }
         )
     }
@@ -57,4 +57,7 @@ interface MovieDao {
 
     @Query("UPDATE movies SET favourite = :toFavourite WHERE id = :movieId")
     suspend fun switchMovieFavourite(movieId: Long, toFavourite: Boolean)
+
+    @Query("SELECT favourite FROM movies WHERE id = :movieId")
+    suspend fun isMovieFlaggedAsFavourite(movieId: Long): Boolean
 }
