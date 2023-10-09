@@ -33,9 +33,9 @@ interface MovieDao {
     suspend fun getMoviesPaginationInfo(): MoviesPaginationInfo?
 
     @Transaction
-    suspend fun saveGenresOfMovie(movieId: Long, movieGenres: List<MovieGenre>) {
+    suspend fun saveMovieGenresAndRelationship(movieId: Long, movieGenres: List<MovieGenre>) {
         saveMovieGenres(movieGenres)
-        saveMovieAndGenresRelation(
+        saveMoviesAndGenresRelation(
             movieGenres.map {
                 MoviesGenresCrossRef(movieId, it.id)
             }
@@ -46,7 +46,7 @@ interface MovieDao {
     suspend fun saveMovieGenres(movieGenres: List<MovieGenre>)
 
     @Upsert
-    suspend fun saveMovieAndGenresRelation(movieWithGenres: List<MoviesGenresCrossRef>)
+    suspend fun saveMoviesAndGenresRelation(movieWithGenres: List<MoviesGenresCrossRef>)
 
     @Query("SELECT * FROM movies ORDER BY popularity DESC")
     fun findPopularMovies(): Flow<List<Movie>>
@@ -56,7 +56,7 @@ interface MovieDao {
     fun findMovie(movieId: Long): Flow<MovieWithGenres>
 
     @Query("UPDATE movies SET favourite = :toFavourite WHERE id = :movieId")
-    suspend fun switchMovieFavourite(movieId: Long, toFavourite: Boolean)
+    suspend fun switchFavouriteFlagOfMovie(movieId: Long, toFavourite: Boolean)
 
     @Query("SELECT favourite FROM movies WHERE id = :movieId")
     suspend fun isMovieFlaggedAsFavourite(movieId: Long): Boolean
