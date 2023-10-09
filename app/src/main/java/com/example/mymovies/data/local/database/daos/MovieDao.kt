@@ -53,7 +53,7 @@ interface MovieDao {
 
     @Transaction
     @Query("SELECT * FROM movies WHERE id = :movieId")
-    fun findMovieWithGenres(movieId: Long): Flow<MovieWithGenres>
+    fun findMovie(movieId: Long): Flow<MovieWithGenres>
 
     @Query("UPDATE movies SET favourite = :toFavourite WHERE id = :movieId")
     suspend fun switchMovieFavourite(movieId: Long, toFavourite: Boolean)
