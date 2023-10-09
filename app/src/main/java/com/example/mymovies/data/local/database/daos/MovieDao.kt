@@ -39,7 +39,7 @@ interface MovieDao {
     suspend fun saveMovieAndGenresRelation(movieWithGenres: List<MoviesGenresCrossRef>)
 
     @Transaction
-    suspend fun saveMovieGenresAndRelation(movieId: Long, movieGenres: List<MovieGenre>) {
+    suspend fun saveGenresOfMovie(movieId: Long, movieGenres: List<MovieGenre>) {
         saveMovieGenres(movieGenres)
         saveMovieAndGenresRelation(
             movieGenres.map {

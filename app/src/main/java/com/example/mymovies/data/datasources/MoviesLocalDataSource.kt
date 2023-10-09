@@ -25,7 +25,7 @@ class MoviesLocalDataSource(private val movieDao: MovieDao) {
 
     suspend fun saveMovieDetailsWithGenres(movie: MovieLocalModel) {
         movieDao.saveMovie(movie.toMovieModelDatabase())
-        movieDao.saveMovieGenresAndRelation(movie.id, movie.genres.map { it.toMovieGenreModelDatabase() })
+        movieDao.saveGenresOfMovie(movie.id, movie.genres.map { it.toMovieGenreModelDatabase() })
     }
 
     fun getMovieWithGenres(movieId: Long): Flow<MovieWithGenres> = movieDao.findMovie(movieId)
