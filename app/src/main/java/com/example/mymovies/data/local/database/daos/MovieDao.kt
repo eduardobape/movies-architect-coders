@@ -32,12 +32,6 @@ interface MovieDao {
     @Query("SELECT * FROM movies_pagination_info")
     suspend fun getMoviesPaginationInfo(): MoviesPaginationInfo?
 
-    @Upsert
-    suspend fun saveMovieGenres(movieGenres: List<MovieGenre>)
-
-    @Upsert
-    suspend fun saveMovieAndGenresRelation(movieWithGenres: List<MoviesGenresCrossRef>)
-
     @Transaction
     suspend fun saveGenresOfMovie(movieId: Long, movieGenres: List<MovieGenre>) {
         saveMovieGenres(movieGenres)
@@ -47,6 +41,12 @@ interface MovieDao {
             }
         )
     }
+
+    @Upsert
+    suspend fun saveMovieGenres(movieGenres: List<MovieGenre>)
+
+    @Upsert
+    suspend fun saveMovieAndGenresRelation(movieWithGenres: List<MoviesGenresCrossRef>)
 
     @Query("SELECT * FROM movies ORDER BY popularity DESC")
     fun findPopularMovies(): Flow<List<Movie>>
