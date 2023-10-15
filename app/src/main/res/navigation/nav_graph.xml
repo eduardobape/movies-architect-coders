@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainDest"
-        android:name="com.example.mymovies.ui.views.PaginatedMoviesMainFragment"
+        android:name="com.example.mymovies.ui.paginatedmovies.PaginatedMoviesMainFragment"
         android:label="@string/toolbar_title_popular_movies"
         tools:layout="@layout/fragment_paginated_movies_main" >
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/movieDetailsDest"
-        android:name="com.example.mymovies.ui.views.MovieDetailsFragment"
+        android:name="com.example.mymovies.ui.moviedetails.MovieDetailsFragment"
         android:label="@string/toolbar_title_movie_details"
         tools:layout="@layout/fragment_movie_details" >
         <argument

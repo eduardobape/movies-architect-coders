@@ -1,23 +1,13 @@
 package com.example.mymovies.data.datasources
 
-import com.example.mymovies.data.remote.models.MovieDetailsSearchRemoteResult
-import com.example.mymovies.data.remote.models.PaginatedMoviesSearchRemoteResult
-import com.example.mymovies.data.remote.services.MoviesSearchApiService
-import com.example.mymovies.ui.models.MoviesSearchFilters
-import java.util.Locale
+import com.example.mymovies.domain.Movie
+import com.example.mymovies.domain.MovieImageSize
+import com.example.mymovies.domain.MoviesSearchFilters
+import com.example.mymovies.domain.PaginatedMovies
 
-class MoviesRemoteDataSource(private val moviesSearchApiService: MoviesSearchApiService) {
+interface MoviesRemoteDataSource {
 
-    suspend fun findPopularMovies(
-        moviesSearchFilters: MoviesSearchFilters, pageToFetch: Int
-    ): PaginatedMoviesSearchRemoteResult =
-        moviesSearchApiService.findPopularMovies(
-            moviesSearchFilters.region,
-            moviesSearchFilters.language,
-            pageToFetch
-        )
-
-    suspend fun fetchMovieDetailsById(movieId: Long): MovieDetailsSearchRemoteResult {
-        return moviesSearchApiService.fetchMovieDetails(movieId, Locale.getDefault().language)
-    }
+    suspend fun requestPaginatedMovies(moviesSearchFilters: MoviesSearchFilters, pageToFetch: Int): PaginatedMovies
+    suspend fun requestMovieDetails(movieId: Long): Movie
+    fun buildUrlMovieImage(movieImageRelativePathUrl: String, imageSize: MovieImageSize): String
 }

@@ -3,8 +3,8 @@ package com.example.mymovies
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
-import com.example.mymovies.data.local.database.AppDataBase
-import com.example.mymovies.data.remote.services.RetrofitApiServices
+import com.example.mymovies.framework.database.AppDataBase
+import com.example.mymovies.framework.webservice.RemoteConnection
 
 class App : Application() {
 
@@ -13,7 +13,7 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        RetrofitApiServices.init(this)
+        RemoteConnection.init(this)
         database = Room.databaseBuilder(
             this,
             AppDataBase::class.java,
