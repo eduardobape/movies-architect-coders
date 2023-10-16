@@ -9,7 +9,6 @@ import com.example.mymovies.framework.database.entities.toMoviesPaginationInfoDa
 import com.example.mymovies.framework.database.daos.MovieDao
 import com.example.mymovies.framework.database.entities.MovieWithGenres
 import com.example.mymovies.framework.database.entities.toDomainModel
-import com.example.mymovies.framework.errors.FavouriteMovieSQLException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

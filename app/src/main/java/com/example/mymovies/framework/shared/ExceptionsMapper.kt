@@ -1,9 +1,10 @@
-package com.example.mymovies.framework.errors
+package com.example.mymovies.framework.shared
 
 import android.database.sqlite.SQLiteException
 import com.example.mymovies.domain.Error
+import com.example.mymovies.framework.database.FavouriteMovieSQLException
+import com.example.mymovies.framework.webservice.NoInternetConnectionException
 import retrofit2.HttpException
-import java.io.IOException
 
 fun Throwable.toError(): Error =
     when (this) {
@@ -13,7 +14,3 @@ fun Throwable.toError(): Error =
         is FavouriteMovieSQLException -> Error.FavouriteMovieDatabase
         else -> Error.Unknown(message ?: "")
     }
-
-class NoInternetConnectionException(message: String) : IOException(message)
-
-class FavouriteMovieSQLException : Exception()
