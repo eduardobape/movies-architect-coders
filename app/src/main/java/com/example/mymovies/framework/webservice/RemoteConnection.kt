@@ -3,7 +3,6 @@ package com.example.mymovies.framework.webservice
 import com.example.mymovies.App
 import com.example.mymovies.BuildConfig
 import com.example.mymovies.appContext
-import com.example.mymovies.framework.shared.NetworkChecker
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory

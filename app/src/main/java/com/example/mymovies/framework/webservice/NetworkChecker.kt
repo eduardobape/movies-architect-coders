@@ -1,4 +1,4 @@
-package com.example.mymovies.framework.shared
+package com.example.mymovies.framework.webservice
 
 import android.content.Context
 import android.net.ConnectivityManager
