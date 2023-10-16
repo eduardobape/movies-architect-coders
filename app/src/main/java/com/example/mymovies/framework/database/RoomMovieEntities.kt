@@ -7,9 +7,6 @@ import androidx.room.ForeignKey
 import androidx.room.Junction
 import androidx.room.PrimaryKey
 import androidx.room.Relation
-import com.example.mymovies.domain.ItemsPaginationInfo
-import com.example.mymovies.domain.Movie as MovieDomainModel
-import com.example.mymovies.domain.MovieGenre as MovieGenreDomainModel
 
 @Entity(tableName = "movies")
 data class Movie(
@@ -89,61 +86,3 @@ data class MovieWithGenres(
     )
     val genres: List<MovieGenre>
 )
-
-fun Movie.toDomainModel(): MovieDomainModel =
-    MovieDomainModel(
-        id,
-        backdropPathUrl,
-        posterPathUrl,
-        budget,
-        originalLanguage,
-        originalTitle,
-        overview,
-        popularity,
-        releaseDate,
-        revenue,
-        runningTime,
-        localTitle,
-        voteAverage,
-        voteCount,
-        emptyList(),
-        isFavourite
-    )
-
-fun MovieDomainModel.toDatabaseModel(): Movie =
-    Movie(
-        id,
-        backdropImageRelativePath,
-        posterImageRelativePath,
-        budget,
-        originalLanguage,
-        originalTitle,
-        overview,
-        popularity,
-        releaseDate,
-        revenue,
-        runningTime,
-        localTitle,
-        voteAverage,
-        voteCount,
-        isFavourite
-    )
-
-fun MovieGenre.toDomainModel(): MovieGenreDomainModel =
-    MovieGenreDomainModel(id, name)
-
-fun MovieGenreDomainModel.toDatabaseModel(): MovieGenre = MovieGenre(id, name)
-
-fun MoviesPaginationInfo.toDomainModel(): ItemsPaginationInfo =
-    ItemsPaginationInfo(
-        lastPageLoaded,
-        totalPages,
-        totalMovies
-    )
-
-fun ItemsPaginationInfo.toMoviesPaginationInfoDatabaseModel(): MoviesPaginationInfo =
-    MoviesPaginationInfo(
-        lastPageLoaded = lastPageLoaded,
-        totalPages = totalPages,
-        totalMovies = totalItems
-    )

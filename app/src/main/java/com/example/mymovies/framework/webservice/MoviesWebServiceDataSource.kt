@@ -5,8 +5,6 @@ import com.example.mymovies.domain.Movie
 import com.example.mymovies.domain.MovieImageSize
 import com.example.mymovies.domain.MoviesSearchFilters
 import com.example.mymovies.domain.PaginatedMovies
-import com.example.mymovies.framework.webservice.responses.toDomainModel
-import com.example.mymovies.framework.webservice.responses.toMovieDomainModel
 import java.util.Locale
 
 class MoviesWebServiceDataSource(private val moviesSearchApiService: MoviesSearchApiService) : MoviesRemoteDataSource {
@@ -26,7 +24,7 @@ class MoviesWebServiceDataSource(private val moviesSearchApiService: MoviesSearc
         ).toDomainModel()
 
     override suspend fun requestMovieDetails(movieId: Long): Movie =
-        moviesSearchApiService.fetchMovieDetails(movieId, Locale.getDefault().language).toMovieDomainModel()
+        moviesSearchApiService.fetchMovieDetails(movieId, Locale.getDefault().language).toDomainModel()
 
     override fun buildUrlMovieImage(movieImageRelativePathUrl: String, imageSize: MovieImageSize): String {
         return "$imageBaseUrl${imageSize.width}$movieImageRelativePathUrl"

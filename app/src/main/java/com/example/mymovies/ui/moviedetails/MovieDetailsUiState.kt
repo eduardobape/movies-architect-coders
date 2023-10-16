@@ -1,7 +1,6 @@
 package com.example.mymovies.ui.moviedetails
 
 import com.example.mymovies.domain.Error
-import com.example.mymovies.domain.Movie
 import com.example.mymovies.domain.MovieGenre
 
 data class MovieDetailsUiState(
@@ -25,17 +24,3 @@ data class MovieDetailsUiModel(
 
 fun MovieDetailsUiModel.hasBackdropImageUrl(): Boolean =
     backdropImageUrl != null
-
-fun Movie.toMovieDetailsUiModel(): MovieDetailsUiModel =
-    MovieDetailsUiModel(
-        id,
-        localTitle,
-        originalTitle,
-        overview,
-        releaseDate,
-        genres,
-        voteAverage,
-        posterImageRelativePath,
-        backdropImageRelativePath,
-        isFavourite
-    )

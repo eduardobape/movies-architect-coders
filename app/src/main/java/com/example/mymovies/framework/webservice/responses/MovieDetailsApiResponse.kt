@@ -1,7 +1,5 @@
 package com.example.mymovies.framework.webservice.responses
 
-import com.example.mymovies.domain.Movie
-import com.example.mymovies.domain.MovieGenre
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -69,25 +67,3 @@ data class MovieLanguage(
     @Json(name = "name") val name: String
 
 )
-
-fun MovieDetailsSearchRemoteResult.toMovieDomainModel(): Movie =
-    Movie(
-        id,
-        backdropImageRelativePath,
-        posterImageRelativePath,
-        budget,
-        originalLanguage,
-        originalTitle,
-        overview,
-        popularity,
-        releaseDate,
-        revenue,
-        runningTime,
-        localTitle,
-        voteAverage,
-        voteCount,
-        genres.map { it.toMovieGenreDomainModel() },
-        isFavourite = false
-    )
-
-fun MovieGenreRemote.toMovieGenreDomainModel(): MovieGenre = MovieGenre(id, name)
