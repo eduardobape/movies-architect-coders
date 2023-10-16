@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovies.R
 import com.example.mymovies.appContext
-import com.example.mymovies.data.repositories.MoviesRepository
+import com.example.mymovies.data.MoviesRepository
 import com.example.mymovies.databinding.FragmentPaginatedMoviesMainBinding
 import com.example.mymovies.domain.Error
 import com.example.mymovies.domain.MovieImageSize

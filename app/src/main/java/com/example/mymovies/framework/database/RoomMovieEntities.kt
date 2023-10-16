@@ -1,4 +1,4 @@
-package com.example.mymovies.framework.database.entities
+package com.example.mymovies.framework.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded

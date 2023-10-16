@@ -1,14 +1,9 @@
-package com.example.mymovies.framework.database.daos
+package com.example.mymovies.framework.database
 
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
-import com.example.mymovies.framework.database.entities.Movie
-import com.example.mymovies.framework.database.entities.MovieGenre
-import com.example.mymovies.framework.database.entities.MovieWithGenres
-import com.example.mymovies.framework.database.entities.MoviesGenresCrossRef
-import com.example.mymovies.framework.database.entities.MoviesPaginationInfo
 import kotlinx.coroutines.flow.Flow
 
 @Dao

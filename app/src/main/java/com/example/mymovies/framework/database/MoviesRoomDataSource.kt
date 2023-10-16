@@ -4,11 +4,6 @@ import com.example.mymovies.data.datasources.MoviesLocalDataSource
 import com.example.mymovies.domain.ItemsPaginationInfo
 import com.example.mymovies.domain.Movie
 import com.example.mymovies.domain.PaginatedMovies
-import com.example.mymovies.framework.database.entities.toDatabaseModel
-import com.example.mymovies.framework.database.entities.toMoviesPaginationInfoDatabaseModel
-import com.example.mymovies.framework.database.daos.MovieDao
-import com.example.mymovies.framework.database.entities.MovieWithGenres
-import com.example.mymovies.framework.database.entities.toDomainModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

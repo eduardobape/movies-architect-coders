@@ -7,7 +7,6 @@ import com.example.mymovies.domain.MoviesSearchFilters
 import com.example.mymovies.domain.PaginatedMovies
 import com.example.mymovies.framework.webservice.responses.toDomainModel
 import com.example.mymovies.framework.webservice.responses.toMovieDomainModel
-import com.example.mymovies.framework.webservice.services.MoviesSearchApiService
 import java.util.Locale
 
 class MoviesWebServiceDataSource(private val moviesSearchApiService: MoviesSearchApiService) : MoviesRemoteDataSource {

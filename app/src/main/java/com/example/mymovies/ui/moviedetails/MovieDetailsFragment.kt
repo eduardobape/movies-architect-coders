@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.mymovies.R
 import com.example.mymovies.appContext
-import com.example.mymovies.data.repositories.MoviesRepository
+import com.example.mymovies.data.MoviesRepository
 import com.example.mymovies.databinding.FragmentMovieDetailsBinding
 import com.example.mymovies.domain.Error
 import com.example.mymovies.domain.MovieGenre

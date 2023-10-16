@@ -1,6 +1,6 @@
 package com.example.mymovies.usecases
 
-import com.example.mymovies.data.repositories.MoviesRepository
+import com.example.mymovies.data.MoviesRepository
 import com.example.mymovies.domain.Error
 import com.example.mymovies.domain.MoviesSearchFilters
 

@@ -1,4 +1,4 @@
-package com.example.mymovies.framework.webservice.services
+package com.example.mymovies.framework.webservice
 
 import com.example.mymovies.domain.MoviesSortFields
 import com.example.mymovies.framework.webservice.responses.MovieDetailsSearchRemoteResult

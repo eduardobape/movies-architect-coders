@@ -1,4 +1,4 @@
-package com.example.mymovies.data.repositories
+package com.example.mymovies.data
 
 import com.example.mymovies.data.datasources.MoviesLocalDataSource
 import com.example.mymovies.data.datasources.MoviesRemoteDataSource
