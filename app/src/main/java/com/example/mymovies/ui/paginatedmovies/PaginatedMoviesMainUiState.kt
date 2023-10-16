@@ -2,6 +2,7 @@ package com.example.mymovies.ui.paginatedmovies
 
 import com.example.mymovies.domain.Error
 import com.example.mymovies.domain.ItemsPaginationInfo
+import com.example.mymovies.domain.Movie
 import com.example.mymovies.domain.MoviesSearchFilters
 
 data class PaginatedMoviesMainUiState(
@@ -22,3 +23,11 @@ data class PaginatedMovieUiModel(
 )
 
 fun PaginatedMovieUiModel.hasPoster(): Boolean = posterUrl != null
+
+fun Movie.toPaginatedMovieUiModel(): PaginatedMovieUiModel =
+    PaginatedMovieUiModel(
+        id,
+        posterImageRelativePath,
+        localTitle,
+        isFavourite
+    )

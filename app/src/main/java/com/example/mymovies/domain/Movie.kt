@@ -1,11 +1,5 @@
 package com.example.mymovies.domain
 
-import com.example.mymovies.framework.database.entities.MoviesPaginationInfo
-import com.example.mymovies.ui.moviedetails.MovieDetailsUiModel
-import com.example.mymovies.ui.paginatedmovies.PaginatedMovieUiModel
-import com.example.mymovies.framework.database.entities.Movie as MovieDatabase
-import com.example.mymovies.framework.database.entities.MovieGenre as MovieGenreDatabase
-
 data class Movie(
     val id: Long,
     val backdropImageRelativePath: String?,
@@ -50,53 +44,3 @@ data class ItemsPaginationInfo(
     val totalPages: Int = 0,
     val totalItems: Int = 0
 )
-
-fun Movie.toMovieDatabaseModel(): MovieDatabase =
-    MovieDatabase(
-        id,
-        backdropImageRelativePath,
-        posterImageRelativePath,
-        budget,
-        originalLanguage,
-        originalTitle,
-        overview,
-        popularity,
-        releaseDate,
-        revenue,
-        runningTime,
-        localTitle,
-        voteAverage,
-        voteCount,
-        isFavourite
-    )
-
-fun Movie.toPaginatedMovieUiModel(): PaginatedMovieUiModel =
-    PaginatedMovieUiModel(
-        id,
-        posterImageRelativePath,
-        localTitle,
-        isFavourite
-    )
-
-fun Movie.toMovieDetailsUiModel(): MovieDetailsUiModel =
-    MovieDetailsUiModel(
-        id,
-        localTitle,
-        originalTitle,
-        overview,
-        releaseDate,
-        genres,
-        voteAverage,
-        posterImageRelativePath,
-        backdropImageRelativePath,
-        isFavourite
-    )
-
-fun MovieGenre.toMovieGenreDatabaseModel(): MovieGenreDatabase = MovieGenreDatabase(id, name)
-
-fun ItemsPaginationInfo.toMoviesPaginationInfoDatabaseModel(): MoviesPaginationInfo =
-    MoviesPaginationInfo(
-        lastPageLoaded = lastPageLoaded,
-        totalPages = totalPages,
-        totalMovies = totalItems
-    )

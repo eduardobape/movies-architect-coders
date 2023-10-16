@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.mymovies.domain.Error
 import com.example.mymovies.domain.Movie
-import com.example.mymovies.domain.toMovieDetailsUiModel
 import com.example.mymovies.framework.errors.toError
 import com.example.mymovies.usecases.BuildMovieImageUrlUseCase
 import com.example.mymovies.usecases.GetCachedMovieDetailsUseCase
