@@ -1,4 +1,4 @@
-package com.example.mymovies.framework.shared
+package com.example.mymovies.framework
 
 import android.database.sqlite.SQLiteException
 import com.example.mymovies.domain.Error

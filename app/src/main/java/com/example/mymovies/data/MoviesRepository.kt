@@ -8,7 +8,7 @@ import com.example.mymovies.domain.Movie
 import com.example.mymovies.domain.MovieImageSize
 import com.example.mymovies.domain.MoviesSearchFilters
 import com.example.mymovies.domain.PaginatedMovies
-import com.example.mymovies.framework.shared.toError
+import com.example.mymovies.framework.toError
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
