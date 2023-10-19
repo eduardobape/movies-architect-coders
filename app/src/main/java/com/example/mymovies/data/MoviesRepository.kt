@@ -8,7 +8,6 @@ import com.example.mymovies.domain.Movie
 import com.example.mymovies.domain.MovieImageSize
 import com.example.mymovies.domain.MoviesSearchFilters
 import com.example.mymovies.domain.PaginatedMovies
-import com.example.mymovies.framework.toError
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -33,29 +32,32 @@ class MoviesRepository(
         moviesSearchFilters: MoviesSearchFilters,
         pageToFetch: Int
     ): Error? {
-        return runCatching {
-            val paginatedMovies: PaginatedMovies =
-                moviesRemoteDataSource.requestPaginatedMovies(moviesSearchFilters, pageToFetch)
-            moviesLocalDataSource.savePaginatedMovies(paginatedMovies)
-        }.fold({ null }) { exception -> exception.toError() }
+        moviesRemoteDataSource.requestPaginatedMovies(moviesSearchFilters, pageToFetch)
+        return moviesRemoteDataSource.requestPaginatedMovies(moviesSearchFilters, pageToFetch).fold(
+            ifLeft = { error: Error -> error },
+            ifRight = { moviesLocalDataSource.savePaginatedMovies(it) }
+        )
     }
 
     fun getMovieDetailsWithGenres(movieId: Long): Flow<Movie> =
         moviesLocalDataSource.getMovieWithGenres(movieId)
 
     suspend fun requestMovieDetails(movieId: Long): Error? {
-        return runCatching {
-            val movie: Movie = moviesRemoteDataSource.requestMovieDetails(movieId)
-            val isMovieFavourite: Boolean = moviesLocalDataSource.isMovieFlaggedAsFavourite(movieId)
-            moviesLocalDataSource.saveMovieDetails(movie.copy(isFavourite = isMovieFavourite))
-        }.fold(
-            { null }
-        ) { exception -> exception.toError() }
+        return moviesRemoteDataSource.requestMovieDetails(movieId).fold(
+            ifLeft = { error: Error -> error },
+            ifRight = { movie ->
+                moviesLocalDataSource.isMovieFlaggedAsFavourite(movieId).fold(
+                    ifLeft = { error: Error -> error },
+                    ifRight = { isMovieFavourite ->
+                        moviesLocalDataSource.saveMovieDetails(movie.copy(isFavourite = isMovieFavourite))
+                    }
+                )
+            }
+        )
     }
 
-    suspend fun switchMovieFavouriteFlag(movieId: Long, toFavourite: Boolean): Error? = runCatching {
+    suspend fun switchMovieFavouriteFlag(movieId: Long, toFavourite: Boolean): Error? =
         moviesLocalDataSource.switchMovieFavouriteFlag(movieId, toFavourite)
-    }.fold({ null }) { exception -> exception.toError() }
 
     fun buildMovieImageUrl(
         movieImageRelativePathUrl: String,
