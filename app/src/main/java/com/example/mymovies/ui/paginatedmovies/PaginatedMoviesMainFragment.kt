@@ -10,20 +10,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mymovies.R
 import com.example.mymovies.appContext
 import com.example.mymovies.data.MoviesRepository
+import com.example.mymovies.data.database.MoviesRoomDataSource
+import com.example.mymovies.data.webservice.MoviesWebServiceDataSource
+import com.example.mymovies.data.webservice.RemoteConnection
 import com.example.mymovies.databinding.FragmentPaginatedMoviesMainBinding
 import com.example.mymovies.domain.Error
 import com.example.mymovies.domain.MovieImageSize
-import com.example.mymovies.framework.database.MoviesRoomDataSource
-import com.example.mymovies.framework.webservice.MoviesWebServiceDataSource
-import com.example.mymovies.framework.webservice.RemoteConnection
 import com.example.mymovies.ui.shared.SpacedItemDecoration
 import com.example.mymovies.ui.shared.collectFlowWithDiffing
 import com.example.mymovies.ui.shared.launchAndCollectFlow
 import com.example.mymovies.ui.shared.viewLifecycleBinding
 import com.example.mymovies.ui.shared.visible
-import com.example.mymovies.usecases.BuildMovieImageUrlUseCase
-import com.example.mymovies.usecases.GetCachedPaginatedMoviesUseCase
-import com.example.mymovies.usecases.RequestMoviesPageUseCase
+import com.example.mymovies.usescases.BuildMovieImageUrlUseCase
+import com.example.mymovies.usescases.GetCachedPaginatedMoviesUseCase
+import com.example.mymovies.usescases.RequestMoviesPageUseCase
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.flow.map
 

@@ -3,13 +3,13 @@ package com.example.mymovies.ui.moviedetails
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.mymovies.data.toError
 import com.example.mymovies.domain.Error
 import com.example.mymovies.domain.Movie
-import com.example.mymovies.framework.toError
-import com.example.mymovies.usecases.BuildMovieImageUrlUseCase
-import com.example.mymovies.usecases.GetCachedMovieDetailsUseCase
-import com.example.mymovies.usecases.RequestMovieDetailsUseCase
-import com.example.mymovies.usecases.SwitchMovieFavouriteUseCase
+import com.example.mymovies.usescases.BuildMovieImageUrlUseCase
+import com.example.mymovies.usescases.GetCachedMovieDetailsUseCase
+import com.example.mymovies.usescases.RequestMovieDetailsUseCase
+import com.example.mymovies.usescases.SwitchMovieFavouriteUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -73,7 +73,8 @@ class MovieDetailsViewModel(
                 _uiState.update { uiState ->
                     uiState.copy(isLoading = true)
                 }
-                val error: Error? = switchMovieFavouriteUseCase(movieDetails)
+                val error: Error? =
+                    switchMovieFavouriteUseCase(movieDetails.id, movieDetails.isFavourite)
                 error?.let {
                     _uiState.update { uiState ->
                         uiState.copy(error = error, isLoading = false)

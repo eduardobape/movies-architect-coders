@@ -3,8 +3,8 @@ package com.example.mymovies
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
-import com.example.mymovies.framework.database.AppDataBase
-import com.example.mymovies.framework.webservice.RemoteConnection
+import com.example.mymovies.data.database.AppDataBase
+import com.example.mymovies.data.webservice.RemoteConnection
 
 class App : Application() {
 

@@ -3,18 +3,18 @@ package com.example.mymovies.ui.paginatedmovies
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.mymovies.domain.Error
+import com.example.mymovies.data.toError
 import com.example.mymovies.domain.MoviesSearchFilters
-import com.example.mymovies.framework.toError
-import com.example.mymovies.usecases.BuildMovieImageUrlUseCase
-import com.example.mymovies.usecases.GetCachedPaginatedMoviesUseCase
-import com.example.mymovies.usecases.RequestMoviesPageUseCase
+import com.example.mymovies.usescases.BuildMovieImageUrlUseCase
+import com.example.mymovies.usescases.GetCachedPaginatedMoviesUseCase
+import com.example.mymovies.usescases.RequestMoviesPageUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import com.example.mymovies.domain.Error
 
 class PaginatedMoviesMainViewModel(
     private val requestMoviesPageUseCase: RequestMoviesPageUseCase,
