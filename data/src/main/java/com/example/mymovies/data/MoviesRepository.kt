@@ -32,7 +32,6 @@ class MoviesRepository(
         moviesSearchFilters: MoviesSearchFilters,
         pageToFetch: Int
     ): Error? {
-        moviesRemoteDataSource.requestPaginatedMovies(moviesSearchFilters, pageToFetch)
         return moviesRemoteDataSource.requestPaginatedMovies(moviesSearchFilters, pageToFetch).fold(
             ifLeft = { error: Error -> error },
             ifRight = { moviesLocalDataSource.savePaginatedMovies(it) }
